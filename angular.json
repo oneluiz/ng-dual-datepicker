@@ -20,7 +20,9 @@
             "outputPath": "docs",
             "index": "demo/src/index.html",
             "browser": "demo/src/main.ts",
-            "polyfills": [],
+            "polyfills": [
+              "zone.js"
+            ],
             "tsConfig": "demo/tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": [],
