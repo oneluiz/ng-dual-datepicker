@@ -12,12 +12,13 @@ A beautiful, customizable dual-calendar date range picker for Angular 17+. Built
 
 ## ✨ Features
 
-- 🚀 **Zero Dependencies** - No Bootstrap or other CSS frameworks required
-- 📱 **Responsive Design** - Works on desktop and mobilestyling
+- 📅 **Dual Calendar Display** - Side-by-side month view for easy range selection
+- 🎨 **Fully Customizable** - Color scheme, padding, and styling
 - ⚡ **Preset Ranges** - Configurable quick-select options
 - 🎯 **Standalone Component** - No module imports required
-- � **Zero Dependencies** - No Bootstrap or other CSS frameworks required
-- �📱 **Responsive Design** - Works on desktop and mobile
+- 🚀 **Zero Dependencies** - No Bootstrap or other CSS frameworks required
+- 🌍 **i18n Support** - Customizable month and day names for any language
+- 📱 **Responsive Design** - Works on desktop and mobile
 - 🌐 **TypeScript** - Full type safety
 - ♿ **Accessible** - Keyboard navigation and ARIA labels
 - 🎭 **Flexible Behavior** - Control when the picker closes
@@ -152,6 +153,7 @@ customPresets: PresetConfig[] = [
 | `inputBorderColorHover` | `string` | `'#9ca3af'` | Input border color on hover |
 | `inputBorderColorFocus` | `string` | `'#80bdff'` | Input border color on focus |
 | `inputPadding` | `string` | `'0.375rem 0.75rem'` | Input padding |
+| `locale` | `LocaleConfig` | English defaults | Custom month/day names for i18n |
 
 ### Outputs
 
@@ -162,13 +164,22 @@ customPresets: PresetConfig[] = [
 ### Types
 
 ```typescript
-interface DateRange {
-  start: Date | null;
-  end: Date | null;
+infechaInicio: string;  // ISO date format: 'YYYY-MM-DD'
+  fechaFin: string;     // ISO date format: 'YYYY-MM-DD'
+  rangoTexto: string;   // Display text: 'DD Mon - DD Mon'
 }
 
 interface PresetConfig {
   label: string;
+  daysAgo: number;
+}
+
+interface LocaleConfig {
+  monthNames?: string[];         // Full month names (12 items)
+  monthNamesShort?: string[];    // Short month names (12 items)
+  dayNames?: string[];           // Full day names (7 items, starting Sunday)
+  dayNamesShort?: string[];      // Short day names (7 items, starting Sunday)
+  firstDayOfWeek?: number;       // 0 = Sunday, 1 = Monday, etc. (not yet implemented)
   daysAgo: number;
 }
 ```
@@ -179,11 +190,42 @@ interface PresetConfig {
 [
   { label: 'Last month', daysAgo: 30 },
   { label: 'Last 6 months', daysAgo: 180 },
-  { label: 'Last year', daysAgo: 365 }
-]
+  { label: 'Last yea
+  [fechaInicio]="startDate"
+  [fechaFin]="endDate"
+  (dateRangeSelected)="onDateRangeSelected($event)">
+</ngx-dual-datepicker>
 ```
 
-## 🎯 Examples
+###fechaInicio]="startDate"
+  [fechaFin]="endDate"
+  [closeOnSelection]="true"
+  [closeOnPresetSelection]="true"
+  (dateRangeSelected)="onDateRangeSelected($event)
+spanishLocale: LocaleConfig = {
+  monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 
+               'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+  monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 
+                    'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+  dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+  dayNamesShort: ['D', 'L', 'M', 'X', 'J', 'V', 'S']
+};
+```
+
+```html
+<ngx-dual-datepicker
+  [fechaInicio]="startDate"
+  [fechaFin]="endDate"
+  [fechaInicio]="startDate"
+  [fechaFin]="endDate"
+  placeholder="Pick your dates"
+  inputBackgroundColor="#fef3c7"
+  inputTextColor="#92400e"
+  inputBorderColor="#fbbf24"
+  inputBorderColorHover="#f59e0b"
+  inputBorderColorFocus="#d97706"
+  inputPadding="8px 12px"
+  (dateRangeSelected)="onDateRangeSelected($event)
 
 ### Minimal Usage
 
@@ -192,35 +234,38 @@ interface PresetConfig {
 ```
 
 ### With Auto-close
+fechaInicio]="startDate"
+      [fechaFin]="endDate"
+      (dateRangeSelected)="onDateRangeSelected($event)"
+      (dateRangeChange)="onDateRangeChange($event)">
+    </ngx-dual-datepicker>
+    
+    <div *ngIf="selectedRange">
+      Selected: {{ selectedRange.rangoTexto }}
+    </div>
+  `
+})
+export class ExampleComponent {
+  startDate: string = '';
+  endDate: string = '';
+  selectedRange: DateRange | null = null;
 
-```html
-<ngx-dual-datepicker
-  [(ngModel)]="dateRange"
-  [closeOnSelection]="true"
-  [closeOnPresetSelection]="true">
-</ngx-dual-datepicker>
-```
+  onDateRangeChange(range: DateRange) {
+    console.log('Date changed:', range.fechaInicio);
+    // Emitted when user selects first date (before completing range)
+  }
 
-### Custom Styling
+  onDateRangeSelected(range: DateRange) {
+    console.log('Range selected:', range);
+    this.selectedRange = range;
+    
+    // Both dates selected - do something
+    this.fetchData(range.fechaInicio, range.fechaFin);
+  }
 
-```html
-<ngx-dual-datepicker
-  [(ngModel)]="dateRange"
-  placeholder="Pick your dates"
-  inputBackgroundColor="#fef3c7"
-  inputTextColor="#92400e"
-  inputBorderColor="#fbbf24"
-  inputBorderColorHover="#f59e0b"
-  inputBorderColorFocus="#d97706"
-  inputPadding="8px 12px">
-</ngx-dual-datepicker>
-```
-
-### With Event Handler
-
-```typescript
-@Component({
-  selector: 'app-example',
+  fetchData(startDate: string, endDate: string) {
+    // Your API call here
+    // Dates are in 'YYYY-MM-DD' format,
   template: `
     <ngx-dual-datepicker
       [(ngModel)]="dateRange"

@@ -3,4 +3,4 @@
  */
 
 export { DualDatepickerComponent } from './dual-datepicker.component';
-export type { DateRange, PresetConfig } from './dual-datepicker.component';
+export type { DateRange, PresetConfig, LocaleConfig } from './dual-datepicker.component';

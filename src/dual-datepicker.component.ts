@@ -13,6 +13,14 @@ export interface PresetConfig {
   daysAgo: number;
 }
 
+export interface LocaleConfig {
+  monthNames?: string[];
+  monthNamesShort?: string[];
+  dayNames?: string[];
+  dayNamesShort?: string[];
+  firstDayOfWeek?: number; // 0 = Sunday, 1 = Monday, etc.
+}
+
 @Component({
   selector: 'ngx-dual-datepicker',
   standalone: true,
@@ -39,6 +47,7 @@ export class DualDatepickerComponent implements OnInit, OnChanges {
   @Input() inputBorderColorHover: string = '#ced4da';
   @Input() inputBorderColorFocus: string = '#80bdff';
   @Input() inputPadding: string = '0.375rem 0.75rem';
+  @Input() locale: LocaleConfig = {};
 
   @Output() dateRangeChange = new EventEmitter<DateRange>();
   @Output() dateRangeSelected = new EventEmitter<DateRange>();
@@ -50,6 +59,11 @@ export class DualDatepickerComponent implements OnInit, OnChanges {
   mesAnterior = new Date();
   diasMesActual: any[] = [];
   diasMesAnterior: any[] = [];
+
+  private readonly defaultMonthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  private readonly defaultMonthNamesShort = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  private readonly defaultDayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+  private readonly defaultDayNamesShort = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
 
   constructor(private elementRef: ElementRef) {}
 
@@ -91,8 +105,8 @@ export class DualDatepickerComponent implements OnInit, OnChanges {
   formatearFechaDisplay(fechaStr: string): string {
     if (!fechaStr) return '';
     const fecha = new Date(fechaStr + 'T00:00:00');
-    const meses = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-    return `${fecha.getDate()} ${meses[fecha.getMonth()]}`;
+    const monthNames = this.locale.monthNamesShort || this.defaultMonthNamesShort;
+    return `${fecha.getDate()} ${monthNames[fecha.getMonth()]}`;
   }
 
   actualizarRangoFechasTexto(): void {
@@ -190,8 +204,12 @@ export class DualDatepickerComponent implements OnInit, OnChanges {
   }
 
   getNombreMes(fecha: Date): string {
-    const meses = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-    return `${meses[fecha.getMonth()]} ${fecha.getFullYear()}`;
+    const monthNames = this.locale.monthNames || this.defaultMonthNames;
+    return `${monthNames[fecha.getMonth()]} ${fecha.getFullYear()}`;
+  }
+
+  getDayNames(): string[] {
+    return this.locale.dayNamesShort || this.defaultDayNamesShort;
   }
 
   seleccionarRangoPredefinido(preset: PresetConfig): void {

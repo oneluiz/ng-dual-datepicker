@@ -54,7 +54,9 @@
           </button>
         </div>
         <div class="date-picker-weekdays">
-          <span>S</span><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span>
+          @for (dayName of getDayNames(); track $index) {
+            <span>{{ dayName }}</span>
+          }
         </div>
         <div class="date-picker-days">
           @for (diaObj of diasMesAnterior; track diaObj.fecha || $index) {
@@ -88,7 +90,9 @@
           </button>
         </div>
         <div class="date-picker-weekdays">
-          <span>S</span><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span>
+          @for (dayName of getDayNames(); track $index) {
+            <span>{{ dayName }}</span>
+          }
         </div>
         <div class="date-picker-days">
           @for (diaObj of diasMesActual; track diaObj.fecha || $index) {
