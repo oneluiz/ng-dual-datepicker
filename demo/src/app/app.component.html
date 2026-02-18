@@ -22,9 +22,9 @@
       @if (example1Range) {
         <div class="selected-range">
           <strong>Selected Range:</strong>
-          <p>Start: {{ example1Range.fechaInicio }}</p>
-          <p>End: {{ example1Range.fechaFin }}</p>
-          <p>Text: {{ example1Range.rangoTexto }}</p>
+          <p>Start: {{ example1Range.fechaInicio || '(empty)' }}</p>
+          <p>End: {{ example1Range.fechaFin || '(empty)' }}</p>
+          <p>Text: {{ example1Range.rangoTexto || '(empty)' }}</p>
         </div>
       }
       <div class="code-block">
@@ -47,9 +47,9 @@
       @if (example2Range) {
         <div class="selected-range">
           <strong>Selected Range:</strong>
-          <p>Start: {{ example2Range.fechaInicio }}</p>
-          <p>End: {{ example2Range.fechaFin }}</p>
-          <p>Text: {{ example2Range.rangoTexto }}</p>
+          <p>Start: {{ example2Range.fechaInicio || '(empty)' }}</p>
+          <p>End: {{ example2Range.fechaFin || '(empty)' }}</p>
+          <p>Text: {{ example2Range.rangoTexto || '(empty)' }}</p>
         </div>
       }
       <div class="code-block">
@@ -76,9 +76,9 @@
       @if (example3Range) {
         <div class="selected-range">
           <strong>Selected Range:</strong>
-          <p>Start: {{ example3Range.fechaInicio }}</p>
-          <p>End: {{ example3Range.fechaFin }}</p>
-          <p>Text: {{ example3Range.rangoTexto }}</p>
+          <p>Start: {{ example3Range.fechaInicio || '(empty)' }}</p>
+          <p>End: {{ example3Range.fechaFin || '(empty)' }}</p>
+          <p>Text: {{ example3Range.rangoTexto || '(empty)' }}</p>
         </div>
       }
       <div class="code-block">
@@ -101,9 +101,9 @@
       @if (example5Range) {
         <div class="selected-range">
           <strong>Selected Range:</strong>
-          <p>Start: {{ example5Range.fechaInicio }}</p>
-          <p>End: {{ example5Range.fechaFin }}</p>
-          <p>Text: {{ example5Range.rangoTexto }}</p>
+          <p>Start: {{ example5Range.fechaInicio || '(empty)' }}</p>
+          <p>End: {{ example5Range.fechaFin || '(empty)' }}</p>
+          <p>Text: {{ example5Range.rangoTexto || '(empty)' }}</p>
         </div>
       }
       <div class="code-block">
@@ -111,7 +111,31 @@
       </div>
     </div>
 
-    <!-- Example 5: With Initial Dates -->
+    <!-- Example 5: Clear Button -->
+    <div class="example-card">
+      <h2>Clear Button</h2>
+      <p class="example-description">
+        The component includes a built-in "Clear" button to reset the selection. Try selecting a range and then clicking "Clear" in the dropdown.
+      </p>
+      <div class="example-demo">
+        <ngx-dual-datepicker
+          (dateRangeChange)="onDateRangeChange(7, $event)">
+        </ngx-dual-datepicker>
+      </div>
+      @if (example7Range) {
+        <div class="selected-range">
+          <strong>Selected Range:</strong>
+          <p>Start: {{ example7Range.fechaInicio || '(empty)' }}</p>
+          <p>End: {{ example7Range.fechaFin || '(empty)' }}</p>
+          <p>Text: {{ example7Range.rangoTexto || '(empty)' }}</p>
+        </div>
+      }
+      <div class="code-block">
+        <pre>{{ codeExamples.basic }}</pre>
+      </div>
+    </div>
+
+    <!-- Example 6: With Initial Dates -->
     <div class="example-card">
       <h2>With Initial Dates</h2>
       <p class="example-description">
@@ -127,9 +151,9 @@
       @if (example6Range) {
         <div class="selected-range">
           <strong>Selected Range:</strong>
-          <p>Start: {{ example6Range.fechaInicio }}</p>
-          <p>End: {{ example6Range.fechaFin }}</p>
-          <p>Text: {{ example6Range.rangoTexto }}</p>
+          <p>Start: {{ example6Range.fechaInicio || '(empty)' }}</p>
+          <p>End: {{ example6Range.fechaFin || '(empty)' }}</p>
+          <p>Text: {{ example6Range.rangoTexto || '(empty)' }}</p>
         </div>
       }
       <div class="code-block">

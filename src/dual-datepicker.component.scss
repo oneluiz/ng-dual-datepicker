@@ -254,3 +254,36 @@
     opacity: 0.3;
   }
 }
+
+.date-picker-footer {
+  padding: 12px;
+  border-top: 1px solid #e1e4e8;
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+
+  .btn-clear {
+    padding: 8px 16px;
+    background-color: #f6f8fa;
+    border: 1px solid #d0d7de;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #24292f;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    
+    &:hover {
+      background-color: #f3f4f6;
+      border-color: #8c959f;
+      transform: translateY(-1px);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+
+    &:active {
+      transform: translateY(0);
+      box-shadow: none;
+      background-color: #e9ecef;
+    }
+  }
+}

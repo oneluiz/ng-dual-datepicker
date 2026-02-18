@@ -15,6 +15,7 @@ A beautiful, customizable dual-calendar date range picker for Angular 17+. Built
 - 📅 **Dual Calendar Display** - Side-by-side month view for easy range selection
 - 🎨 **Fully Customizable** - Color scheme, padding, and styling
 - ⚡ **Preset Ranges** - Configurable quick-select options
+- 🧹 **Clear Button** - Built-in button to reset selection
 - 🎯 **Standalone Component** - No module imports required
 - 🚀 **Zero Dependencies** - No Bootstrap or other CSS frameworks required
 - 🌍 **i18n Support** - Customizable month and day names for any language

@@ -36,6 +36,9 @@ export class AppComponent {
   fechaInicio = '2026-02-01';
   fechaFin = '2026-02-18';
 
+  // Example 7: Clear button
+  example7Range: DateRange | null = null;
+
   onDateRangeChange(example: number, range: DateRange) {
     switch(example) {
       case 1:
@@ -55,6 +58,9 @@ export class AppComponent {
         break;
       case 6:
         this.example6Range = range;
+        break;
+      case 7:
+        this.example7Range = range;
         break;
     }
   }
