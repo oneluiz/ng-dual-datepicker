@@ -145,6 +145,8 @@ customPresets: PresetConfig[] = [
 | `ngModel` | `DateRange` | `{ start: null, end: null }` | Two-way binding for selected date range |
 | `placeholder` | `string` | `'Select date range'` | Input placeholder text |
 | `presets` | `PresetConfig[]` | Default presets | Array of preset configurations |
+| `showPresets` | `boolean` | `true` | Show/hide the presets sidebar |
+| `showClearButton` | `boolean` | `true` | Show/hide the Clear button in dropdown |
 | `closeOnSelection` | `boolean` | `false` | Close picker when both dates selected |
 | `closeOnPresetSelection` | `boolean` | `false` | Close picker when preset is clicked |
 | `closeOnClickOutside` | `boolean` | `true` | Close picker when clicking outside |

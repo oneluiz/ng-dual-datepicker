@@ -33,6 +33,7 @@ export class DualDatepickerComponent implements OnInit, OnChanges {
   @Input() fechaInicio: string = '';
   @Input() fechaFin: string = '';
   @Input() showPresets: boolean = true;
+  @Input() showClearButton: boolean = true;
   @Input() closeOnSelection: boolean = true;
   @Input() closeOnPresetSelection: boolean = true;
   @Input() closeOnClickOutside: boolean = true;

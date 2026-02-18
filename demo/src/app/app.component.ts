@@ -43,6 +43,9 @@ export class AppComponent {
   @ViewChild('datepicker8') datepicker8!: DualDatepickerComponent;
   example8Range: DateRange | null = null;
 
+  // Example 9: Hide clear button
+  example9Range: DateRange | null = null;
+
   clearExternalButton() {
     this.datepicker8.limpiar();
   }
@@ -72,6 +75,9 @@ export class AppComponent {
         break;
       case 8:
         this.example8Range = range;
+        break;
+      case 9:
+        this.example9Range = range;
         break;
     }
   }
@@ -133,6 +139,10 @@ import { DualDatepickerComponent } from '@oneluiz/dual-datepicker';
 clearExternalButton() {
   this.datepicker8.limpiar();
 }`,
+      hideClearButton: `<ngx-dual-datepicker
+  [showClearButton]="false"
+  (dateRangeChange)="onDateRangeChange($event)">
+</ngx-dual-datepicker>`,
       install: `npm install @oneluiz/dual-datepicker`
     };
   }

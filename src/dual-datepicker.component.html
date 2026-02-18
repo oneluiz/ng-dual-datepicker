@@ -112,11 +112,13 @@
     </div>
 
     <!-- Footer with clear button -->
+    @if (showClearButton) {
     <div class="date-picker-footer">
       <button type="button" class="btn-clear" (click)="limpiar()" title="Clear selection">
         Clear
       </button>
     </div>
+    }
   </div>
   }
 </div>

@@ -191,6 +191,31 @@
       </div>
     </div>
 
+    <!-- Example 9: Hide Clear Button -->
+    <div class="example-card">
+      <h2>Hide Clear Button</h2>
+      <p class="example-description">
+        You can hide the internal Clear button by setting [showClearButton]="false". Perfect when you want a minimal UI or are using an external clear button.
+      </p>
+      <div class="example-demo">
+        <ngx-dual-datepicker
+          [showClearButton]="false"
+          (dateRangeChange)="onDateRangeChange(9, $event)">
+        </ngx-dual-datepicker>
+      </div>
+      @if (example9Range) {
+        <div class="selected-range">
+          <strong>Selected Range:</strong>
+          <p>Start: {{ example9Range.fechaInicio || '(empty)' }}</p>
+          <p>End: {{ example9Range.fechaFin || '(empty)' }}</p>
+          <p>Text: {{ example9Range.rangoTexto || '(empty)' }}</p>
+        </div>
+      }
+      <div class="code-block">
+        <pre>{{ codeExamples.hideClearButton }}</pre>
+      </div>
+    </div>
+
     <!-- Installation -->
     <div class="example-card">
       <h2>📦 Installation</h2>
