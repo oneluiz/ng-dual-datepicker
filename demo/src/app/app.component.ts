@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DualDatepickerComponent, DateRange, PresetConfig } from '../../../src/public-api';
 
@@ -39,6 +39,14 @@ export class AppComponent {
   // Example 7: Clear button
   example7Range: DateRange | null = null;
 
+  // Example 8: External clear button
+  @ViewChild('datepicker8') datepicker8!: DualDatepickerComponent;
+  example8Range: DateRange | null = null;
+
+  clearExternalButton() {
+    this.datepicker8.limpiar();
+  }
+
   onDateRangeChange(example: number, range: DateRange) {
     switch(example) {
       case 1:
@@ -61,6 +69,9 @@ export class AppComponent {
         break;
       case 7:
         this.example7Range = range;
+        break;
+      case 8:
+        this.example8Range = range;
         break;
     }
   }
@@ -102,6 +113,26 @@ customPresets: PresetConfig[] = [
 // In your component:
 fechaInicio = '2026-02-01';
 fechaFin = '2026-02-18';`,
+      externalButton: `<!-- Template -->
+<div style="display: flex; gap: 10px; align-items: flex-start;">
+  <ngx-dual-datepicker
+    #datepicker8
+    (dateRangeChange)="onDateRangeChange(8, $event)">
+  </ngx-dual-datepicker>
+  <button (click)="clearExternalButton()" style="padding: 0.375rem 0.75rem;">
+    Clear
+  </button>
+</div>
+
+// Component
+import { Component, ViewChild } from '@angular/core';
+import { DualDatepickerComponent } from '@oneluiz/dual-datepicker';
+
+@ViewChild('datepicker8') datepicker8!: DualDatepickerComponent;
+
+clearExternalButton() {
+  this.datepicker8.limpiar();
+}`,
       install: `npm install @oneluiz/dual-datepicker`
     };
   }

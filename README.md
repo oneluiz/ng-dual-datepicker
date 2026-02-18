@@ -162,6 +162,35 @@ customPresets: PresetConfig[] = [
 |-------|------|-------------|
 | `ngModelChange` | `EventEmitter<DateRange>` | Emitted when date range changes |
 
+### Public Methods
+
+You can call these methods programmatically using a template reference or ViewChild:
+
+```typescript
+import { Component, ViewChild } from '@angular/core';
+import { DualDatepickerComponent } from '@oneluiz/dual-datepicker';
+
+@Component({
+  template: `
+    <div style="display: flex; gap: 10px;">
+      <ngx-dual-datepicker #datepicker></ngx-dual-datepicker>
+      <button (click)="clearSelection()">Clear</button>
+    </div>
+  `
+})
+export class MyComponent {
+  @ViewChild('datepicker') datepicker!: DualDatepickerComponent;
+
+  clearSelection() {
+    this.datepicker.limpiar(); // Clears the date selection
+  }
+}
+```
+
+| Method | Description |
+|--------|-------------|
+| `limpiar()` | Clears the current date selection and resets the component |
+
 ### Types
 
 ```typescript
