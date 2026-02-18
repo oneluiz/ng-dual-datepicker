@@ -2,14 +2,18 @@
 
 A beautiful, customizable dual-calendar date range picker for Angular 17+. Built as a standalone component with full TypeScript support.
 
-![npm version](https://img.shields.io/npm/v/@oneluiz/dual-datepicker)
-![license](https://img.shields.io/npm/l/@ngx-tools/dual-datepicker)
+[![npm version](https://img.shields.io/npm/v/@oneluiz/dual-datepicker)](https://www.npmjs.com/package/@oneluiz/dual-datepicker)
+![license](https://img.shields.io/npm/l/@oneluiz/dual-datepicker)
 ![Angular](https://img.shields.io/badge/Angular-17%2B-red)
+
+## 🎯 [Live Demo](https://oneluiz.github.io/ng-dual-datepicker/)
+
+**[Check out the interactive examples →](https://oneluiz.github.io/ng-dual-datepicker/)**
 
 ## ✨ Features
 
-- 📅 **Dual Calendar Display** - Side-by-side month view for easy range selection
-- 🎨 **Fully Customizable** - Color scheme, padding, and styling
+- 🚀 **Zero Dependencies** - No Bootstrap or other CSS frameworks required
+- 📱 **Responsive Design** - Works on desktop and mobilestyling
 - ⚡ **Preset Ranges** - Configurable quick-select options
 - 🎯 **Standalone Component** - No module imports required
 - � **Zero Dependencies** - No Bootstrap or other CSS frameworks required

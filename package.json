@@ -22,7 +22,7 @@
   "bugs": {
     "url": "https://github.com/oneluiz/ng-dual-datepicker/issues"
   },
-  "homepage": "https://github.com/oneluiz/ng-dual-datepicker#readme",
+  "homepage": "https://oneluiz.github.io/ng-dual-datepicker/",
   "peerDependencies": {
     "@angular/common": "^17.0.0 || ^18.0.0 || ^19.0.0 || ^20.0.0",
     "@angular/core": "^17.0.0 || ^18.0.0 || ^19.0.0 || ^20.0.0",
@@ -30,14 +30,20 @@
   },
   "scripts": {
     "build": "ng-packagr -p ng-package.json",
-    "publish:pkg": "cd dist && npm publish --access public"
+    "publish:pkg": "cd dist && npm publish --access public",
+    "demo:serve": "ng serve demo",
+    "demo:build": "ng build demo --base-href=/ng-dual-datepicker/"
   },
   "devDependencies": {
-    "@angular/common": "^17.3.12",
+    "@angular-devkit/build-angular": "^18.2.14",
+    "@angular/cli": "^18.2.14",
+    "@angular/common": "^18.2.14",
     "@angular/compiler": "^18.2.14",
     "@angular/compiler-cli": "^18.2.14",
-    "@angular/core": "^17.3.12",
-    "@angular/forms": "^17.3.12",
+    "@angular/core": "^18.2.14",
+    "@angular/forms": "^18.2.14",
+    "@angular/platform-browser": "^18.2.14",
+    "@angular/platform-browser-dynamic": "^18.2.14",
     "ng-packagr": "^18.2.1",
     "rxjs": "^7.8.2",
     "typescript": "5.5",

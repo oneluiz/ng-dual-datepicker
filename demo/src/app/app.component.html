@@ -1,0 +1,165 @@
+<div class="container">
+  <div class="header">
+    <h1>🗓️ Dual Datepicker</h1>
+    <p>Un componente Angular standalone para selección de rangos de fechas</p>
+    <a href="https://www.npmjs.com/package/@oneluiz/dual-datepicker" target="_blank" class="npm-link">
+      Ver en NPM
+    </a>
+  </div>
+
+  <div class="example-grid">
+    <!-- Ejemplo 1: Básico -->
+    <div class="example-card">
+      <h2>Ejemplo Básico</h2>
+      <p class="example-description">
+        Uso básico del componente con configuración predeterminada.
+      </p>
+      <div class="example-demo">
+        <ngx-dual-datepicker
+          (dateRangeChange)="onDateRangeChange(1, $event)">
+        </ngx-dual-datepicker>
+      </div>
+      @if (example1Range) {
+        <div class="selected-range">
+          <strong>Rango seleccionado:</strong>
+          <p>Inicio: {{ example1Range.fechaInicio }}</p>
+          <p>Fin: {{ example1Range.fechaFin }}</p>
+          <p>Texto: {{ example1Range.rangoTexto }}</p>
+        </div>
+      }
+      <div class="code-block">
+        <pre>{{ codeExamples.basic }}</pre>
+      </div>
+    </div>
+
+    <!-- Ejemplo 2: Con presets personalizados -->
+    <div class="example-card">
+      <h2>Presets Personalizados</h2>
+      <p class="example-description">
+        Define tus propios presets para rangos de fechas comunes.
+      </p>
+      <div class="example-demo">
+        <ngx-dual-datepicker
+          [presets]="customPresets"
+          (dateRangeChange)="onDateRangeChange(2, $event)">
+        </ngx-dual-datepicker>
+      </div>
+      @if (example2Range) {
+        <div class="selected-range">
+          <strong>Rango seleccionado:</strong>
+          <p>Inicio: {{ example2Range.fechaInicio }}</p>
+          <p>Fin: {{ example2Range.fechaFin }}</p>
+          <p>Texto: {{ example2Range.rangoTexto }}</p>
+        </div>
+      }
+      <div class="code-block">
+        <pre>{{ codeExamples.presets }}</pre>
+      </div>
+    </div>
+
+    <!-- Ejemplo 3: Estilo GitHub -->
+    <div class="example-card">
+      <h2>Colores Personalizados (GitHub Style)</h2>
+      <p class="example-description">
+        Personaliza los colores del input para que coincidan con tu diseño.
+      </p>
+      <div class="example-demo">
+        <ngx-dual-datepicker
+          inputBackgroundColor="#0d1117"
+          inputTextColor="#c9d1d9"
+          inputBorderColor="#30363d"
+          inputBorderColorHover="#58a6ff"
+          inputBorderColorFocus="#58a6ff"
+          (dateRangeChange)="onDateRangeChange(3, $event)">
+        </ngx-dual-datepicker>
+      </div>
+      @if (example3Range) {
+        <div class="selected-range">
+          <strong>Rango seleccionado:</strong>
+          <p>Inicio: {{ example3Range.fechaInicio }}</p>
+          <p>Fin: {{ example3Range.fechaFin }}</p>
+          <p>Texto: {{ example3Range.rangoTexto }}</p>
+        </div>
+      }
+      <div class="code-block">
+        <pre>{{ codeExamples.colors }}</pre>
+      </div>
+    </div>
+
+    <!-- Ejemplo 4: Sin presets -->
+    <div class="example-card">
+      <h2>Sin Presets</h2>
+      <p class="example-description">
+        Oculta los presets y muestra solo el calendario.
+      </p>
+      <div class="example-demo">
+        <ngx-dual-datepicker
+          [showPresets]="false"
+          (dateRangeChange)="onDateRangeChange(5, $event)">
+        </ngx-dual-datepicker>
+      </div>
+      @if (example5Range) {
+        <div class="selected-range">
+          <strong>Rango seleccionado:</strong>
+          <p>Inicio: {{ example5Range.fechaInicio }}</p>
+          <p>Fin: {{ example5Range.fechaFin }}</p>
+          <p>Texto: {{ example5Range.rangoTexto }}</p>
+        </div>
+      }
+      <div class="code-block">
+        <pre>{{ codeExamples.noPresets }}</pre>
+      </div>
+    </div>
+
+    <!-- Ejemplo 5: Con fechas iniciales -->
+    <div class="example-card">
+      <h2>Con Fechas Iniciales</h2>
+      <p class="example-description">
+        Inicializa el componente con un rango de fechas predefinido.
+      </p>
+      <div class="example-demo">
+        <ngx-dual-datepicker
+          [fechaInicio]="fechaInicio"
+          [fechaFin]="fechaFin"
+          (dateRangeChange)="onDateRangeChange(6, $event)">
+        </ngx-dual-datepicker>
+      </div>
+      @if (example6Range) {
+        <div class="selected-range">
+          <strong>Rango seleccionado:</strong>
+          <p>Inicio: {{ example6Range.fechaInicio }}</p>
+          <p>Fin: {{ example6Range.fechaFin }}</p>
+          <p>Texto: {{ example6Range.rangoTexto }}</p>
+        </div>
+      }
+      <div class="code-block">
+        <pre>{{ codeExamples.initial }}</pre>
+      </div>
+    </div>
+
+    <!-- Instalación -->
+    <div class="example-card">
+      <h2>📦 Instalación</h2>
+      <p class="example-description">
+        Instala el paquete desde npm:
+      </p>
+      <div class="code-block">
+        <pre>{{ codeExamples.install }}</pre>
+      </div>
+      <p class="example-description" style="margin-top: 1rem;">
+        Luego importa el componente en tu aplicación:
+      </p>
+      <div class="code-block">
+        <pre>import {{ '{' }} DualDatepickerComponent {{ '}' }} from '&#64;oneluiz/dual-datepicker';</pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <p>
+      Creado con ❤️ | 
+      <a href="https://github.com/oneluiz/ng-dual-datepicker" target="_blank">GitHub</a> | 
+      <a href="https://www.npmjs.com/package/@oneluiz/dual-datepicker" target="_blank">NPM</a>
+    </p>
+  </div>
+</div>
