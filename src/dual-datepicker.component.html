@@ -4,9 +4,10 @@
   <input 
     type="text" 
     class="datepicker-input" 
-    [value]="rangoFechas" 
+    [value]="rangoFechas()" 
     (click)="toggleDatePicker()" 
     [placeholder]="placeholder"
+    [disabled]="isDisabled()"
     [ngStyle]="{
       'background-color': inputBackgroundColor,
       'color': inputTextColor,
@@ -15,7 +16,7 @@
     }"
     readonly>
 
-  @if (mostrarDatePicker) {
+  @if (mostrarDatePicker()) {
   <div class="date-picker-dropdown">
     @if (showPresets) {
     <div class="date-picker-presets">
@@ -46,7 +47,7 @@
               <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
             </svg>
           </button>
-          <span>{{ getNombreMes(mesAnterior) }}</span>
+          <span>{{ nombreMesAnterior() }}</span>
           <button type="button" style="visibility: hidden;">
             <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
               <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
@@ -54,12 +55,12 @@
           </button>
         </div>
         <div class="date-picker-weekdays">
-          @for (dayName of getDayNames(); track $index) {
+          @for (dayName of diasSemana(); track $index) {
             <span>{{ dayName }}</span>
           }
         </div>
         <div class="date-picker-days">
-          @for (diaObj of diasMesAnterior; track diaObj.fecha || $index) {
+          @for (diaObj of diasMesAnterior(); track diaObj.fecha || $index) {
             <button 
               type="button"
               class="date-picker-day" 
@@ -82,7 +83,7 @@
               <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
             </svg>
           </button>
-          <span>{{ getNombreMes(mesActual) }}</span>
+          <span>{{ nombreMesActual() }}</span>
           <button type="button" (click)="cambiarMes(1)">
             <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
               <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
@@ -90,12 +91,12 @@
           </button>
         </div>
         <div class="date-picker-weekdays">
-          @for (dayName of getDayNames(); track $index) {
+          @for (dayName of diasSemana(); track $index) {
             <span>{{ dayName }}</span>
           }
         </div>
         <div class="date-picker-days">
-          @for (diaObj of diasMesActual; track diaObj.fecha || $index) {
+          @for (diaObj of diasMesActual(); track diaObj.fecha || $index) {
             <button 
               type="button"
               class="date-picker-day" 

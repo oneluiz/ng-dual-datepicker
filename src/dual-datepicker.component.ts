@@ -1,6 +1,6 @@
-import { Component, Input, Output, EventEmitter, OnInit, OnChanges, SimpleChanges, HostListener, ElementRef } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, OnChanges, SimpleChanges, HostListener, ElementRef, forwardRef, signal, computed, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 export interface DateRange {
   fechaInicio: string;
@@ -24,11 +24,18 @@ export interface LocaleConfig {
 @Component({
   selector: 'ngx-dual-datepicker',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule],
   templateUrl: './dual-datepicker.component.html',
-  styleUrl: './dual-datepicker.component.scss'
+  styleUrl: './dual-datepicker.component.scss',
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => DualDatepickerComponent),
+      multi: true
+    }
+  ]
 })
-export class DualDatepickerComponent implements OnInit, OnChanges {
+export class DualDatepickerComponent implements OnInit, OnChanges, ControlValueAccessor {
   @Input() placeholder: string = 'Select date range';
   @Input() fechaInicio: string = '';
   @Input() fechaFin: string = '';
@@ -53,24 +60,43 @@ export class DualDatepickerComponent implements OnInit, OnChanges {
   @Output() dateRangeChange = new EventEmitter<DateRange>();
   @Output() dateRangeSelected = new EventEmitter<DateRange>();
 
-  mostrarDatePicker = false;
-  rangoFechas = '';
-  fechaSeleccionandoInicio = true;
-  mesActual = new Date();
-  mesAnterior = new Date();
-  diasMesActual: any[] = [];
-  diasMesAnterior: any[] = [];
+  // Signals for reactive state
+  mostrarDatePicker = signal(false);
+  rangoFechas = signal('');
+  fechaSeleccionandoInicio = signal(true);
+  mesActual = signal(new Date());
+  mesAnterior = signal(new Date());
+  diasMesActual = signal<any[]>([]);
+  diasMesAnterior = signal<any[]>([]);
+  isDisabled = signal(false);
+
+  // Computed values
+  nombreMesActual = computed(() => this.getNombreMes(this.mesActual()));
+  nombreMesAnterior = computed(() => this.getNombreMes(this.mesAnterior()));
+  diasSemana = computed(() => this.getDayNames());
 
   private readonly defaultMonthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
   private readonly defaultMonthNamesShort = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
   private readonly defaultDayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
   private readonly defaultDayNamesShort = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
 
-  constructor(private elementRef: ElementRef) {}
+  // ControlValueAccessor callbacks
+  private onChange: (value: DateRange | null) => void = () => {};
+  private onTouched: () => void = () => {};
+
+  constructor(private elementRef: ElementRef) {
+    // Effect to emit changes when dates change
+    effect(() => {
+      const rango = this.rangoFechas();
+      if (this.fechaInicio || this.fechaFin) {
+        this.onChange(this.getDateRangeValue());
+      }
+    });
+  }
 
   @HostListener('document:click', ['$event'])
   onClickOutside(event: MouseEvent): void {
-    if (this.mostrarDatePicker && this.closeOnClickOutside) {
+    if (this.mostrarDatePicker() && this.closeOnClickOutside) {
       const clickedInside = this.elementRef.nativeElement.contains(event.target);
       if (!clickedInside) {
         this.cerrarDatePicker();
@@ -91,7 +117,7 @@ export class DualDatepickerComponent implements OnInit, OnChanges {
         this.actualizarRangoFechasTexto();
         this.generarCalendarios();
       } else if (!this.fechaInicio && !this.fechaFin) {
-        this.rangoFechas = '';
+        this.rangoFechas.set('');
       }
     }
   }
@@ -114,28 +140,31 @@ export class DualDatepickerComponent implements OnInit, OnChanges {
     if (this.fechaInicio && this.fechaFin) {
       const inicio = this.formatearFechaDisplay(this.fechaInicio);
       const fin = this.formatearFechaDisplay(this.fechaFin);
-      this.rangoFechas = `${inicio} - ${fin}`;
+      this.rangoFechas.set(`${inicio} - ${fin}`);
     } else {
-      this.rangoFechas = '';
+      this.rangoFechas.set('');
     }
   }
 
   toggleDatePicker(): void {
-    this.mostrarDatePicker = !this.mostrarDatePicker;
-    if (this.mostrarDatePicker) {
-      this.fechaSeleccionandoInicio = true;
-      this.mesAnterior = new Date(this.mesActual.getFullYear(), this.mesActual.getMonth() - 1, 1);
+    this.mostrarDatePicker.update(value => !value);
+    if (this.mostrarDatePicker()) {
+      this.fechaSeleccionandoInicio.set(true);
+      const mesActualValue = this.mesActual();
+      this.mesAnterior.set(new Date(mesActualValue.getFullYear(), mesActualValue.getMonth() - 1, 1));
       this.generarCalendarios();
     }
+    this.onTouched();
   }
 
   cerrarDatePicker(): void {
-    this.mostrarDatePicker = false;
+    this.mostrarDatePicker.set(false);
+    this.onTouched();
   }
 
   generarCalendarios(): void {
-    this.diasMesAnterior = this.generarCalendarioMes(this.mesAnterior);
-    this.diasMesActual = this.generarCalendarioMes(this.mesActual);
+    this.diasMesAnterior.set(this.generarCalendarioMes(this.mesAnterior()));
+    this.diasMesActual.set(this.generarCalendarioMes(this.mesActual()));
   }
 
   generarCalendarioMes(fecha: Date): any[] {
@@ -174,13 +203,13 @@ export class DualDatepickerComponent implements OnInit, OnChanges {
   }
 
   seleccionarDia(diaObj: any): void {
-    if (!diaObj.esMesActual) return;
+    if (!diaObj.esMesActual || this.isDisabled()) return;
 
-    if (this.fechaSeleccionandoInicio) {
+    if (this.fechaSeleccionandoInicio()) {
       this.fechaInicio = diaObj.fecha;
       this.fechaFin = '';
-      this.rangoFechas = '';
-      this.fechaSeleccionandoInicio = false;
+      this.rangoFechas.set('');
+      this.fechaSeleccionandoInicio.set(false);
       this.emitirCambio();
     } else {
       if (diaObj.fecha < this.fechaInicio) {
@@ -191,9 +220,9 @@ export class DualDatepickerComponent implements OnInit, OnChanges {
       }
       this.actualizarRangoFechasTexto();
       if (this.closeOnSelection) {
-        this.mostrarDatePicker = false;
+        this.mostrarDatePicker.set(false);
       }
-      this.fechaSeleccionandoInicio = true;
+      this.fechaSeleccionandoInicio.set(true);
       this.emitirCambio();
       this.emitirSeleccion();
     }
@@ -201,8 +230,10 @@ export class DualDatepickerComponent implements OnInit, OnChanges {
   }
 
   cambiarMes(direccion: number): void {
-    this.mesActual = new Date(this.mesActual.getFullYear(), this.mesActual.getMonth() + direccion, 1);
-    this.mesAnterior = new Date(this.mesActual.getFullYear(), this.mesActual.getMonth() - 1, 1);
+    const mesActualValue = this.mesActual();
+    this.mesActual.set(new Date(mesActualValue.getFullYear(), mesActualValue.getMonth() + direccion, 1));
+    const nuevoMesActual = this.mesActual();
+    this.mesAnterior.set(new Date(nuevoMesActual.getFullYear(), nuevoMesActual.getMonth() - 1, 1));
     this.generarCalendarios();
   }
 
@@ -225,7 +256,7 @@ export class DualDatepickerComponent implements OnInit, OnChanges {
     this.actualizarRangoFechasTexto();
     this.generarCalendarios();
     if (this.closeOnPresetSelection) {
-      this.mostrarDatePicker = false;
+      this.mostrarDatePicker.set(false);
     }
     this.emitirSeleccion();
   }
@@ -233,17 +264,18 @@ export class DualDatepickerComponent implements OnInit, OnChanges {
   limpiar(): void {
     this.fechaInicio = '';
     this.fechaFin = '';
-    this.rangoFechas = '';
-    this.mostrarDatePicker = false;
-    this.fechaSeleccionandoInicio = true;
+    this.rangoFechas.set('');
+    this.mostrarDatePicker.set(false);
+    this.fechaSeleccionandoInicio.set(true);
     this.emitirCambio();
+    this.onTouched();
   }
 
   private emitirCambio(): void {
     this.dateRangeChange.emit({
       fechaInicio: this.fechaInicio,
       fechaFin: this.fechaFin,
-      rangoTexto: this.rangoFechas
+      rangoTexto: this.rangoFechas()
     });
   }
 
@@ -251,7 +283,43 @@ export class DualDatepickerComponent implements OnInit, OnChanges {
     this.dateRangeSelected.emit({
       fechaInicio: this.fechaInicio,
       fechaFin: this.fechaFin,
-      rangoTexto: this.rangoFechas
+      rangoTexto: this.rangoFechas()
     });
+  }
+
+  private getDateRangeValue(): DateRange {
+    return {
+      fechaInicio: this.fechaInicio,
+      fechaFin: this.fechaFin,
+      rangoTexto: this.rangoFechas()
+    };
+  }
+
+  // ControlValueAccessor implementation
+  writeValue(value: DateRange | null): void {
+    if (value) {
+      this.fechaInicio = value.fechaInicio || '';
+      this.fechaFin = value.fechaFin || '';
+      if (this.fechaInicio && this.fechaFin) {
+        this.actualizarRangoFechasTexto();
+        this.generarCalendarios();
+      }
+    } else {
+      this.fechaInicio = '';
+      this.fechaFin = '';
+      this.rangoFechas.set('');
+    }
+  }
+
+  registerOnChange(fn: (value: DateRange | null) => void): void {
+    this.onChange = fn;
+  }
+
+  registerOnTouched(fn: () => void): void {
+    this.onTouched = fn;
+  }
+
+  setDisabledState(isDisabled: boolean): void {
+    this.isDisabled.set(isDisabled);
   }
 }

@@ -23,6 +23,8 @@ A beautiful, customizable dual-calendar date range picker for Angular 17+. Built
 - 🌐 **TypeScript** - Full type safety
 - ♿ **Accessible** - Keyboard navigation and ARIA labels
 - 🎭 **Flexible Behavior** - Control when the picker closes
+- 🔄 **Reactive Forms Support** - Full ControlValueAccessor implementation
+- ⚡ **Angular Signals** - Modern reactive state management
 
 ## 📦 Installation
 
@@ -67,14 +69,16 @@ import { DualDatepickerComponent } from '@oneluiz/dual-datepicker';
   imports: [FormsModule, DualDatepickerComponent],
   template: `
     <ngx-dual-datepicker
-      [(ngModel)]="selectedRange"
+      [fechaInicio]="fechaInicio"
+      [fechaFin]="fechaFin"
       [presets]="customPresets"
-      (ngModelChange)="onDateChange($event)">
+      (dateRangeChange)="onDateChange($event)">
     </ngx-dual-datepicker>
   `
 })
 export class ExampleComponent {
-  selectedRange = { start: null, end: null };
+  fechaInicio = '';
+  fechaFin = '';
   
   customPresets = [
     { label: 'Last 7 days', daysAgo: 7 },
@@ -82,8 +86,119 @@ export class ExampleComponent {
     { label: 'Last 90 days', daysAgo: 90 }
   ];
 
-  onDateChange(range: any) {
+  onDateChange(range: DateRange) {
     console.log('Date range selected:', range);
+    this.fechaInicio = range.fechaInicio;
+    this.fechaFin = range.fechaFin;
+  }
+}
+```
+
+### 3. Use with Reactive Forms ✨ New!
+
+```typescript
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { DualDatepickerComponent, DateRange } from '@oneluiz/dual-datepicker';
+
+@Component({
+  selector: 'app-reactive-form',
+  standalone: true,
+  imports: [ReactiveFormsModule, DualDatepickerComponent],
+  template: `
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <label>Select Date Range:</label>
+      <ngx-dual-datepicker
+        formControlName="dateRange"
+        placeholder="Choose dates"
+        [showClearButton]="true">
+      </ngx-dual-datepicker>
+      
+      <button type="submit" [disabled]="!form.valid">Submit</button>
+      
+      @if (form.value.dateRange) {
+        <div>
+          Selected: {{ form.value.dateRange.fechaInicio }} to {{ form.value.dateRange.fechaFin }}
+        </div>
+      }
+    </form>
+  `
+})
+export class ReactiveFormComponent implements OnInit {
+  form!: FormGroup;
+
+  constructor(private fb: FormBuilder) {}
+
+  ngOnInit() {
+    this.form = this.fb.group({
+      dateRange: [null] // Will receive DateRange object
+    });
+    
+    // Listen to changes
+    this.form.get('dateRange')?.valueChanges.subscribe(value => {
+      console.log('Date range changed:', value);
+    });
+  }
+
+  onSubmit() {
+    const dateRange: DateRange = this.form.value.dateRange;
+    console.log('Form submitted:', dateRange);
+  }
+}
+```
+
+### 4. Use with Angular Signals ⚡ New!
+
+The component now uses Angular Signals internally for better performance and reactivity:
+
+```typescript
+import { Component, signal, computed } from '@angular/core';
+import { DualDatepickerComponent, DateRange } from '@oneluiz/dual-datepicker';
+
+@Component({
+  selector: 'app-signals-example',
+  standalone: true,
+  imports: [DualDatepickerComponent],
+  template: `
+    <ngx-dual-datepicker
+      [fechaInicio]="fechaInicio()"
+      [fechaFin]="fechaFin()"
+      (dateRangeChange)="onDateChange($event)">
+    </ngx-dual-datepicker>
+    
+    @if (isRangeSelected()) {
+      <div>
+        <p>{{ rangeText() }}</p>
+        <p>Days selected: {{ daysDifference() }}</p>
+      </div>
+    }
+  `
+})
+export class SignalsExampleComponent {
+  fechaInicio = signal('');
+  fechaFin = signal('');
+  
+  // Computed values
+  isRangeSelected = computed(() => 
+    this.fechaInicio() !== '' && this.fechaFin() !== ''
+  );
+  
+  rangeText = computed(() => 
+    this.isRangeSelected() 
+      ? `${this.fechaInicio()} to ${this.fechaFin()}`
+      : 'No range selected'
+  );
+  
+  daysDifference = computed(() => {
+    if (!this.isRangeSelected()) return 0;
+    const start = new Date(this.fechaInicio());
+    const end = new Date(this.fechaFin());
+    return Math.ceil((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24));
+  });
+
+  onDateChange(range: DateRange) {
+    this.fechaInicio.set(range.fechaInicio);
+    this.fechaFin.set(range.fechaFin);
   }
 }
 ```
