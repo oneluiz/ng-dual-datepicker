@@ -10,6 +10,9 @@ import { DualDatepickerComponent, DateRange, PresetConfig } from '../../../src/p
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
+  // Active tab
+  activeTab: 'examples' | 'docs' | 'api' = 'examples';
+
   // Example 1: Basic
   example1Range: DateRange | null = null;
 
@@ -48,6 +51,10 @@ export class AppComponent {
 
   clearExternalButton() {
     this.datepicker8.limpiar();
+  }
+
+  setActiveTab(tab: 'examples' | 'docs' | 'api') {
+    this.activeTab = tab;
   }
 
   onDateRangeChange(example: number, range: DateRange) {
