@@ -1,6 +1,6 @@
 {
   "name": "@oneluiz/dual-datepicker",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A customizable dual-calendar date range picker component for Angular 17+",
   "keywords": [
     "angular",
@@ -24,9 +24,9 @@
   },
   "homepage": "https://github.com/oneluiz/ng-dual-datepicker#readme",
   "peerDependencies": {
-    "@angular/common": "^17.0.0 || ^18.0.0",
-    "@angular/core": "^17.0.0 || ^18.0.0",
-    "@angular/forms": "^17.0.0 || ^18.0.0"
+    "@angular/common": "^17.0.0 || ^18.0.0 || ^19.0.0 || ^20.0.0",
+    "@angular/core": "^17.0.0 || ^18.0.0 || ^19.0.0 || ^20.0.0",
+    "@angular/forms": "^17.0.0 || ^18.0.0 || ^19.0.0 || ^20.0.0"
   },
   "main": "./dist/index.js",
   "module": "./dist/index.esm.js",

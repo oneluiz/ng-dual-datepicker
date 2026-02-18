@@ -256,6 +256,8 @@ export class ExampleComponent {
 
 - Angular 17.0.0 or higher
 - Angular 18.0.0 or higher
+- Angular 19.0.0 or higher
+- Angular 20.0.0 or higher
 
 ## 📄 License
 
