@@ -1,6 +1,6 @@
 {
   "name": "@oneluiz/dual-datepicker",
-  "version": "1.0.3",
+  "version": "2.0.0",
   "description": "A customizable dual-calendar date range picker component for Angular 17+",
   "keywords": [
     "angular",
@@ -28,32 +28,25 @@
     "@angular/core": "^17.0.0 || ^18.0.0 || ^19.0.0 || ^20.0.0",
     "@angular/forms": "^17.0.0 || ^18.0.0 || ^19.0.0 || ^20.0.0"
   },
-  "main": "./dist/index.js",
-  "module": "./dist/index.esm.js",
-  "types": "./dist/index.d.ts",
-  "exports": {
-    ".": {
-      "import": "./dist/index.esm.js",
-      "require": "./dist/index.js",
-      "types": "./dist/index.d.ts"
-    }
-  },
   "files": [
     "dist",
     "README.md",
     "LICENSE"
   ],
   "scripts": {
-    "clean": "rm -rf dist",
-    "build": "npm run clean && tsc && node create-esm.js",
+    "build": "ng-packagr -p ng-package.json",
     "prepare": "npm run build"
   },
   "devDependencies": {
     "@angular/common": "^17.3.12",
+    "@angular/compiler": "^18.2.14",
+    "@angular/compiler-cli": "^18.2.14",
     "@angular/core": "^17.3.12",
     "@angular/forms": "^17.3.12",
+    "ng-packagr": "^18.2.1",
     "rxjs": "^7.8.2",
-    "typescript": "5.2",
+    "typescript": "5.5",
     "zone.js": "^0.14.10"
-  }
+  },
+  "packageManager": "pnpm@10.13.1+sha512.37ebf1a5c7a30d5fabe0c5df44ee8da4c965ca0c5af3dbab28c3a1681b70a256218d05c81c9c0dcf767ef6b8551eb5b960042b9ed4300c59242336377e01cfad"
 }
