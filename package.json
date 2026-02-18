@@ -1,5 +1,5 @@
 {
-  "name": "@ngx-tools/dual-datepicker",
+  "name": "@oneluiz/dual-datepicker",
   "version": "1.0.0",
   "description": "A customizable dual-calendar date range picker component for Angular 17+",
   "keywords": [

@@ -1,5 +1,5 @@
 /**
- * Public API Surface of @ngx-tools/dual-datepicker
+ * Public API Surface of @oneluiz/dual-datepicker
  */
 
 export { DualDatepickerComponent } from './dual-datepicker.component';

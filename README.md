@@ -1,8 +1,8 @@
-# @ngx-tools/dual-datepicker
+# @oneluiz/dual-datepicker
 
 A beautiful, customizable dual-calendar date range picker for Angular 17+. Built as a standalone component with full TypeScript support.
 
-![npm version](https://img.shields.io/npm/v/@ngx-tools/dual-datepicker)
+![npm version](https://img.shields.io/npm/v/@oneluiz/dual-datepicker)
 ![license](https://img.shields.io/npm/l/@ngx-tools/dual-datepicker)
 ![Angular](https://img.shields.io/badge/Angular-17%2B-red)
 
@@ -20,7 +20,7 @@ A beautiful, customizable dual-calendar date range picker for Angular 17+. Built
 ## 📦 Installation
 
 ```bash
-npm install @ngx-tools/dual-datepicker
+npm install @oneluiz/dual-datepicker
 ```
 
 ## 🚀 Quick Start
@@ -29,7 +29,7 @@ npm install @ngx-tools/dual-datepicker
 
 ```typescript
 import { Component } from '@angular/core';
-import { DualDatepickerComponent, DateRange } from '@ngx-tools/dual-datepicker';
+import { DualDatepickerComponent, DateRange } from '@oneluiz/dual-datepicker';
 
 @Component({
   selector: 'app-root',
@@ -52,7 +52,7 @@ export class AppComponent {
 ```typescript
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { DualDatepickerComponent } from '@ngx-tools/dual-datepicker';
+import { DualDatepickerComponent } from '@oneluiz/dual-datepicker';
 
 @Component({
   selector: 'app-example',
