@@ -32,7 +32,7 @@
     "build": "ng-packagr -p ng-package.json",
     "publish:pkg": "cd dist && npm publish --access public",
     "demo:serve": "ng serve demo",
-    "demo:build": "ng build demo --base-href=/ng-dual-datepicker/ && cd docs && mv browser/* . 2>/dev/null || true && rm -rf browser 2>/dev/null || true && cd .."
+    "demo:build": "ng build demo --base-href=/ng-dual-datepicker/ && cd docs && mv browser/* . 2>/dev/null || true && rm -rf browser 2>/dev/null || true && touch .nojekyll && cd .."
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^18.2.14",
