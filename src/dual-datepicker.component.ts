@@ -178,6 +178,7 @@ export class DualDatepickerComponent implements OnInit, OnChanges {
     if (this.fechaSeleccionandoInicio) {
       this.fechaInicio = diaObj.fecha;
       this.fechaFin = '';
+      this.rangoFechas = '';
       this.fechaSeleccionandoInicio = false;
       this.emitirCambio();
     } else {
@@ -192,6 +193,7 @@ export class DualDatepickerComponent implements OnInit, OnChanges {
         this.mostrarDatePicker = false;
       }
       this.fechaSeleccionandoInicio = true;
+      this.emitirCambio();
       this.emitirSeleccion();
     }
     this.generarCalendarios();
