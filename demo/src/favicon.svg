@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Fondo -->
+  <rect width="100" height="100" fill="#667eea" rx="20"/>
+  
+  <!-- Calendario exterior -->
+  <rect x="20" y="25" width="60" height="55" fill="white" rx="4"/>
+  
+  <!-- Header del calendario -->
+  <rect x="20" y="25" width="60" height="12" fill="#764ba2" rx="4"/>
+  <rect x="20" y="29" width="60" height="8" fill="#764ba2"/>
+  
+  <!-- Anillos superiores -->
+  <circle cx="32" cy="28" r="2" fill="white"/>
+  <circle cx="50" cy="28" r="2" fill="white"/>
+  <circle cx="68" cy="28" r="2" fill="white"/>
+  
+  <!-- Días del calendario (grid) -->
+  <rect x="25" y="42" width="8" height="6" fill="#667eea" rx="1"/>
+  <rect x="36" y="42" width="8" height="6" fill="#667eea" rx="1"/>
+  <rect x="47" y="42" width="8" height="6" fill="#667eea" rx="1"/>
+  <rect x="58" y="42" width="8" height="6" fill="#667eea" rx="1"/>
+  <rect x="69" y="42" width="8" height="6" fill="#667eea" rx="1"/>
+  
+  <rect x="25" y="52" width="8" height="6" fill="#667eea" rx="1"/>
+  <rect x="36" y="52" width="8" height="6" fill="#667eea" rx="1"/>
+  <rect x="47" y="52" width="8" height="6" fill="#764ba2" rx="1"/>
+  <rect x="58" y="52" width="8" height="6" fill="#764ba2" rx="1"/>
+  <rect x="69" y="52" width="8" height="6" fill="#667eea" rx="1"/>
+  
+  <rect x="25" y="62" width="8" height="6" fill="#667eea" rx="1"/>
+  <rect x="36" y="62" width="8" height="6" fill="#667eea" rx="1"/>
+  <rect x="47" y="62" width="8" height="6" fill="#667eea" rx="1"/>
+  <rect x="58" y="62" width="8" height="6" fill="#667eea" rx="1"/>
+  <rect x="69" y="62" width="8" height="6" fill="#667eea" rx="1"/>
+  
+  <rect x="25" y="72" width="8" height="6" fill="#667eea" rx="1"/>
+  <rect x="36" y="72" width="8" height="6" fill="#667eea" rx="1"/>
+</svg>
