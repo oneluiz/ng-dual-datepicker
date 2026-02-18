@@ -172,10 +172,11 @@
           <div class="example-card">
             <h2>Clear Button</h2>
             <p class="example-description">
-              The component includes a built-in "Clear" button to reset the selection. Try selecting a range and then clicking "Clear" in the dropdown.
+              Enable the built-in "Clear" button by setting [showClearButton]="true". This button appears in the dropdown and allows users to reset the selection.
             </p>
             <div class="example-demo">
               <ngx-dual-datepicker
+                [showClearButton]="true"
                 (dateRangeChange)="onDateRangeChange(7, $event)">
               </ngx-dual-datepicker>
             </div>
@@ -188,7 +189,7 @@
               </div>
             }
             <div class="code-block">
-              <pre>{{ codeExamples.basic }}</pre>
+              <pre>{{ codeExamples.clearButton }}</pre>
             </div>
           </div>
 
@@ -248,15 +249,14 @@
             </div>
           </div>
 
-          <!-- Example 9: Hide Clear Button -->
+          <!-- Example 9: Minimal UI -->
           <div class="example-card">
-            <h2>Hide Clear Button</h2>
+            <h2>Minimal UI (Default)</h2>
             <p class="example-description">
-              You can hide the internal Clear button by setting [showClearButton]="false". Perfect when you want a minimal UI or are using an external clear button.
+              By default, the Clear button is hidden for a cleaner, minimalist interface. This is perfect for most use cases where you want an uncluttered UI.
             </p>
             <div class="example-demo">
               <ngx-dual-datepicker
-                [showClearButton]="false"
                 (dateRangeChange)="onDateRangeChange(9, $event)">
               </ngx-dual-datepicker>
             </div>
@@ -269,7 +269,7 @@
               </div>
             }
             <div class="code-block">
-              <pre>{{ codeExamples.hideClearButton }}</pre>
+              <pre>{{ codeExamples.minimalUI }}</pre>
             </div>
           </div>
         </div>
@@ -450,7 +450,7 @@ export class MyComponent &#123;
                   <tr>
                     <td><code>showClearButton</code></td>
                     <td><code>boolean</code></td>
-                    <td><code>true</code></td>
+                    <td><code>false</code></td>
                     <td>Show/hide the Clear button in dropdown footer</td>
                   </tr>
                   <tr>

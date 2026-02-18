@@ -144,12 +144,18 @@ import { DualDatepickerComponent } from '@oneluiz/dual-datepicker';
 @ViewChild('datepicker8') datepicker8!: DualDatepickerComponent;
 
 clearExternalButton() {
-  this.datepicker8.limpiar();
-}`,
-      hideClearButton: `<ngx-dual-datepicker
-  [showClearButton]="false"
+    this.datepicker8.limpiar();
+  }`,
+      clearButton: `<ngx-dual-datepicker
+  [showClearButton]="true"
   (dateRangeChange)="onDateRangeChange($event)">
 </ngx-dual-datepicker>`,
+      minimalUI: `<ngx-dual-datepicker
+  (dateRangeChange)="onDateRangeChange($event)">
+</ngx-dual-datepicker>
+
+// Note: showClearButton is false by default
+// for a clean, minimalist interface`,
       install: `npm install @oneluiz/dual-datepicker`
     };
   }
