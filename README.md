@@ -12,7 +12,8 @@ A beautiful, customizable dual-calendar date range picker for Angular 17+. Built
 - 🎨 **Fully Customizable** - Color scheme, padding, and styling
 - ⚡ **Preset Ranges** - Configurable quick-select options
 - 🎯 **Standalone Component** - No module imports required
-- 📱 **Responsive Design** - Works on desktop and mobile
+- � **Zero Dependencies** - No Bootstrap or other CSS frameworks required
+- �📱 **Responsive Design** - Works on desktop and mobile
 - 🌐 **TypeScript** - Full type safety
 - ♿ **Accessible** - Keyboard navigation and ARIA labels
 - 🎭 **Flexible Behavior** - Control when the picker closes
