@@ -10,28 +10,28 @@ import { DualDatepickerComponent, DateRange, PresetConfig } from '../../../src/p
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
-  // Ejemplo 1: Básico
+  // Example 1: Basic
   example1Range: DateRange | null = null;
 
-  // Ejemplo 2: Con presets personalizados
+  // Example 2: With custom presets
   example2Range: DateRange | null = null;
   customPresets: PresetConfig[] = [
-    { label: 'Hoy', daysAgo: 0 },
-    { label: 'Última semana', daysAgo: 7 },
-    { label: 'Último mes', daysAgo: 30 },
-    { label: 'Últimos 3 meses', daysAgo: 90 }
+    { label: 'Today', daysAgo: 0 },
+    { label: 'Last week', daysAgo: 7 },
+    { label: 'Last month', daysAgo: 30 },
+    { label: 'Last 3 months', daysAgo: 90 }
   ];
 
-  // Ejemplo 3: Con colores personalizados (GitHub style)
+  // Example 3: With custom colors (GitHub style)
   example3Range: DateRange | null = null;
 
-  // Ejemplo 4: Con presets y colores personalizados
+  // Example 4: With presets and custom colors
   example4Range: DateRange | null = null;
 
-  // Ejemplo 5: Sin presets, solo calendario
+  // Example 5: Without presets, calendar only
   example5Range: DateRange | null = null;
 
-  // Ejemplo 6: Con fechas iniciales
+  // Example 6: With initial dates
   example6Range: DateRange | null = null;
   fechaInicio = '2026-02-01';
   fechaFin = '2026-02-18';
@@ -69,11 +69,11 @@ export class AppComponent {
   (dateRangeChange)="onDateRangeChange($event)">
 </ngx-dual-datepicker>
 
-// En tu componente:
+// In your component:
 customPresets: PresetConfig[] = [
-  { label: 'Hoy', daysAgo: 0 },
-  { label: 'Última semana', daysAgo: 7 },
-  { label: 'Último mes', daysAgo: 30 }
+  { label: 'Today', daysAgo: 0 },
+  { label: 'Last week', daysAgo: 7 },
+  { label: 'Last month', daysAgo: 30 }
 ];`,
       colors: `<ngx-dual-datepicker
   inputBackgroundColor="#0d1117"
@@ -93,7 +93,7 @@ customPresets: PresetConfig[] = [
   (dateRangeChange)="onDateRangeChange($event)">
 </ngx-dual-datepicker>
 
-// En tu componente:
+// In your component:
 fechaInicio = '2026-02-01';
 fechaFin = '2026-02-18';`,
       install: `npm install @oneluiz/dual-datepicker`
