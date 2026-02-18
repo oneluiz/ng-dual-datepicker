@@ -1,0 +1,59 @@
+{
+  "name": "@ngx-tools/dual-datepicker",
+  "version": "1.0.0",
+  "description": "A customizable dual-calendar date range picker component for Angular 17+",
+  "keywords": [
+    "angular",
+    "datepicker",
+    "date-range",
+    "calendar",
+    "dual-calendar",
+    "date-picker",
+    "angular-component",
+    "standalone",
+    "typescript"
+  ],
+  "author": "Luis Cortes",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/oneluiz/ng-dual-datepicker.git"
+  },
+  "bugs": {
+    "url": "https://github.com/oneluiz/ng-dual-datepicker/issues"
+  },
+  "homepage": "https://github.com/oneluiz/ng-dual-datepicker#readme",
+  "peerDependencies": {
+    "@angular/common": "^17.0.0 || ^18.0.0",
+    "@angular/core": "^17.0.0 || ^18.0.0",
+    "@angular/forms": "^17.0.0 || ^18.0.0"
+  },
+  "main": "./dist/index.js",
+  "module": "./dist/index.esm.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.esm.js",
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "clean": "rm -rf dist",
+    "build": "npm run clean && tsc && node create-esm.js",
+    "prepare": "npm run build"
+  },
+  "devDependencies": {
+    "@angular/common": "^17.3.12",
+    "@angular/core": "^17.3.12",
+    "@angular/forms": "^17.3.12",
+    "rxjs": "^7.8.2",
+    "typescript": "5.2",
+    "zone.js": "^0.14.10"
+  }
+}

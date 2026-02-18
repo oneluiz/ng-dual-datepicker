@@ -1,0 +1,233 @@
+// Dual Datepicker Component Styles
+.datepicker-wrapper {
+  position: relative;
+  width: 100%;
+
+  .datepicker-input {
+    cursor: pointer;
+    
+    &:hover {
+      border-color: var(--input-border-hover, #ced4da);
+    }
+    
+    &:focus {
+      border-color: var(--input-border-focus, #80bdff);
+      box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+      outline: 0;
+    }
+  }
+}
+
+.date-picker-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  margin-top: 4px;
+  background: white;
+  border: 1px solid #e1e4e8;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08), 0 0 1px rgba(0, 0, 0, 0.08);
+  padding: 16px;
+  z-index: 1060;
+  min-width: 680px;
+
+  @media (max-width: 768px) {
+    min-width: 100%;
+    left: 0;
+    right: 0;
+  }
+}
+
+.date-picker-header-only-close {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 12px;
+
+  .btn-close-calendar {
+    background-color: transparent;
+    border: 1px solid transparent;
+    color: #6b7280;
+    padding: 6px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    font-size: 1.5rem;
+    line-height: 1;
+    
+    &:hover {
+      background-color: #fee;
+      border-color: #fcc;
+      color: #dc2626;
+      transform: translateY(-1px);
+      box-shadow: 0 2px 4px rgba(220, 38, 38, 0.1);
+    }
+
+    &:active {
+      transform: translateY(0);
+      box-shadow: none;
+    }
+  }
+}
+
+.date-picker-presets {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #e5e7eb;
+  align-items: center;
+
+  @media (max-width: 768px) {
+    flex-wrap: wrap;
+  }
+
+  button {
+    font-size: 0.75rem;
+    padding: 6px 14px;
+    border: none;
+    background-color: #f9fafb;
+    color: #374151;
+    border-radius: 6px;
+    transition: all 0.15s ease;
+    font-weight: 500;
+    cursor: pointer;
+    border: 1px solid #e5e7eb;
+
+    &:hover {
+      background-color: #f3f4f6;
+      border-color: #d1d5db;
+      transform: translateY(-1px);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06);
+    }
+
+    &:active {
+      transform: translateY(0);
+      box-shadow: none;
+    }
+  }
+
+  .btn-close-calendar {
+    margin-left: auto;
+    background-color: transparent;
+    border: 1px solid transparent;
+    color: #6b7280;
+    padding: 6px 10px;
+    font-size: 1.5rem;
+    line-height: 1;
+    
+    &:hover {
+      background-color: #fee;
+      border-color: #fcc;
+      color: #dc2626;
+      transform: translateY(-1px);
+      box-shadow: 0 2px 4px rgba(220, 38, 38, 0.1);
+    }
+
+    &:active {
+      transform: translateY(0);
+      box-shadow: none;
+    }
+  }
+}
+
+.date-picker-calendars {
+  display: flex;
+  gap: 32px;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    gap: 16px;
+  }
+}
+
+.date-picker-calendar {
+  flex: 1;
+}
+
+.date-picker-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  padding: 0 4px;
+
+  span {
+    font-size: 0.813rem;
+    font-weight: 600;
+    color: #111827;
+  }
+
+  button {
+    padding: 4px;
+    color: #6b7280;
+    text-decoration: none;
+    border-radius: 6px;
+    transition: all 0.15s ease;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #f3f4f6;
+      color: #111827;
+    }
+  }
+}
+
+.date-picker-weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+  margin-bottom: 4px;
+
+  span {
+    text-align: center;
+    font-size: 0.625rem;
+    font-weight: 600;
+    color: #6b7280;
+    padding: 6px;
+  }
+}
+
+.date-picker-days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+}
+
+.date-picker-day {
+  aspect-ratio: 1;
+  border: none;
+  background: transparent;
+  border-radius: 50%;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  color: #374151;
+  font-weight: 400;
+
+  &:hover:not(:disabled):not(.selected) {
+    background-color: #f3f4f6;
+    color: #111827;
+  }
+
+  &.empty {
+    visibility: hidden;
+  }
+
+  &.selected {
+    background-color: #222;
+    color: white;
+    font-weight: 600;
+  }
+
+  &.in-range {
+    background-color: #f9fafb;
+    border-radius: 0;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.3;
+  }
+}

@@ -1,0 +1,111 @@
+<div class="datepicker-wrapper" 
+  [style.--input-border-hover]="inputBorderColorHover"
+  [style.--input-border-focus]="inputBorderColorFocus">
+  <input 
+    type="text" 
+    class="form-control datepicker-input" 
+    [value]="rangoFechas" 
+    (click)="toggleDatePicker()" 
+    [placeholder]="placeholder"
+    [ngStyle]="{
+      'background-color': inputBackgroundColor,
+      'color': inputTextColor,
+      'border-color': inputBorderColor,
+      'padding': inputPadding
+    }"
+    readonly>
+
+  @if (mostrarDatePicker) {
+  <div class="date-picker-dropdown">
+    @if (showPresets) {
+    <div class="date-picker-presets">
+      @for (preset of presets; track preset.label) {
+      <button type="button" (click)="seleccionarRangoPredefinido(preset)">{{ preset.label }}</button>
+      }
+      <button type="button" class="btn-close-calendar" (click)="cerrarDatePicker()" title="Close">
+        ×
+      </button>
+    </div>
+    }
+
+    @if (!showPresets) {
+    <div class="date-picker-header-only-close">
+      <button type="button" class="btn-close-calendar" (click)="cerrarDatePicker()" title="Close">
+        ×
+      </button>
+    </div>
+    }
+
+    <!-- Calendars -->
+    <div class="date-picker-calendars">
+      <!-- Previous month calendar -->
+      <div class="date-picker-calendar">
+        <div class="date-picker-header">
+          <button type="button" (click)="cambiarMes(-1)">
+            <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+              <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+            </svg>
+          </button>
+          <span>{{ getNombreMes(mesAnterior) }}</span>
+          <button type="button" style="visibility: hidden;">
+            <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+              <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
+            </svg>
+          </button>
+        </div>
+        <div class="date-picker-weekdays">
+          <span>S</span><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span>
+        </div>
+        <div class="date-picker-days">
+          @for (diaObj of diasMesAnterior; track diaObj.fecha || $index) {
+            <button 
+              type="button"
+              class="date-picker-day" 
+              [class.empty]="!diaObj.esMesActual"
+              [class.selected]="diaObj.esInicio || diaObj.esFin"
+              [class.in-range]="diaObj.enRango && !diaObj.esInicio && !diaObj.esFin"
+              (click)="seleccionarDia(diaObj)"
+              [disabled]="!diaObj.esMesActual">
+              {{ diaObj.dia }}
+            </button>
+          }
+        </div>
+      </div>
+
+      <!-- Current month calendar -->
+      <div class="date-picker-calendar">
+        <div class="date-picker-header">
+          <button type="button" style="visibility: hidden;">
+            <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+              <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+            </svg>
+          </button>
+          <span>{{ getNombreMes(mesActual) }}</span>
+          <button type="button" (click)="cambiarMes(1)">
+            <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+              <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
+            </svg>
+          </button>
+        </div>
+        <div class="date-picker-weekdays">
+          <span>S</span><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span>
+        </div>
+        <div class="date-picker-days">
+          @for (diaObj of diasMesActual; track diaObj.fecha || $index) {
+            <button 
+              type="button"
+              class="date-picker-day" 
+              [class.empty]="!diaObj.esMesActual"
+              [class.selected]="diaObj.esInicio || diaObj.esFin"
+              [class.in-range]="diaObj.enRango && !diaObj.esInicio && !diaObj.esFin"
+              (click)="seleccionarDia(diaObj)"
+              [disabled]="!diaObj.esMesActual">
+              {{ diaObj.dia }}
+            </button>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+  }
+</div>
