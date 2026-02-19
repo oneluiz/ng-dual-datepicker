@@ -456,7 +456,11 @@ export class DayJSAdapter extends DateAdapter<Dayjs> {
 </ngx-dual-datepicker>
 ```
 
-### Custom Presets
+### ⚡ Custom Presets (Power Feature)
+
+**This is where our library shines!** Unlike Angular Material, we offer an incredibly flexible preset system perfect for dashboards, reporting, POS, BI apps, and ERP systems.
+
+#### Simple Pattern (Backward Compatible)
 
 ```typescript
 customPresets: PresetConfig[] = [
@@ -466,6 +470,132 @@ customPresets: PresetConfig[] = [
   { label: 'Last year', daysAgo: 365 }
 ];
 ```
+
+#### **NEW v2.6.0** - Flexible Pattern with `getValue()` 🔥
+
+The real power comes with the `getValue()` pattern. Define **any custom logic** you need:
+
+```typescript
+import { PresetConfig } from '@oneluiz/dual-datepicker';
+
+customPresets: PresetConfig[] = [
+  { 
+    label: 'Today', 
+    getValue: () => {
+      const today = new Date();
+      return {
+        start: formatDate(today),
+        end: formatDate(today)
+      };
+    }
+  },
+  { 
+    label: 'This Month', 
+    getValue: () => {
+      const today = new Date();
+      const start = new Date(today.getFullYear(), today.getMonth(), 1);
+      const end = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+      return {
+        start: formatDate(start),
+        end: formatDate(end)
+      };
+    }
+  },
+  { 
+    label: 'Last Month', 
+    getValue: () => {
+      const today = new Date();
+      const start = new Date(today.getFullYear(), today.getMonth() - 1, 1);
+      const end = new Date(today.getFullYear(), today.getMonth(), 0);
+      return {
+        start: formatDate(start),
+        end: formatDate(end)
+      };
+    }
+  },
+  { 
+    label: 'Quarter to Date', 
+    getValue: () => {
+      const today = new Date();
+      const currentMonth = today.getMonth();
+      const quarterStartMonth = Math.floor(currentMonth / 3) * 3;
+      const start = new Date(today.getFullYear(), quarterStartMonth, 1);
+      return {
+        start: formatDate(start),
+        end: formatDate(today)
+      };
+    }
+  }
+];
+```
+
+#### **Even Better** - Use Pre-built Utilities 🚀
+
+We provide **ready-to-use preset utilities** for common scenarios:
+
+```typescript
+import { CommonPresets } from '@oneluiz/dual-datepicker';
+
+// Dashboard presets
+presets = CommonPresets.dashboard;
+// → Today, Yesterday, Last 7 days, Last 30 days, This month, Last month
+
+// Reporting presets
+presets = CommonPresets.reporting;
+// → Today, This week, Last week, This month, Last month, This quarter, Last quarter
+
+// Financial/ERP presets
+presets = CommonPresets.financial;
+// → Month to date, Quarter to date, Year to date, Last month, Last quarter, Last year
+
+// Analytics/BI presets
+presets = CommonPresets.analytics;
+// → Last 7/14/30/60/90/180/365 days
+
+// Simple presets
+presets = CommonPresets.simple;
+// → Today, Last 7 days, Last 30 days, This year
+```
+
+#### Create Your Own Utilities
+
+Import individual utilities and mix them:
+
+```typescript
+import { 
+  getToday, 
+  getThisMonth, 
+  getLastMonth, 
+  getQuarterToDate,
+  getYearToDate,
+  PresetConfig 
+} from '@oneluiz/dual-datepicker';
+
+customPresets: PresetConfig[] = [
+  { label: 'Today', getValue: getToday },
+  { label: 'This Month', getValue: getThisMonth },
+  { label: 'Last Month', getValue: getLastMonth },
+  { label: 'Quarter to Date', getValue: getQuarterToDate },
+  { label: 'Year to Date', getValue: getYearToDate },
+  { 
+    label: 'Custom Logic', 
+    getValue: () => {
+      // Your custom date calculation
+      return { start: '2026-01-01', end: '2026-12-31' };
+    }
+  }
+];
+```
+
+#### Why This Is Powerful
+
+✅ **Perfect for Dashboards** - "Last 7 days", "Month to date", "Quarter to date"  
+✅ **Perfect for Reporting** - "This week", "Last week", "This quarter"  
+✅ **Perfect for Financial Systems** - "Quarter to date", "Year to date", "Fiscal year"  
+✅ **Perfect for Analytics** - Consistent date ranges for BI tools  
+✅ **Perfect for ERP** - Custom business logic and fiscal calendars  
+
+**Angular Material doesn't offer this level of flexibility!** 🎯
 
 ```html
 <ngx-dual-datepicker
@@ -534,14 +664,23 @@ export class MyComponent {
 ### Types
 
 ```typescript
-infechaInicio: string;  // ISO date format: 'YYYY-MM-DD'
+interface DateRange {
+  fechaInicio: string;  // ISO date format: 'YYYY-MM-DD'
   fechaFin: string;     // ISO date format: 'YYYY-MM-DD'
   rangoTexto: string;   // Display text: 'DD Mon - DD Mon'
 }
 
+interface PresetRange {
+  start: string;  // ISO date format: 'YYYY-MM-DD'
+  end: string;    // ISO date format: 'YYYY-MM-DD'
+}
+
 interface PresetConfig {
   label: string;
-  daysAgo: number;
+  /** @deprecated Use getValue() instead for more flexibility */
+  daysAgo?: number;
+  /** NEW v2.6.0 - Function that returns date range with custom logic */
+  getValue?: () => PresetRange;
 }
 
 interface LocaleConfig {
@@ -550,7 +689,6 @@ interface LocaleConfig {
   dayNames?: string[];           // Full day names (7 items, starting Sunday)
   dayNamesShort?: string[];      // Short day names (7 items, starting Sunday)
   firstDayOfWeek?: number;       // 0 = Sunday, 1 = Monday, etc. (not yet implemented)
-  daysAgo: number;
 }
 ```
 
@@ -678,19 +816,26 @@ export class ExampleComponent {
 - Angular 19.0.0 or higher
 - Angular 20.0.0 or higher
 
-## �️ Roadmap
-Recently shipped (v2.5.0):
+## 🗺️ Roadmap
 
+Recently shipped:
+
+**v2.6.0:**
+- ✅ **Flexible Preset System** - `getValue()` pattern for custom date logic (This month, Last month, Quarter to date, etc.)
+- ✅ **Pre-built Preset Utilities** - CommonPresets for Dashboard, Reporting, Financial, Analytics
+- ✅ **Real Differentiator** - Perfect for ERP, BI, POS, and Reporting systems
+
+**v2.5.0:**
 - ✅ **Date Adapter System** - Support for DayJS, date-fns, Luxon, and custom date libraries
+
 Planned features and improvements:
 
 - ⬜ **Complete keyboard navigation** - Arrow keys, Enter/Space, Tab, Escape
 - ⬜ **Full accessibility audit** - WCAG 2.1 AA compliance
-- ⬜ **Presets improvements** - More flexible preset configurations
 - ⬜ **Multi-range support** - Select multiple date ranges
 - ⬜ **Theming system** - Pre-built theme presets
 
-## �📄 License
+## 📄 License
 
 MIT © Luis Cortes
 

@@ -10,9 +10,16 @@ export interface DateRange {
   rangoTexto: string;
 }
 
+export interface PresetRange {
+  start: string;
+  end: string;
+}
+
 export interface PresetConfig {
   label: string;
-  daysAgo: number;
+  /** @deprecated Use getValue() instead for more flexibility */
+  daysAgo?: number;
+  getValue?: () => PresetRange;
 }
 
 export interface LocaleConfig {
@@ -266,11 +273,29 @@ export class DualDatepickerComponent implements OnInit, OnChanges, ControlValueA
   }
 
   seleccionarRangoPredefinido(preset: PresetConfig): void {
-    const hoy = this.dateAdapter.today();
-    const fechaInicio = this.dateAdapter.addDays(hoy, -preset.daysAgo);
+    let start: string;
+    let end: string;
 
-    this.fechaInicio = this.formatearFecha(fechaInicio);
-    this.fechaFin = this.formatearFecha(hoy);
+    // New flexible pattern with getValue()
+    if (preset.getValue) {
+      const range = preset.getValue();
+      start = range.start;
+      end = range.end;
+    }
+    // Backward compatibility with daysAgo pattern
+    else if (preset.daysAgo !== undefined) {
+      const hoy = this.dateAdapter.today();
+      const fechaInicio = this.dateAdapter.addDays(hoy, -preset.daysAgo);
+      start = this.formatearFecha(fechaInicio);
+      end = this.formatearFecha(hoy);
+    }
+    else {
+      console.error('PresetConfig must have either getValue() or daysAgo');
+      return;
+    }
+
+    this.fechaInicio = start;
+    this.fechaFin = end;
     this.actualizarRangoFechasTexto();
     this.generarCalendarios();
     if (this.closeOnPresetSelection) {

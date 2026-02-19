@@ -1,6 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { DualDatepickerComponent, DateRange, PresetConfig } from '../../../src/public-api';
+import { DualDatepickerComponent, DateRange, PresetConfig, CommonPresets } from '../../../src/public-api';
 
 @Component({
   selector: 'app-root',
@@ -52,6 +52,10 @@ export class AppComponent {
   // Example 10: Date Adapter System
   example10Range: DateRange | null = null;
 
+  // Example 11: CommonPresets - Financial/Reporting
+  example11Range: DateRange | null = null;
+  financialPresets = CommonPresets.financial;
+
   clearExternalButton() {
     this.datepicker8.limpiar();
   }
@@ -91,6 +95,9 @@ export class AppComponent {
         break;
       case 10:
         this.example10Range = range;
+        break;
+      case 11:
+        this.example11Range = range;
         break;
     }
   }
@@ -196,6 +203,32 @@ import { DATE_ADAPTER } from '@oneluiz/dual-datepicker';
 
 // 3. Use component normally
 <ngx-dual-datepicker></ngx-dual-datepicker>`,
+      commonPresets: `import { CommonPresets } from '@oneluiz/dual-datepicker';
+
+// Financial/ERP presets
+financialPresets = CommonPresets.financial;
+// → Month to date, Quarter to date, Year to date, 
+//   Last month, Last quarter, Last year
+
+// Dashboard presets  
+dashboardPresets = CommonPresets.dashboard;
+// → Today, Yesterday, Last 7 days, Last 30 days,
+//   This month, Last month
+
+// Reporting presets
+reportingPresets = CommonPresets.reporting;
+// → Today, This week, Last week, This month,
+//   Last month, This quarter, Last quarter
+
+// Analytics/BI presets
+analyticsPresets = CommonPresets.analytics;
+// → Last 7/14/30/60/90/180/365 days
+
+// Use in template
+<ngx-dual-datepicker
+  [presets]="financialPresets"
+  (dateRangeChange)="onDateRangeChange($event)">
+</ngx-dual-datepicker>`,
       install: `npm install @oneluiz/dual-datepicker`
     };
   }
