@@ -33,7 +33,7 @@ Use this if:
 - 🌍 **i18n Support** - Customizable month and day names for any language
 - 📱 **Responsive Design** - Works on desktop and mobile
 - 🌐 **TypeScript** - Full type safety
-- ♿ **Accessible** - Keyboard navigation and ARIA labels
+- ♿ **Basic Accessibility** - ARIA labels included (keyboard navigation in progress)
 - 🎭 **Flexible Behavior** - Control when the picker closes
 - 🔄 **Reactive Forms Support** - Full ControlValueAccessor implementation
 - ⚡ **Angular Signals** - Modern reactive state management
@@ -43,6 +43,17 @@ Use this if:
 - **OnPush change detection** - Optimized for performance
 - **No external dependencies** - Lightweight bundle size
 - **Optimized rendering with trackBy** - Efficient list rendering
+
+## ♿ Accessibility (A11y)
+
+**Current Status:**
+- ✅ **Screen reader support** - ARIA labels included for all interactive elements
+- ✅ **Semantic HTML** - Proper HTML structure
+- ⚠️ **Keyboard navigation** - Partially implemented (in active development)
+  - Mouse/touch interaction: ✅ Fully supported
+  - Keyboard navigation: 🚧 In progress (see [Roadmap](#-roadmap))
+
+> **Note:** Full keyboard navigation support is planned and will be included in a future release. This includes arrow key navigation, Enter/Space selection, and Escape to close.
 
 ## 📦 Installation
 
@@ -477,10 +488,11 @@ export class ExampleComponent {
 
 Planned features and improvements:
 
-- ⬜ Accessibility audit
-- ⬜ Presets improvements
-- ⬜ Multi-range support
-- ⬜ Theming system
+- ⬜ **Complete keyboard navigation** - Arrow keys, Enter/Space, Tab, Escape
+- ⬜ **Full accessibility audit** - WCAG 2.1 AA compliance
+- ⬜ **Presets improvements** - More flexible preset configurations
+- ⬜ **Multi-range support** - Select multiple date ranges
+- ⬜ **Theming system** - Pre-built theme presets
 
 ## �📄 License
 

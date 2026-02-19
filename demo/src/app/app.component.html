@@ -300,7 +300,7 @@
               <li>🌍 <strong>i18n Support</strong> - Customizable month and day names for any language</li>
               <li>📱 <strong>Responsive Design</strong> - Works on desktop and mobile</li>
               <li>🌐 <strong>TypeScript</strong> - Full type safety</li>
-              <li>♿ <strong>Accessible</strong> - Keyboard navigation and ARIA labels</li>
+              <li>♿ <strong>Basic Accessibility</strong> - ARIA labels included (keyboard navigation in progress)</li>
               <li>🔄 <strong>Reactive Forms</strong> - Full ControlValueAccessor implementation</li>
               <li>⚡ <strong>Angular Signals</strong> - Modern reactive state management</li>
             </ul>
@@ -337,6 +337,42 @@
                 <p>Efficient list rendering for calendar days</p>
               </li>
             </ul>
+          </section>
+
+          <section class="doc-section">
+            <h2>♿ Accessibility (A11y)</h2>
+            <p class="section-intro"><strong>Current Status:</strong></p>
+            <div class="a11y-status">
+              <div class="a11y-item supported">
+                <span class="a11y-icon">✅</span>
+                <div>
+                  <strong>Screen reader support</strong>
+                  <p>ARIA labels included for all interactive elements</p>
+                </div>
+              </div>
+              <div class="a11y-item supported">
+                <span class="a11y-icon">✅</span>
+                <div>
+                  <strong>Semantic HTML</strong>
+                  <p>Proper HTML structure for accessibility</p>
+                </div>
+              </div>
+              <div class="a11y-item in-progress">
+                <span class="a11y-icon">⚠️</span>
+                <div>
+                  <strong>Keyboard navigation</strong>
+                  <p>Partially implemented (in active development)</p>
+                  <ul class="a11y-details">
+                    <li>✅ Mouse/touch interaction: Fully supported</li>
+                    <li>🚧 Keyboard navigation: In progress</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="a11y-note">
+              <strong>ℹ️ Note:</strong> Full keyboard navigation support is planned and will be included in a future release. 
+              This includes arrow key navigation, Enter/Space selection, and Escape to close.
+            </div>
           </section>
 
           <section class="doc-section">
@@ -626,7 +662,8 @@ export class MyComponent &#123;
             <h2>🗺️ Roadmap</h2>
             <p>Planned features and improvements:</p>
             <ul class="roadmap-list">
-              <li>⬜ <strong>Accessibility audit</strong> - Complete WCAG compliance review</li>
+              <li>⬜ <strong>Complete keyboard navigation</strong> - Arrow keys, Enter/Space, Tab, Escape</li>
+              <li>⬜ <strong>Full accessibility audit</strong> - WCAG 2.1 AA compliance</li>
               <li>⬜ <strong>Presets improvements</strong> - More flexible preset configurations</li>
               <li>⬜ <strong>Multi-range support</strong> - Select multiple date ranges</li>
               <li>⬜ <strong>Theming system</strong> - Pre-built theme presets</li>
