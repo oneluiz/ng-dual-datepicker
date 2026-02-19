@@ -559,7 +559,7 @@
               <li>🎨 <strong>Fully Customizable</strong> – Every color, padding, border configurable</li>
               <li>📦 <strong>Lightweight</strong> – ~60 KB gzipped total bundle</li>
               <li>🚀 <strong>Performance</strong> – OnPush change detection + trackBy optimization</li>
-              <li>♿ <strong>Accessible</strong> – ARIA labels, semantic HTML, keyboard navigation (in progress)</li>
+              <li>♿ <strong>Accessible</strong> – WCAG 2.1 Level AA compliant, full keyboard navigation, screen reader support</li>
               <li>🌍 <strong>i18n Ready</strong> – Customizable month/day names</li>
               <li>📱 <strong>Responsive</strong> – Works on desktop and mobile</li>
             </ul>
@@ -620,7 +620,7 @@
 
           <section class="doc-section">
             <h2>♿ Accessibility (A11y)</h2>
-            <p class="section-intro"><strong>Current Status:</strong></p>
+            <p class="section-intro"><strong>✅ WCAG 2.1 Level AA Compliant (v3.1.0)</strong></p>
             <div class="a11y-status">
               <div class="a11y-item supported">
                 <span class="a11y-icon">✅</span>
@@ -636,21 +636,25 @@
                   <p>Proper HTML structure for accessibility</p>
                 </div>
               </div>
-              <div class="a11y-item in-progress">
-                <span class="a11y-icon">⚠️</span>
+              <div class="a11y-item supported">
+                <span class="a11y-icon">✅</span>
                 <div>
-                  <strong>Keyboard navigation</strong>
-                  <p>Partially implemented (in active development)</p>
+                  <strong>Full keyboard navigation</strong>
+                  <p><span class="badge-new">NEW v3.1.0</span> Complete keyboard control with 8 shortcuts</p>
                   <ul class="a11y-details">
-                    <li>✅ Mouse/touch interaction: Fully supported</li>
-                    <li>🚧 Keyboard navigation: In progress</li>
+                    <li>✅ Arrow keys: Navigate days & weeks</li>
+                    <li>✅ Enter/Space: Select focused day</li>
+                    <li>✅ Escape: Close datepicker</li>
+                    <li>✅ Home/End: Jump to first/last day</li>
+                    <li>✅ PageUp/PageDown: Navigate months</li>
+                    <li>✅ Shift+PageUp/PageDown: Navigate years</li>
                   </ul>
                 </div>
               </div>
             </div>
             <div class="a11y-note">
-              <strong>ℹ️ Note:</strong> Full keyboard navigation support is planned and will be included in a future release. 
-              This includes arrow key navigation, Enter/Space selection, and Escape to close.
+              <strong>⌨️ Keyboard Navigation:</strong> Full keyboard navigation is enabled by default in v3.1.0. 
+              You can disable it by setting <code>[enableKeyboardNavigation]="false"</code> if needed.
             </div>
           </section>
 
@@ -1186,6 +1190,12 @@ export class BookingComponent &#123;
                     <td>Automatically close the date picker when clicking outside of it</td>
                   </tr>
                   <tr>
+                    <td><code>enableKeyboardNavigation</code></td>
+                    <td><code>boolean</code></td>
+                    <td><code>true</code></td>
+                    <td><span class="badge-new">v3.1.0</span> Enable/disable keyboard navigation (arrow keys, Enter, Escape, etc.)</td>
+                  </tr>
+                  <tr>
                     <td><code>locale</code></td>
                     <td><code>LocaleConfig</code></td>
                     <td>English defaults</td>
@@ -1355,8 +1365,8 @@ import &#123; getLastNDays &#125; from '&#64;oneluiz/dual-datepicker';
               <li>✅ <strong>Date Adapter System</strong> - v2.5.0 Support for DayJS, date-fns, Luxon</li>
               <li>✅ <strong>Flexible Preset System</strong> - v2.6.0 getValue() pattern with CommonPresets utilities</li>
               <li>✅ <strong>Multi-range support</strong> - v2.7.0 Select UNLIMITED date ranges! 🔥</li>
-              <li>⬜ <strong>Complete keyboard navigation</strong> - Arrow keys, Enter/Space, Tab, Escape</li>
-              <li>⬜ <strong>Full accessibility audit</strong> - WCAG 2.1 AA compliance</li>
+              <li>✅ <strong>Complete keyboard navigation</strong> - v3.1.0 Arrow keys, Enter/Space, Tab, Escape, PageUp/Down ⌨️</li>
+              <li>✅ <strong>Full accessibility audit</strong> - v3.1.0 WCAG 2.1 Level AA compliance ♿</li>
               <li>⬜ <strong>Theming system</strong> - Pre-built theme presets</li>
               <li>⬜ <strong>Time picker</strong> - Select date + time ranges</li>
             </ul>
@@ -1372,10 +1382,10 @@ import &#123; getLastNDays &#125; from '&#64;oneluiz/dual-datepicker';
       Made with ❤️ by <a href="https://github.com/oneluiz" target="_blank">&#64;oneluiz</a>
     </p>
     <p>
-      v2.7.0 🔥 | 
+      v3.1.0 ⌨️ | 
       <a href="https://github.com/oneluiz/ng-dual-datepicker" target="_blank">GitHub</a> | 
       <a href="https://www.npmjs.com/package/@oneluiz/dual-datepicker" target="_blank">NPM</a> |
-      <a href="https://github.com/oneluiz/ng-dual-datepicker/releases/tag/v2.7.0" target="_blank">What's New</a>
+      <a href="https://github.com/oneluiz/ng-dual-datepicker/releases/tag/v3.1.0" target="_blank">What's New</a>
     </p>
   </footer>
 </div>

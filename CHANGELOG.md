@@ -37,6 +37,9 @@ Complete keyboard navigation for enhanced accessibility and professional UX:
 - Intelligent tabindex management (0 for focused element, -1 for others)
 - Focus automatically initialized to selected date or current day
 
+**Configuration:**
+- New `@Input() enableKeyboardNavigation: boolean = true` - Keyboard navigation enabled by default, can be disabled if needed
+
 This brings the component to WCAG 2.1 Level AA compliance for keyboard accessibility.
 
 ## [3.0.0] - 2026-02-19

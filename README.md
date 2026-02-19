@@ -119,6 +119,15 @@ Navigate the datepicker entirely with your keyboard:
 - `aria-expanded`, `aria-haspopup` states
 - `aria-label`, `aria-selected`, `aria-current` on calendar days
 
+**Configuration:**
+```typescript
+// Keyboard navigation enabled by default
+<ngx-dual-datepicker></ngx-dual-datepicker>
+
+// Disable if needed
+<ngx-dual-datepicker [enableKeyboardNavigation]="false"></ngx-dual-datepicker>
+```
+
 ## 📦 Installation
 
 ```bash

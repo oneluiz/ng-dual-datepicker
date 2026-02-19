@@ -60,6 +60,7 @@ export class DualDatepickerComponent implements OnInit, OnChanges, ControlValueA
   @Input() closeOnSelection: boolean = true;
   @Input() closeOnPresetSelection: boolean = true;
   @Input() closeOnClickOutside: boolean = true;
+  @Input() enableKeyboardNavigation: boolean = true;
   @Input() presets: PresetConfig[] = [];
   @Input() inputBackgroundColor: string = '#fff';
   @Input() inputTextColor: string = '#495057';
@@ -130,6 +131,10 @@ export class DualDatepickerComponent implements OnInit, OnChanges, ControlValueA
 
   @HostListener('keydown', ['$event'])
   handleKeyboardNavigation(event: KeyboardEvent): void {
+    if (!this.enableKeyboardNavigation) {
+      return;
+    }
+
     if (!this.showDatePicker()) {
       // When picker is closed, allow Enter/Space to open it
       if (event.key === 'Enter' || event.key === ' ') {
@@ -436,18 +441,24 @@ export class DualDatepickerComponent implements OnInit, OnChanges, ControlValueA
       const previousMonthDate = this.dateAdapter.createDate(year, month - 1, 1);
       this.previousMonth.set(previousMonthDate);
       this.generateCalendars();
-      // Initialize keyboard focus
-      this.initializeFocus();
+      // Initialize keyboard focus only if keyboard navigation is enabled
+      if (this.enableKeyboardNavigation) {
+        this.initializeFocus();
+      }
     } else {
       // Clear focus when closing
-      this.focusedDay.set(null);
+      if (this.enableKeyboardNavigation) {
+        this.focusedDay.set(null);
+      }
     }
     this.onTouched();
   }
 
   closeDatePicker(): void {
     this.showDatePicker.set(false);
-    this.focusedDay.set(null);
+    if (this.enableKeyboardNavigation) {
+      this.focusedDay.set(null);
+    }
     this.onTouched();
   }
 
