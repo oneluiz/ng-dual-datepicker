@@ -1107,6 +1107,12 @@ export class BookingComponent &#123;
                     <td>Show/hide the Clear button in dropdown footer</td>
                   </tr>
                   <tr>
+                    <td><code>multiRange</code></td>
+                    <td><code>boolean</code></td>
+                    <td><code>false</code></td>
+                    <td><span class="badge-new">v2.7.0</span> Enable multi-range selection mode. Select unlimited date ranges!</td>
+                  </tr>
+                  <tr>
                     <td><code>locale</code></td>
                     <td><code>LocaleConfig</code></td>
                     <td>English defaults</td>
@@ -1168,12 +1174,22 @@ export class BookingComponent &#123;
                   <tr>
                     <td><code>dateRangeChange</code></td>
                     <td><code>EventEmitter&lt;DateRange&gt;</code></td>
-                    <td>Emitted when the date range changes</td>
+                    <td>Emitted when the date range changes (single-range mode)</td>
                   </tr>
                   <tr>
                     <td><code>dateRangeSelected</code></td>
                     <td><code>EventEmitter&lt;DateRange&gt;</code></td>
-                    <td>Emitted when both dates are selected (range complete)</td>
+                    <td>Emitted when both dates are selected - range complete (single-range mode)</td>
+                  </tr>
+                  <tr>
+                    <td><code>multiDateRangeChange</code></td>
+                    <td><code>EventEmitter&lt;MultiDateRange&gt;</code></td>
+                    <td><span class="badge-new">v2.7.0</span> Emitted when ranges change in multi-range mode</td>
+                  </tr>
+                  <tr>
+                    <td><code>multiDateRangeSelected</code></td>
+                    <td><code>EventEmitter&lt;MultiDateRange&gt;</code></td>
+                    <td><span class="badge-new">v2.7.0</span> Emitted when Done button is clicked in multi-range mode</td>
                   </tr>
                 </tbody>
               </table>
@@ -1214,15 +1230,36 @@ export class BookingComponent &#123;
 &#125;</pre>
             </div>
 
-            <h3>PresetConfig</h3>
+            <h3>PresetConfig <span class="badge-updated">Updated v2.6.0</span></h3>
             <div class="code-block">
               <pre>interface PresetConfig &#123;
   label: string;  // Display label for the preset
-  daysAgo: number;  // Number of days ago from today
+  daysAgo?: number;  // DEPRECATED: Number of days ago from today
+  getValue?: () => DateRange;  // NEW: Function that returns a DateRange
+&#125;
+
+// Old pattern (still works, but deprecated):
+&#123; label: 'Last 7 days', daysAgo: 7 &#125;
+
+// NEW recommended pattern (v2.6.0+):
+&#123; label: 'Last 7 days', getValue: () => getLastNDays(7) &#125;
+&#123; label: 'This Month', getValue: () => getThisMonth() &#125;</pre>
+            </div>
+
+            <h3>MultiDateRange <span class="badge-new">v2.7.0</span></h3>
+            <div class="code-block">
+              <pre>interface MultiDateRange &#123;
+  ranges: DateRange[];  // Array of selected date ranges
 &#125;
 
 // Example:
-&#123; label: 'Last 7 days', daysAgo: 7 &#125;</pre>
+&#123;
+  ranges: [
+    &#123; fechaInicio: '2026-01-01', fechaFin: '2026-01-05', rangoTexto: 'Jan 1 – Jan 5' &#125;,
+    &#123; fechaInicio: '2026-01-10', fechaFin: '2026-01-15', rangoTexto: 'Jan 10 – Jan 15' &#125;,
+    &#123; fechaInicio: '2026-02-01', fechaFin: '2026-02-07', rangoTexto: 'Feb 1 – Feb 7' &#125;
+  ]
+&#125;</pre>
             </div>
 
             <h3>LocaleConfig</h3>
@@ -1242,13 +1279,15 @@ export class BookingComponent &#123;
 
           <section class="doc-section">
             <h2>🗺️ Roadmap</h2>
-            <p>Planned features and improvements:</p>
+            <p>Completed and planned features:</p>
             <ul class="roadmap-list">
+              <li>✅ <strong>Date Adapter System</strong> - v2.5.0 Support for DayJS, date-fns, Luxon</li>
+              <li>✅ <strong>Flexible Preset System</strong> - v2.6.0 getValue() pattern with CommonPresets utilities</li>
+              <li>✅ <strong>Multi-range support</strong> - v2.7.0 Select UNLIMITED date ranges! 🔥</li>
               <li>⬜ <strong>Complete keyboard navigation</strong> - Arrow keys, Enter/Space, Tab, Escape</li>
               <li>⬜ <strong>Full accessibility audit</strong> - WCAG 2.1 AA compliance</li>
-              <li>⬜ <strong>Presets improvements</strong> - More flexible preset configurations</li>
-              <li>⬜ <strong>Multi-range support</strong> - Select multiple date ranges</li>
               <li>⬜ <strong>Theming system</strong> - Pre-built theme presets</li>
+              <li>⬜ <strong>Time picker</strong> - Select date + time ranges</li>
             </ul>
           </section>
         </div>
@@ -1262,9 +1301,10 @@ export class BookingComponent &#123;
       Made with ❤️ by <a href="https://github.com/oneluiz" target="_blank">&#64;oneluiz</a>
     </p>
     <p>
-      v2.3.0 | 
+      v2.7.0 🔥 | 
       <a href="https://github.com/oneluiz/ng-dual-datepicker" target="_blank">GitHub</a> | 
-      <a href="https://www.npmjs.com/package/@oneluiz/dual-datepicker" target="_blank">NPM</a>
+      <a href="https://www.npmjs.com/package/@oneluiz/dual-datepicker" target="_blank">NPM</a> |
+      <a href="https://github.com/oneluiz/ng-dual-datepicker/releases/tag/v2.7.0" target="_blank">What's New</a>
     </p>
   </footer>
 </div>
