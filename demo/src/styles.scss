@@ -765,6 +765,122 @@ body {
   }
 }
 
+// Flexible Preset System Documentation Styles
+.preset-collections {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin: 1.5rem 0 2rem;
+}
+
+.preset-card {
+  background: #f7fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 1.5rem;
+  transition: all 0.2s ease;
+
+  &:hover {
+    border-color: #cbd5e0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  }
+
+  h4 {
+    margin: 0 0 1rem 0;
+    color: #1a202c;
+    font-size: 1rem;
+  }
+
+  .code-block {
+    margin: 0;
+    
+    pre {
+      font-size: 0.8125rem;
+      padding: 1rem;
+    }
+  }
+}
+
+.use-case-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.25rem;
+  margin: 1.5rem 0;
+}
+
+.use-case-item {
+  background: #ffffff;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 1.25rem;
+  text-align: center;
+  transition: all 0.2s ease;
+
+  &:hover {
+    border-color: #1a202c;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  }
+
+  .use-case-icon {
+    font-size: 2rem;
+    display: block;
+    margin-bottom: 0.75rem;
+  }
+
+  strong {
+    display: block;
+    font-size: 0.9375rem;
+    color: #1a202c;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    font-size: 0.8125rem;
+    color: #718096;
+    margin: 0;
+    line-height: 1.4;
+  }
+}
+
+.why-powerful {
+  background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+  border-radius: 12px;
+  padding: 2rem;
+  margin: 2rem 0;
+
+  h3 {
+    margin-top: 0;
+    text-align: center;
+    font-size: 1.375rem;
+    color: #1a202c;
+  }
+}
+
+.backward-compat {
+  background: #fffaf0;
+  border: 1px solid #fbd38d;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin: 2rem 0;
+
+  h3 {
+    margin-top: 0;
+    color: #744210;
+    font-size: 1.125rem;
+  }
+
+  p {
+    margin-bottom: 1rem;
+    color: #744210;
+  }
+
+  code {
+    background: #ffffff;
+    color: #744210;
+  }
+}
+
 // Footer
 .demo-footer {
   background: white;

@@ -628,6 +628,191 @@ export class MyComponent &#123;
 &#125;</pre>
             </div>
           </section>
+
+          <section class="doc-section featured-section">
+            <div class="section-badge">NEW v2.6.0</div>
+            <h2>⚡ Flexible Preset System - GAME CHANGER</h2>
+            <p class="section-intro">
+              <strong>This is our REAL differentiator vs Angular Material!</strong> 
+              We offer an incredibly flexible preset system perfect for dashboards, reporting, POS, BI apps, and ERP systems.
+            </p>
+
+            <h3>🔥 The Power Pattern: getValue()</h3>
+            <p>Define <strong>any custom date logic</strong> you need. Material doesn't have this!</p>
+            <div class="code-block">
+              <pre>import &#123; PresetConfig &#125; from '&#64;oneluiz/dual-datepicker';
+
+presets: PresetConfig[] = [
+  &#123; 
+    label: 'Today', 
+    getValue: () => &#123;
+      const today = new Date();
+      return &#123;
+        start: formatDate(today),
+        end: formatDate(today)
+      &#125;;
+    &#125;
+  &#125;,
+  &#123; 
+    label: 'This Month', 
+    getValue: () => &#123;
+      const today = new Date();
+      const start = new Date(today.getFullYear(), today.getMonth(), 1);
+      const end = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+      return &#123;
+        start: formatDate(start),
+        end: formatDate(end)
+      &#125;;
+    &#125;
+  &#125;,
+  &#123; 
+    label: 'Quarter to Date', 
+    getValue: () => &#123;
+      const today = new Date();
+      const currentMonth = today.getMonth();
+      const quarterStartMonth = Math.floor(currentMonth / 3) * 3;
+      const start = new Date(today.getFullYear(), quarterStartMonth, 1);
+      return &#123;
+        start: formatDate(start),
+        end: formatDate(today)
+      &#125;;
+    &#125;
+  &#125;
+];</pre>
+            </div>
+
+            <h3>🚀 Even Better: CommonPresets</h3>
+            <p>Pre-built preset collections ready to use. Just import and go!</p>
+            <div class="preset-collections">
+              <div class="preset-card">
+                <h4>💼 Financial/ERP</h4>
+                <div class="code-block">
+                  <pre>import &#123; CommonPresets &#125; from '&#64;oneluiz/dual-datepicker';
+
+presets = CommonPresets.financial;
+// → Month to date
+// → Quarter to date
+// → Year to date
+// → Last month
+// → Last quarter
+// → Last year</pre>
+                </div>
+              </div>
+
+              <div class="preset-card">
+                <h4>📊 Dashboard</h4>
+                <div class="code-block">
+                  <pre>presets = CommonPresets.dashboard;
+// → Today
+// → Yesterday
+// → Last 7 days
+// → Last 30 days
+// → This month
+// → Last month</pre>
+                </div>
+              </div>
+
+              <div class="preset-card">
+                <h4>📋 Reporting</h4>
+                <div class="code-block">
+                  <pre>presets = CommonPresets.reporting;
+// → Today
+// → This week
+// → Last week
+// → This month
+// → Last month
+// → This quarter
+// → Last quarter</pre>
+                </div>
+              </div>
+
+              <div class="preset-card">
+                <h4>📈 Analytics/BI</h4>
+                <div class="code-block">
+                  <pre>presets = CommonPresets.analytics;
+// → Last 7/14/30/60/90/180/365 days</pre>
+                </div>
+              </div>
+            </div>
+
+            <h3>🎯 Mix & Match Utilities</h3>
+            <p>Import individual utility functions and create your own combinations:</p>
+            <div class="code-block">
+              <pre>import &#123; 
+  getToday, 
+  getThisMonth, 
+  getLastMonth, 
+  getQuarterToDate,
+  getYearToDate,
+  getLastNDays,
+  PresetConfig 
+&#125; from '&#64;oneluiz/dual-datepicker';
+
+customPresets: PresetConfig[] = [
+  &#123; label: 'Today', getValue: getToday &#125;,
+  &#123; label: 'This Month', getValue: getThisMonth &#125;,
+  &#123; label: 'Last Month', getValue: getLastMonth &#125;,
+  &#123; label: 'Quarter to Date', getValue: getQuarterToDate &#125;,
+  &#123; label: 'Year to Date', getValue: getYearToDate &#125;,
+  &#123; label: 'Last 90 Days', getValue: () => getLastNDays(90) &#125;,
+  &#123; 
+    label: 'Custom Logic', 
+    getValue: () => &#123;
+      // Your business logic here
+      return &#123; start: '2026-01-01', end: '2026-12-31' &#125;;
+    &#125;
+  &#125;
+];</pre>
+            </div>
+
+            <div class="why-powerful">
+              <h3>💪 Why This Is Powerful</h3>
+              <div class="use-case-grid">
+                <div class="use-case-item">
+                  <span class="use-case-icon">🏢</span>
+                  <strong>ERP Systems</strong>
+                  <p>Quarter to date, Year to date, Fiscal periods</p>
+                </div>
+                <div class="use-case-item">
+                  <span class="use-case-icon">📊</span>
+                  <strong>BI Dashboards</strong>
+                  <p>Consistent date ranges for analytics</p>
+                </div>
+                <div class="use-case-item">
+                  <span class="use-case-icon">💰</span>
+                  <strong>POS Systems</strong>
+                  <p>This week, Last week, Today, Yesterday</p>
+                </div>
+                <div class="use-case-item">
+                  <span class="use-case-icon">📋</span>
+                  <strong>Reporting</strong>
+                  <p>This/Last month, quarter, year</p>
+                </div>
+                <div class="use-case-item">
+                  <span class="use-case-icon">🎯</span>
+                  <strong>Custom Logic</strong>
+                  <p>Any date calculation your business needs</p>
+                </div>
+                <div class="use-case-item">
+                  <span class="use-case-icon">🔥</span>
+                  <strong>Material Can't Do This!</strong>
+                  <p>Our unique competitive advantage</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="backward-compat">
+              <h3>🔄 Fully Backward Compatible</h3>
+              <p>The old <code>daysAgo</code> pattern still works (now deprecated):</p>
+              <div class="code-block">
+                <pre>// Old pattern (still works, but deprecated)
+&#123; label: 'Last 30 days', daysAgo: 30 &#125;
+
+// New recommended pattern
+&#123; label: 'Last 30 days', getValue: () => getLastNDays(30) &#125;</pre>
+              </div>
+            </div>
+          </section>
         </div>
       </div>
     }
