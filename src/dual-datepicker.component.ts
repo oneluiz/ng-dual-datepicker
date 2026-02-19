@@ -216,11 +216,33 @@ export class DualDatepickerComponent implements OnInit, OnChanges, ControlValueA
   private initializeFocus(): void {
     // Set initial focus to start date, end date, or first available day
     if (this.startDate) {
-      const startMonth = this.isDateInMonth(this.startDate, this.previousMonth()) ? 0 : 1;
-      this.focusedDay.set({ date: this.startDate, monthIndex: startMonth });
+      const inPrevMonth = this.isDateInMonth(this.startDate, this.previousMonth());
+      const inCurrMonth = this.isDateInMonth(this.startDate, this.currentMonth());
+      
+      if (inPrevMonth || inCurrMonth) {
+        this.focusedDay.set({ date: this.startDate, monthIndex: inPrevMonth ? 0 : 1 });
+      } else {
+        // startDate is not visible, focus on first day of current month
+        const currentMonthDays = this.currentMonthDays();
+        const firstDay = currentMonthDays.find(day => day.isCurrentMonth);
+        if (firstDay) {
+          this.focusedDay.set({ date: firstDay.date, monthIndex: 1 });
+        }
+      }
     } else if (this.endDate) {
-      const endMonth = this.isDateInMonth(this.endDate, this.previousMonth()) ? 0 : 1;
-      this.focusedDay.set({ date: this.endDate, monthIndex: endMonth });
+      const inPrevMonth = this.isDateInMonth(this.endDate, this.previousMonth());
+      const inCurrMonth = this.isDateInMonth(this.endDate, this.currentMonth());
+      
+      if (inPrevMonth || inCurrMonth) {
+        this.focusedDay.set({ date: this.endDate, monthIndex: inPrevMonth ? 0 : 1 });
+      } else {
+        // endDate is not visible, focus on first day of current month
+        const currentMonthDays = this.currentMonthDays();
+        const firstDay = currentMonthDays.find(day => day.isCurrentMonth);
+        if (firstDay) {
+          this.focusedDay.set({ date: firstDay.date, monthIndex: 1 });
+        }
+      }
     } else {
       // Focus first day of current month
       const currentMonthDays = this.currentMonthDays();
@@ -255,8 +277,8 @@ export class DualDatepickerComponent implements OnInit, OnChanges, ControlValueA
     const newDateStr = this.formatDate(newDate);
 
     // Determine which month the new date belongs to
-    const inPrevMonth = this.isDateInMonth(newDateStr, this.previousMonth());
-    const inCurrMonth = this.isDateInMonth(newDateStr, this.currentMonth());
+    let inPrevMonth = this.isDateInMonth(newDateStr, this.previousMonth());
+    let inCurrMonth = this.isDateInMonth(newDateStr, this.currentMonth());
 
     if (inPrevMonth || inCurrMonth) {
       this.focusedDay.set({ 
@@ -270,7 +292,15 @@ export class DualDatepickerComponent implements OnInit, OnChanges, ControlValueA
       } else {
         this.changeMonth(-1);
       }
-      this.focusedDay.set({ date: newDateStr, monthIndex: direction > 0 ? 0 : 1 });
+      
+      // Recalculate after month change
+      inPrevMonth = this.isDateInMonth(newDateStr, this.previousMonth());
+      inCurrMonth = this.isDateInMonth(newDateStr, this.currentMonth());
+      
+      this.focusedDay.set({ 
+        date: newDateStr, 
+        monthIndex: inPrevMonth ? 0 : (inCurrMonth ? 1 : 0)
+      });
     }
   }
 
@@ -287,8 +317,8 @@ export class DualDatepickerComponent implements OnInit, OnChanges, ControlValueA
     const newDate = this.dateAdapter.addDays(currentDate, direction * 7); // Move by week
     const newDateStr = this.formatDate(newDate);
 
-    const inPrevMonth = this.isDateInMonth(newDateStr, this.previousMonth());
-    const inCurrMonth = this.isDateInMonth(newDateStr, this.currentMonth());
+    let inPrevMonth = this.isDateInMonth(newDateStr, this.previousMonth());
+    let inCurrMonth = this.isDateInMonth(newDateStr, this.currentMonth());
 
     if (inPrevMonth || inCurrMonth) {
       this.focusedDay.set({ 
@@ -302,7 +332,15 @@ export class DualDatepickerComponent implements OnInit, OnChanges, ControlValueA
       } else {
         this.changeMonth(-1);
       }
-      this.focusedDay.set({ date: newDateStr, monthIndex: direction > 0 ? 0 : 1 });
+      
+      // Recalculate after month change
+      inPrevMonth = this.isDateInMonth(newDateStr, this.previousMonth());
+      inCurrMonth = this.isDateInMonth(newDateStr, this.currentMonth());
+      
+      this.focusedDay.set({ 
+        date: newDateStr, 
+        monthIndex: inPrevMonth ? 0 : (inCurrMonth ? 1 : 0)
+      });
     }
   }
 
