@@ -45,7 +45,7 @@ const range: DateRange = {
 console.log(range.startDate); // NEW
 ```
 
-## 2. Component @Input Properties
+## 2. Component Input Properties (Angular `@Input` decorator)
 
 ### Before (v2.x):
 ```html
@@ -160,7 +160,7 @@ this.form.patchValue({
 - [ ] Replace `fechaInicio` with `startDate` in all templates
 - [ ] Replace `fechaFin` with `endDate` in all templates
 - [ ] Replace `rangoTexto` with `rangeText` in all templates
-- [ ] Update `@Input()` bindings: `[fechaInicio]` → `[startDate]`, `[fechaFin]` → `[endDate]`
+- [ ] Update component input bindings: `[fechaInicio]` → `[startDate]`, `[fechaFin]` → `[endDate]`
 - [ ] Update all `DateRange` property references in TypeScript
 - [ ] Remove all `daysAgo` usage and replace with `getValue: () => getLastNDays(n)`
 - [ ] Update presets to use `getValue` functions or CommonPresets
