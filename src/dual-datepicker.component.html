@@ -112,12 +112,49 @@
       </div>
     </div>
 
+    <!-- Multi-Range List -->
+    @if (multiRange && selectedRanges().length > 0) {
+    <div class="multi-range-list">
+      <div class="multi-range-header">
+        <span class="multi-range-title">Selected Ranges ({{ selectedRanges().length }})</span>
+      </div>
+      <div class="multi-range-items">
+        @for (range of selectedRanges(); track $index) {
+        <div class="multi-range-item">
+          <span class="multi-range-text">{{ range.rangoTexto }}</span>
+          <button 
+            type="button" 
+            class="btn-remove-range" 
+            (click)="eliminarRango($index)"
+            title="Remove this range">
+            <svg width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
+              <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
+            </svg>
+          </button>
+        </div>
+        }
+      </div>
+    </div>
+    }
+
     <!-- Footer with clear button -->
-    @if (showClearButton) {
+    @if (showClearButton || multiRange) {
     <div class="date-picker-footer">
-      <button type="button" class="btn-clear" (click)="limpiar()" title="Clear selection">
-        Clear
-      </button>
+      @if (multiRange) {
+        <div class="multi-range-footer-actions">
+          <button type="button" class="btn-clear" (click)="limpiar()" title="Clear all ranges">
+            Clear All
+          </button>
+          <button type="button" class="btn-done" (click)="cerrarDatePicker()" title="Done selecting">
+            Done
+          </button>
+        </div>
+      }
+      @if (!multiRange && showClearButton) {
+        <button type="button" class="btn-clear" (click)="limpiar()" title="Clear selection">
+          Clear
+        </button>
+      }
     </div>
     }
   </div>

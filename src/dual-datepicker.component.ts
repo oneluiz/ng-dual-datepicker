@@ -10,6 +10,10 @@ export interface DateRange {
   rangoTexto: string;
 }
 
+export interface MultiDateRange {
+  ranges: DateRange[];
+}
+
 export interface PresetRange {
   start: string;
   end: string;
@@ -54,6 +58,7 @@ export class DualDatepickerComponent implements OnInit, OnChanges, ControlValueA
   @Input() fechaFin: string = '';
   @Input() showPresets: boolean = true;
   @Input() showClearButton: boolean = false;
+  @Input() multiRange: boolean = false;
   @Input() closeOnSelection: boolean = true;
   @Input() closeOnPresetSelection: boolean = true;
   @Input() closeOnClickOutside: boolean = true;
@@ -72,6 +77,8 @@ export class DualDatepickerComponent implements OnInit, OnChanges, ControlValueA
 
   @Output() dateRangeChange = new EventEmitter<DateRange>();
   @Output() dateRangeSelected = new EventEmitter<DateRange>();
+  @Output() multiDateRangeChange = new EventEmitter<MultiDateRange>();
+  @Output() multiDateRangeSelected = new EventEmitter<MultiDateRange>();
 
   // Date adapter injection
   private dateAdapter = inject<DateAdapter>(DATE_ADAPTER);
@@ -85,6 +92,10 @@ export class DualDatepickerComponent implements OnInit, OnChanges, ControlValueA
   diasMesActual = signal<any[]>([]);
   diasMesAnterior = signal<any[]>([]);
   isDisabled = signal(false);
+  
+  // Multi-range support
+  selectedRanges = signal<DateRange[]>([]);
+  currentRangeIndex = signal<number>(-1);
 
   // Computed values
   nombreMesActual = computed(() => this.getNombreMes(this.mesActual()));
@@ -218,35 +229,88 @@ export class DualDatepickerComponent implements OnInit, OnChanges, ControlValueA
   }
 
   estaEnRango(fechaStr: string): boolean {
-    if (!this.fechaInicio || !this.fechaFin) return false;
-    return fechaStr >= this.fechaInicio && fechaStr <= this.fechaFin;
+    if (this.multiRange) {
+      // Check if date is in any of the selected ranges
+      return this.selectedRanges().some(range => {
+        return fechaStr >= range.fechaInicio && fechaStr <= range.fechaFin;
+      });
+    } else {
+      if (!this.fechaInicio || !this.fechaFin) return false;
+      return fechaStr >= this.fechaInicio && fechaStr <= this.fechaFin;
+    }
   }
 
   seleccionarDia(diaObj: any): void {
     if (!diaObj.esMesActual || this.isDisabled()) return;
 
-    if (this.fechaSeleccionandoInicio()) {
-      this.fechaInicio = diaObj.fecha;
-      this.fechaFin = '';
-      this.rangoFechas.set('');
-      this.fechaSeleccionandoInicio.set(false);
-      this.emitirCambio();
-    } else {
-      if (diaObj.fecha < this.fechaInicio) {
-        this.fechaFin = this.fechaInicio;
+    if (this.multiRange) {
+      // Multi-range mode: add ranges to array
+      if (this.fechaSeleccionandoInicio()) {
         this.fechaInicio = diaObj.fecha;
+        this.fechaFin = '';
+        this.rangoFechas.set('');
+        this.fechaSeleccionandoInicio.set(false);
       } else {
-        this.fechaFin = diaObj.fecha;
+        if (diaObj.fecha < this.fechaInicio) {
+          this.fechaFin = this.fechaInicio;
+          this.fechaInicio = diaObj.fecha;
+        } else {
+          this.fechaFin = diaObj.fecha;
+        }
+        
+        // Add the new range to the array
+        const newRange: DateRange = {
+          fechaInicio: this.fechaInicio,
+          fechaFin: this.fechaFin,
+          rangoTexto: this.formatearFechaDisplay(this.fechaInicio) + ' – ' + this.formatearFechaDisplay(this.fechaFin)
+        };
+        
+        const currentRanges = [...this.selectedRanges()];
+        currentRanges.push(newRange);
+        this.selectedRanges.set(currentRanges);
+        
+        // Reset for next range selection
+        this.fechaInicio = '';
+        this.fechaFin = '';
+        this.fechaSeleccionandoInicio.set(true);
+        
+        // Update display text
+        this.actualizarMultiRangoTexto();
+        
+        // Don't close if multiRange, allow adding more ranges
+        if (this.closeOnSelection && !this.multiRange) {
+          this.mostrarDatePicker.set(false);
+        }
+        
+        this.emitirMultiCambio();
+        this.emitirMultiSeleccion();
       }
-      this.actualizarRangoFechasTexto();
-      if (this.closeOnSelection) {
-        this.mostrarDatePicker.set(false);
+      this.generarCalendarios();
+    } else {
+      // Single range mode (original behavior)
+      if (this.fechaSeleccionandoInicio()) {
+        this.fechaInicio = diaObj.fecha;
+        this.fechaFin = '';
+        this.rangoFechas.set('');
+        this.fechaSeleccionandoInicio.set(false);
+        this.emitirCambio();
+      } else {
+        if (diaObj.fecha < this.fechaInicio) {
+          this.fechaFin = this.fechaInicio;
+          this.fechaInicio = diaObj.fecha;
+        } else {
+          this.fechaFin = diaObj.fecha;
+        }
+        this.actualizarRangoFechasTexto();
+        if (this.closeOnSelection) {
+          this.mostrarDatePicker.set(false);
+        }
+        this.fechaSeleccionandoInicio.set(true);
+        this.emitirCambio();
+        this.emitirSeleccion();
       }
-      this.fechaSeleccionandoInicio.set(true);
-      this.emitirCambio();
-      this.emitirSeleccion();
+      this.generarCalendarios();
     }
-    this.generarCalendarios();
   }
 
   cambiarMes(direccion: number): void {
@@ -310,8 +374,41 @@ export class DualDatepickerComponent implements OnInit, OnChanges, ControlValueA
     this.rangoFechas.set('');
     this.mostrarDatePicker.set(false);
     this.fechaSeleccionandoInicio.set(true);
-    this.emitirCambio();
+    
+    if (this.multiRange) {
+      this.selectedRanges.set([]);
+      this.currentRangeIndex.set(-1);
+      this.emitirMultiCambio();
+    } else {
+      this.emitirCambio();
+    }
+    
     this.onTouched();
+    this.generarCalendarios();
+  }
+  
+  eliminarRango(index: number): void {
+    if (!this.multiRange) return;
+    
+    const currentRanges = [...this.selectedRanges()];
+    currentRanges.splice(index, 1);
+    this.selectedRanges.set(currentRanges);
+    
+    this.actualizarMultiRangoTexto();
+    this.emitirMultiCambio();
+    this.emitirMultiSeleccion();
+    this.generarCalendarios();
+  }
+  
+  private actualizarMultiRangoTexto(): void {
+    const count = this.selectedRanges().length;
+    if (count === 0) {
+      this.rangoFechas.set('');
+    } else if (count === 1) {
+      this.rangoFechas.set('1 range selected');
+    } else {
+      this.rangoFechas.set(`${count} ranges selected`);
+    }
   }
 
   private emitirCambio(): void {
@@ -327,6 +424,18 @@ export class DualDatepickerComponent implements OnInit, OnChanges, ControlValueA
       fechaInicio: this.fechaInicio,
       fechaFin: this.fechaFin,
       rangoTexto: this.rangoFechas()
+    });
+  }
+  
+  private emitirMultiCambio(): void {
+    this.multiDateRangeChange.emit({
+      ranges: this.selectedRanges()
+    });
+  }
+  
+  private emitirMultiSeleccion(): void {
+    this.multiDateRangeSelected.emit({
+      ranges: this.selectedRanges()
     });
   }
 

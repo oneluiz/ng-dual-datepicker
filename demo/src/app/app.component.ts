@@ -1,6 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { DualDatepickerComponent, DateRange, PresetConfig, CommonPresets } from '../../../src/public-api';
+import { DualDatepickerComponent, DateRange, MultiDateRange, PresetConfig, CommonPresets } from '../../../src/public-api';
 
 @Component({
   selector: 'app-root',
@@ -56,6 +56,9 @@ export class AppComponent {
   example11Range: DateRange | null = null;
   financialPresets = CommonPresets.financial;
 
+  // Example 12: Multi-Range Support (NEW v2.7.0 - DIFFERENTIATOR!)
+  example12MultiRange: MultiDateRange | null = null;
+
   clearExternalButton() {
     this.datepicker8.limpiar();
   }
@@ -100,6 +103,10 @@ export class AppComponent {
         this.example11Range = range;
         break;
     }
+  }
+
+  onMultiDateRangeChange(multiRange: MultiDateRange) {
+    this.example12MultiRange = multiRange;
   }
 
   get codeExamples() {
@@ -229,6 +236,35 @@ analyticsPresets = CommonPresets.analytics;
   [presets]="financialPresets"
   (dateRangeChange)="onDateRangeChange($event)">
 </ngx-dual-datepicker>`,
+      multiRange: `import { MultiDateRange } from '@oneluiz/dual-datepicker';
+
+// Enable multi-range mode (NEW v2.7.0!)
+multiRanges: MultiDateRange | null = null;
+
+onMultiRangeChange(ranges: MultiDateRange) {
+  this.multiRanges = ranges;
+  console.log('Selected ranges:', ranges.ranges);
+  // Example output:
+  // [
+  //   { fechaInicio: '2026-01-01', fechaFin: '2026-01-05', rangoTexto: 'Jan 1 – Jan 5' },
+  //   { fechaInicio: '2026-01-10', fechaFin: '2026-01-15', rangoTexto: 'Jan 10 – Jan 15' }
+  // ]
+}
+
+// Use in template
+<ngx-dual-datepicker
+  [multiRange]="true"
+  (multiDateRangeChange)="onMultiRangeChange($event)">
+</ngx-dual-datepicker>
+
+<!-- Perfect for: -->
+<!-- ✔ Hotel booking systems -->
+<!-- ✔ Event blackout periods -->
+<!-- ✔ Maintenance windows -->
+<!-- ✔ Availability calendars -->
+<!-- ✔ Shift scheduling -->
+
+<!-- Material DOESN'T have this! -->`,
       install: `npm install @oneluiz/dual-datepicker`
     };
   }

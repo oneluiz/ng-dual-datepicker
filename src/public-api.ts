@@ -3,7 +3,7 @@
  */
 
 export { DualDatepickerComponent } from './dual-datepicker.component';
-export type { DateRange, PresetConfig, PresetRange, LocaleConfig } from './dual-datepicker.component';
+export type { DateRange, MultiDateRange, PresetConfig, PresetRange, LocaleConfig } from './dual-datepicker.component';
 
 // Date Adapter System
 export { DateAdapter, DATE_ADAPTER } from './date-adapter';

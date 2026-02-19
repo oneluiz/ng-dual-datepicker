@@ -22,6 +22,7 @@ npm install @oneluiz/dual-datepicker
 | **Dependencies** | Zero | Requires @angular/material, @angular/cdk |
 | **Standalone** | ✅ Native | ⚠️ Requires module setup |
 | **Signals Support** | ✅ Built-in | ❌ Not yet |
+| **Multi-Range Support** | ✅ NEW v2.7.0 | ❌ Not available |
 | **Customization** | Full styling control | Theme-constrained |
 | **Learning Curve** | Minimal | Requires Material knowledge |
 | **Change Detection** | OnPush optimized | Default |
@@ -33,6 +34,7 @@ npm install @oneluiz/dual-datepicker
 - 🎯 **Standalone Component** – No NgModule imports needed
 - ⚡ **Angular Signals** – Modern reactive state management
 - 🔄 **Reactive Forms** – Full ControlValueAccessor implementation
+- 🔥 **Multi-Range Support** – Select multiple date ranges (NEW v2.7.0 - Material CAN'T do this!)
 - 🎨 **Fully Customizable** – Every color, padding, border configurable
 - 📦 **Lightweight** – ~60 KB gzipped total bundle
 - 🚀 **Performance** – OnPush change detection + trackBy optimization
@@ -210,6 +212,73 @@ export class SignalsExampleComponent {
   }
 }
 ```
+
+### 5. Multi-Range Support 🔥 NEW v2.7.0!
+
+**Material CAN'T do this!** Select multiple date ranges in a single picker - perfect for booking systems, blackout periods, and complex scheduling.
+
+```typescript
+import { Component } from '@angular/core';
+import { DualDatepickerComponent, MultiDateRange } from '@oneluiz/dual-datepicker';
+
+@Component({
+  selector: 'app-multi-range',
+  standalone: true,
+  imports: [DualDatepickerComponent],
+  template: `
+    <ngx-dual-datepicker
+      [multiRange]="true"
+      [showClearButton]="true"
+      (multiDateRangeChange)="onMultiRangeChange($event)">
+    </ngx-dual-datepicker>
+
+    @if (selectedRanges && selectedRanges.ranges.length > 0) {
+      <div class="selected-ranges">
+        <h3>Selected Ranges ({{ selectedRanges.ranges.length }})</h3>
+        @for (range of selectedRanges.ranges; track $index) {
+          <div class="range-item">
+            <strong>Range {{ $index + 1 }}:</strong> {{ range.rangoTexto }}
+            <br>
+            <span>{{ range.fechaInicio }} → {{ range.fechaFin }}</span>
+          </div>
+        }
+      </div>
+    }
+  `
+})
+export class MultiRangeExample {
+  selectedRanges: MultiDateRange | null = null;
+
+  onMultiRangeChange(ranges: MultiDateRange) {
+    this.selectedRanges = ranges;
+    console.log('Selected ranges:', ranges.ranges);
+    // Output example:
+    // [
+    //   { fechaInicio: '2026-01-01', fechaFin: '2026-01-05', rangoTexto: 'Jan 1 – Jan 5' },
+    //   { fechaInicio: '2026-01-10', fechaFin: '2026-01-15', rangoTexto: 'Jan 10 – Jan 15' },
+    //   { fechaInicio: '2026-02-01', fechaFin: '2026-02-07', rangoTexto: 'Feb 1 – Feb 7' }
+    // ]
+  }
+}
+```
+
+#### Perfect Use Cases
+
+- 🏨 **Hotel Booking Systems** - Block multiple periods for reservations
+- 📅 **Event Blackout Periods** - Mark multiple dates as unavailable
+- 🔧 **Maintenance Windows** - Schedule multiple maintenance periods
+- 📊 **Availability Calendars** - Show multiple available/unavailable periods
+- 👷 **Shift Scheduling** - Select multiple work periods
+- 💼 **Business Meetings** - Block out multiple date ranges
+
+#### Key Features
+
+- ✅ Select unlimited date ranges
+- ✅ Visual feedback - all ranges highlighted in calendar
+- ✅ Easy management - add/remove ranges with one click
+- ✅ Separate events for multi-range (`multiDateRangeChange`, `multiDateRangeSelected`)
+- ✅ Clear all ranges with one button
+- ❌ **Angular Material CANNOT do this!**
 
 ## 🔌 Date Adapter System
 

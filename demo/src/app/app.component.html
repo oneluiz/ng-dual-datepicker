@@ -359,6 +359,74 @@
               <pre>{{ codeExamples.commonPresets }}</pre>
             </div>
           </div>
+
+          <!-- Example 12: Multi-Range Support -->
+          <div class="example-card featured-card game-changer-card">
+            <div class="badge-new">NEW v2.7.0 - GAME CHANGER!</div>
+            <h2>🔥 Multi-Range Support - Material CAN'T Do This!</h2>
+            <p class="example-description">
+              <strong>This is our ULTIMATE differentiator!</strong> Select <strong>multiple date ranges</strong> in one picker. Perfect for <strong>hotel booking</strong>, <strong>event blackout periods</strong>, <strong>maintenance windows</strong>, and <strong>shift scheduling</strong>. 
+              <span class="highlight-red">Angular Material DOESN'T have this feature!</span> 💥
+            </p>
+            <div class="example-demo">
+              <ngx-dual-datepicker
+                [multiRange]="true"
+                [showClearButton]="true"
+                (multiDateRangeChange)="onMultiDateRangeChange($event)">
+              </ngx-dual-datepicker>
+            </div>
+            @if (example12MultiRange && example12MultiRange.ranges.length > 0) {
+              <div class="selected-multirange">
+                <strong>Selected Ranges ({{ example12MultiRange.ranges.length }}):</strong>
+                <div class="multi-range-display">
+                  @for (range of example12MultiRange.ranges; track $index) {
+                    <div class="range-item">
+                      <span class="range-badge">Range {{ $index + 1 }}</span>
+                      <span class="range-text">{{ range.rangoTexto }}</span>
+                      <span class="range-dates">{{ range.fechaInicio }} → {{ range.fechaFin }}</span>
+                    </div>
+                  }
+                </div>
+              </div>
+            }
+            <div class="adapter-info material-cant">
+              <h4>🎯 Perfect Use Cases:</h4>
+              <ul>
+                <li>🏨 <strong>Hotel Booking Systems</strong> - Block multiple periods for reservations</li>
+                <li>📅 <strong>Event Blackout Periods</strong> - Mark multiple dates unavailable</li>
+                <li>🔧 <strong>Maintenance Windows</strong> - Schedule multiple maintenance periods</li>
+                <li>📊 <strong>Availability Calendars</strong> - Show multiple available/unavailable periods</li>
+                <li>👷 <strong>Shift Scheduling</strong> - Select multiple work periods</li>
+                <li>💼 <strong>Business Meetings</strong> - Block out multiple date ranges</li>
+              </ul>
+              <h4>💎 Why This Is Revolutionary:</h4>
+              <ul>
+                <li>✅ Select as many ranges as you need</li>
+                <li>✅ Visual feedback - all ranges highlighted in calendar</li>
+                <li>✅ Easy range management - add/remove with one click</li>
+                <li>✅ Perfect for complex scheduling scenarios</li>
+                <li>✅ Real-world business need</li>
+                <li>❌ <strong>Angular Material CANNOT do this!</strong></li>
+                <li>❌ <strong>Most date pickers CANNOT do this!</strong></li>
+              </ul>
+              <div class="material-comparison">
+                <p class="comparison-title">📊 Feature Comparison</p>
+                <div class="comparison">
+                  <div class="our-feature">
+                    <span class="feature-name">ng-dual-datepicker</span>
+                    <span class="feature-value">✅ Multi-Range</span>
+                  </div>
+                  <div class="their-feature">
+                    <span class="feature-name">Angular Material</span>
+                    <span class="feature-value">❌ Single Range Only</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="code-block">
+              <pre>{{ codeExamples.multiRange }}</pre>
+            </div>
+          </div>
         </div>
       </div>
     }

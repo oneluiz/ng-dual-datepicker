@@ -1,7 +1,7 @@
 {
   "name": "@oneluiz/dual-datepicker",
-  "version": "2.6.0",
-  "description": "A customizable dual-calendar date range picker component for Angular 17+ with Reactive Forms and Signals support",
+  "version": "2.7.0",
+  "description": "A customizable dual-calendar date range picker component for Angular 17+ with Reactive Forms, Signals, and Multi-Range support",
   "keywords": [
     "angular",
     "datepicker",
