@@ -5,6 +5,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.1.1] - 2026-02-19
+
+### 🐛 Bug Fixes
+
+#### Keyboard Navigation Refinements
+
+- **Fixed monthIndex calculation**: Corrected focus positioning after month changes during vertical and horizontal navigation
+- **Fixed initializeFocus validation**: Ensured focused dates are only initialized if they're within visible month range
+- **Fixed timezone issue**: Resolved day-skipping bug in horizontal navigation caused by UTC/local timezone interpretation of ISO date strings (YYYY-MM-DD)
+  - Updated `NativeDateAdapter.parse()` to explicitly parse ISO dates as local dates
+  - Prevents incorrect day calculations in different timezones
+  - Arrow left/right now navigate correctly one day at a time
+
+#### Documentation & Configuration
+
+- **Complete documentation update**: Updated all sections including footer, roadmap, API reference, and accessibility documentation
+- **Added configuration option**: Keyboard navigation can now be disabled with `[enableKeyboardNavigation]="false"` input (enabled by default)
+
 ## [3.1.0] - 2026-02-19
 
 ### ✨ Features
