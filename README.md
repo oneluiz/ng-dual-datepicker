@@ -10,6 +10,18 @@ A beautiful, customizable dual-calendar date range picker for Angular 17+. Built
 
 **[Check out the interactive examples →](https://oneluiz.github.io/ng-dual-datepicker/)**
 
+## 🤔 When to use this
+
+Use this if:
+- ✅ You need a lightweight date range picker
+- ✅ You use Angular 17+
+- ✅ You prefer standalone components
+- ✅ You want full control over styling
+- ✅ You need Reactive Forms support (ControlValueAccessor)
+- ✅ You want modern Angular Signals
+- ✅ You need internationalization (i18n)
+- ✅ You want zero external dependencies
+
 ## ✨ Features
 
 - 📅 **Dual Calendar Display** - Side-by-side month view for easy range selection
