@@ -881,6 +881,174 @@ customPresets: PresetConfig[] = [
               </div>
             </div>
           </section>
+
+          <section class="doc-section featured-section game-changer-section">
+            <div class="section-badge">NEW v2.7.0 - ULTIMATE!</div>
+            <h2>🔥 Multi-Range Support - Material CAN'T Do This!</h2>
+            <p class="section-intro">
+              <strong class="highlight-red">This is our STRONGEST differentiator!</strong> 
+              Select <strong>MULTIPLE date ranges</strong> in a single picker. Perfect for hotel booking systems, event blackout periods, maintenance windows, and complex scheduling. <strong>Angular Material CANNOT do this!</strong> 💥
+            </p>
+
+            <h3>⚡ How It Works</h3>
+            <p>Enable multi-range mode and start selecting as many date ranges as you need:</p>
+            <div class="code-block">
+              <pre>import &#123; MultiDateRange &#125; from '&#64;oneluiz/dual-datepicker';
+
+// Enable multi-range mode
+&lt;ngx-dual-datepicker
+  [multiRange]="true"
+  [showClearButton]="true"
+  (multiDateRangeChange)="onMultiRangeChange($event)"&gt;
+&lt;/ngx-dual-datepicker&gt;
+
+// Handle multiple ranges
+onMultiRangeChange(data: MultiDateRange) &#123;
+  console.log('Selected ranges:', data.ranges);
+  // Output:
+  // [
+  //   &#123; fechaInicio: '2026-01-01', fechaFin: '2026-01-05', rangoTexto: 'Jan 1 – Jan 5' &#125;,
+  //   &#123; fechaInicio: '2026-01-10', fechaFin: '2026-01-15', rangoTexto: 'Jan 10 – Jan 15' &#125;,
+  //   &#123; fechaInicio: '2026-02-01', fechaFin: '2026-02-07', rangoTexto: 'Feb 1 – Feb 7' &#125;
+  // ]
+&#125;</pre>
+            </div>
+
+            <h3>🎯 Perfect Use Cases</h3>
+            <div class="use-case-grid">
+              <div class="use-case-item">
+                <span class="use-case-icon">🏨</span>
+                <strong>Hotel Booking Systems</strong>
+                <p>Block multiple periods for reservations</p>
+              </div>
+              <div class="use-case-item">
+                <span class="use-case-icon">📅</span>
+                <strong>Event Blackout Periods</strong>
+                <p>Mark multiple dates unavailable</p>
+              </div>
+              <div class="use-case-item">
+                <span class="use-case-icon">🔧</span>
+                <strong>Maintenance Windows</strong>
+                <p>Schedule multiple maintenance periods</p>
+              </div>
+              <div class="use-case-item">
+                <span class="use-case-icon">📊</span>
+                <strong>Availability Calendars</strong>
+                <p>Show multiple available/unavailable periods</p>
+              </div>
+              <div class="use-case-item">
+                <span class="use-case-icon">👷</span>
+                <strong>Shift Scheduling</strong>
+                <p>Select multiple work periods</p>
+              </div>
+              <div class="use-case-item">
+                <span class="use-case-icon">💼</span>
+                <strong>Business Meetings</strong>
+                <p>Block out multiple date ranges</p>
+              </div>
+            </div>
+
+            <div class="why-powerful">
+              <h3>💎 Key Features</h3>
+              <div class="use-case-grid">
+                <div class="use-case-item">
+                  <span class="use-case-icon">✅</span>
+                  <strong>Unlimited Ranges</strong>
+                  <p>Select as many ranges as you need</p>
+                </div>
+                <div class="use-case-item">
+                  <span class="use-case-icon">👁️</span>
+                  <strong>Visual Feedback</strong>
+                  <p>All ranges highlighted in calendar</p>
+                </div>
+                <div class="use-case-item">
+                  <span class="use-case-icon">🗑️</span>
+                  <strong>Easy Management</strong>
+                  <p>Add/remove ranges with one click</p>
+                </div>
+                <div class="use-case-item">
+                  <span class="use-case-icon">📡</span>
+                  <strong>Dedicated Events</strong>
+                  <p>multiDateRangeChange & multiDateRangeSelected</p>
+                </div>
+                <div class="use-case-item">
+                  <span class="use-case-icon">🔄</span>
+                  <strong>Backward Compatible</strong>
+                  <p>Opt-in feature, doesn't break existing code</p>
+                </div>
+                <div class="use-case-item">
+                  <span class="use-case-icon">🔥</span>
+                  <strong>Unique Feature</strong>
+                  <p>Material and most pickers CAN'T do this!</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="material-comparison-box">
+              <h3>📊 vs Angular Material</h3>
+              <div class="comparison">
+                <div class="our-feature">
+                  <span class="feature-name">ng-dual-datepicker v2.7.0</span>
+                  <span class="feature-value">✅ UNLIMITED Multi-Range Support</span>
+                  <span class="feature-desc">Select as many date ranges as needed</span>
+                </div>
+                <div class="their-feature">
+                  <span class="feature-name">Angular Material</span>
+                  <span class="feature-value">❌ Single Range Only</span>
+                  <span class="feature-desc">Cannot select multiple ranges</span>
+                </div>
+              </div>
+              <p class="comparison-conclusion">
+                <strong>This is a REAL competitive advantage</strong> for business applications that need complex date selection scenarios.
+              </p>
+            </div>
+
+            <h3>💻 Complete Example</h3>
+            <div class="code-block">
+              <pre>import &#123; Component &#125; from '&#64;angular/core';
+import &#123; DualDatepickerComponent, MultiDateRange &#125; from '&#64;oneluiz/dual-datepicker';
+
+&#64;Component(&#123;
+  selector: 'app-booking',
+  standalone: true,
+  imports: [DualDatepickerComponent],
+  template: `
+    &lt;h2&gt;Select Blocked Dates&lt;/h2&gt;
+    &lt;ngx-dual-datepicker
+      [multiRange]="true"
+      [showClearButton]="true"
+      (multiDateRangeChange)="onRangesChange($event)"&gt;
+    &lt;/ngx-dual-datepicker&gt;
+
+    &#64;if (blockedRanges && blockedRanges.ranges.length &gt; 0) &#123;
+      &lt;div class="blocked-periods"&gt;
+        &lt;h3&gt;Blocked Periods (&#123;&#123; blockedRanges.ranges.length &#125;&#125;)&lt;/h3&gt;
+        &#64;for (range of blockedRanges.ranges; track $index) &#123;
+          &lt;div class="period"&gt;
+            &lt;strong&gt;Period &#123;&#123; $index + 1 &#125;&#125;:&lt;/strong&gt; 
+            &#123;&#123; range.rangoTexto &#125;&#125;
+          &lt;/div&gt;
+        &#125;
+      &lt;/div&gt;
+    &#125;
+  `
+&#125;)
+export class BookingComponent &#123;
+  blockedRanges: MultiDateRange | null = null;
+
+  onRangesChange(ranges: MultiDateRange) &#123;
+    this.blockedRanges = ranges;
+    // Save to backend/database
+    this.saveBlockedPeriods(ranges.ranges);
+  &#125;
+
+  saveBlockedPeriods(ranges: DateRange[]) &#123;
+    // Your API call here
+    console.log('Saving blocked periods:', ranges);
+  &#125;
+&#125;</pre>
+            </div>
+          </section>
         </div>
       </div>
     }

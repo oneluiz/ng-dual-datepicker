@@ -1151,3 +1151,124 @@ body {
     padding: 1.5rem;
   }
 }
+
+// Multi-Range Documentation Styles
+.game-changer-section {
+  position: relative;
+  border: 3px solid #fc8181 !important;
+  background: linear-gradient(135deg, #fff5f5 0%, #ffffff 50%, #fff5f5 100%) !important;
+
+  &::before {
+    content: '🔥';
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 3rem;
+    opacity: 0.1;
+    pointer-events: none;
+  }
+}
+
+.section-badge {
+  display: inline-block;
+  background: linear-gradient(135deg, #f56565 0%, #c53030 100%);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(245, 101, 101, 0.3);
+}
+
+.material-comparison-box {
+  background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+  border: 2px solid #cbd5e0;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin: 2rem 0;
+
+  h3 {
+    margin-top: 0;
+    color: #2d3748;
+    font-size: 1.25rem;
+    text-align: center;
+  }
+
+  .comparison {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin: 1.5rem 0;
+  }
+
+  .our-feature,
+  .their-feature {
+    padding: 1rem;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .our-feature {
+    background: #c6f6d5;
+    border: 2px solid #48bb78;
+
+    .feature-name {
+      font-weight: 700;
+      color: #22543d;
+      font-size: 0.875rem;
+    }
+
+    .feature-value {
+      font-weight: 700;
+      color: #276749;
+      font-size: 0.9375rem;
+    }
+
+    .feature-desc {
+      font-size: 0.8125rem;
+      color: #2f855a;
+    }
+  }
+
+  .their-feature {
+    background: #fed7d7;
+    border: 2px solid #fc8181;
+
+    .feature-name {
+      font-weight: 700;
+      color: #742a2a;
+      font-size: 0.875rem;
+    }
+
+    .feature-value {
+      font-weight: 700;
+      color: #c53030;
+      font-size: 0.9375rem;
+    }
+
+    .feature-desc {
+      font-size: 0.8125rem;
+      color: #9b2c2c;
+    }
+  }
+
+  .comparison-conclusion {
+    text-align: center;
+    margin-top: 1rem;
+    font-size: 0.9375rem;
+    color: #2d3748;
+    padding: 1rem;
+    background: #ffffff;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+
+    strong {
+      color: #c53030;
+    }
+  }
+}
