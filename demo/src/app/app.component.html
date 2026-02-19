@@ -272,6 +272,48 @@
               <pre>{{ codeExamples.minimalUI }}</pre>
             </div>
           </div>
+
+          <!-- Example 10: Date Adapter System -->
+          <div class="example-card featured-card">
+            <div class="badge-new">NEW v2.5.0</div>
+            <h2>🔌 Date Adapter System</h2>
+            <p class="example-description">
+              <strong>Flexible date library support!</strong> Use DayJS, date-fns, Luxon, or any custom date library. This example uses the default <code>NativeDateAdapter</code>, but you can easily swap it for your preferred library.
+            </p>
+            <div class="example-demo">
+              <ngx-dual-datepicker
+                (dateRangeChange)="onDateRangeChange(10, $event)">
+              </ngx-dual-datepicker>
+            </div>
+            @if (example10Range) {
+              <div class="selected-range">
+                <strong>Selected Range:</strong>
+                <p>Start: {{ example10Range.fechaInicio || '(empty)' }}</p>
+                <p>End: {{ example10Range.fechaFin || '(empty)' }}</p>
+                <p>Text: {{ example10Range.rangoTexto || '(empty)' }}</p>
+              </div>
+            }
+            <div class="adapter-info">
+              <h4>📚 Supported Libraries:</h4>
+              <ul>
+                <li>✅ <strong>Native Date</strong> (default) - No setup needed</li>
+                <li>✅ <strong>DayJS</strong> - Lightweight alternative to Moment.js</li>
+                <li>✅ <strong>date-fns</strong> - Modern JavaScript date utility</li>
+                <li>✅ <strong>Luxon</strong> - Powerful date manipulation</li>
+                <li>✅ <strong>Custom adapters</strong> - Create your own!</li>
+              </ul>
+              <h4>🎯 Benefits:</h4>
+              <ul>
+                <li>🔓 Zero vendor lock-in</li>
+                <li>🔄 Consistency across your app</li>
+                <li>🎨 Custom backend model support</li>
+                <li>📘 Full TypeScript generics</li>
+              </ul>
+            </div>
+            <div class="code-block">
+              <pre>{{ codeExamples.dateAdapter }}</pre>
+            </div>
+          </div>
         </div>
       </div>
     }

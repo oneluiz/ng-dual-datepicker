@@ -49,6 +49,9 @@ export class AppComponent {
   // Example 9: Hide clear button
   example9Range: DateRange | null = null;
 
+  // Example 10: Date Adapter System
+  example10Range: DateRange | null = null;
+
   clearExternalButton() {
     this.datepicker8.limpiar();
   }
@@ -85,6 +88,9 @@ export class AppComponent {
         break;
       case 9:
         this.example9Range = range;
+        break;
+      case 10:
+        this.example10Range = range;
         break;
     }
   }
@@ -156,6 +162,40 @@ clearExternalButton() {
 
 // Note: showClearButton is false by default
 // for a clean, minimalist interface`,
+      dateAdapter: `// 1. Create custom adapter (e.g., with DayJS)
+import { Injectable } from '@angular/core';
+import { DateAdapter } from '@oneluiz/dual-datepicker';
+import dayjs, { Dayjs } from 'dayjs';
+
+@Injectable()
+export class DayJSAdapter extends DateAdapter<Dayjs> {
+  parse(value: any): Dayjs | null {
+    if (!value) return null;
+    const parsed = dayjs(value);
+    return parsed.isValid() ? parsed : null;
+  }
+
+  format(date: Dayjs, format = 'YYYY-MM-DD'): string {
+    return date.format(format);
+  }
+
+  addDays(date: Dayjs, days: number): Dayjs {
+    return date.add(days, 'day');
+  }
+  // ... implement other methods
+}
+
+// 2. Provide custom adapter
+import { DATE_ADAPTER } from '@oneluiz/dual-datepicker';
+
+@Component({
+  providers: [
+    { provide: DATE_ADAPTER, useClass: DayJSAdapter }
+  ]
+})
+
+// 3. Use component normally
+<ngx-dual-datepicker></ngx-dual-datepicker>`,
       install: `npm install @oneluiz/dual-datepicker`
     };
   }
