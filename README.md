@@ -467,7 +467,16 @@ export class ExampleComponent {
 - Angular 19.0.0 or higher
 - Angular 20.0.0 or higher
 
-## 📄 License
+## �️ Roadmap
+
+Planned features and improvements:
+
+- ⬜ Accessibility audit
+- ⬜ Presets improvements
+- ⬜ Multi-range support
+- ⬜ Theming system
+
+## �📄 License
 
 MIT © Luis Cortes
 
