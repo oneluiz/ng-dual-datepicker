@@ -34,7 +34,7 @@ interface DateRange {
 - `range.fechaFin` → `range.endDate`
 - `range.rangoTexto` → `range.rangeText`
 
-#### Component @Input Properties Renamed
+#### Component Input Properties Renamed (Angular `@Input` decorator)
 
 ```typescript
 // v2.x (DEPRECATED)
@@ -142,7 +142,7 @@ See [MIGRATION_V3.md](MIGRATION_V3.md) for complete migration instructions inclu
 ### Added
 
 - **Multi-Range Support**: Select multiple non-overlapping date ranges in a single picker
-  - New `multiRange` @Input property (boolean, default: false)
+  - New `multiRange` input property (boolean, default: false)
   - New `multiDateRangeSelected` @Output event
   - New `multiDateRangeChange` @Output event
   - Visual indicators for multiple ranges
@@ -214,9 +214,9 @@ See [MIGRATION_V3.md](MIGRATION_V3.md) for complete migration instructions inclu
 
 ### Added
 
-- Preset ranges (`presetRanges` @Input)
-- Auto-close on selection (`closeOnSelection` @Input)
-- Auto-close on preset selection (`closeOnPresetSelection` @Input)
+- Preset ranges (via `presetRanges` input)
+- Auto-close on selection (via `closeOnSelection` input)
+- Auto-close on preset selection (via `closeOnPresetSelection` input)
 
 ---
 
