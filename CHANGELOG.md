@@ -5,6 +5,40 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.1.0] - 2026-02-19
+
+### ✨ Features
+
+#### Full Keyboard Navigation Support
+
+Complete keyboard navigation for enhanced accessibility and professional UX:
+
+**Arrow Keys Navigation:**
+- **←/→**: Navigate between days (horizontal)
+- **↑/↓**: Navigate by weeks (vertical) 
+- **Home**: Jump to first day of visible range
+- **End**: Jump to last day of visible range
+- **PageUp/PageDown**: Navigate months
+- **Shift + PageUp/PageDown**: Navigate years
+
+**Selection & Actions:**
+- **Enter/Space**: Select focused day
+- **Escape**: Close datepicker
+- **Tab**: Navigate between input, presets, and calendar (natural tab order)
+
+**Visual Indicators:**
+- Blue outline ring for keyboard-focused day
+- ARIA attributes for screen reader support
+- Proper focus management when opening/closing picker
+
+**Accessibility Improvements:**
+- `role="combobox"` on input with `aria-expanded` and `aria-haspopup`
+- `aria-label`, `aria-selected`, and `aria-current` on calendar days
+- Intelligent tabindex management (0 for focused element, -1 for others)
+- Focus automatically initialized to selected date or current day
+
+This brings the component to WCAG 2.1 Level AA compliance for keyboard accessibility.
+
 ## [3.0.0] - 2026-02-19
 
 ### 🚨 BREAKING CHANGES

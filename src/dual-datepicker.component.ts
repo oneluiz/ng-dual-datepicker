@@ -91,6 +91,9 @@ export class DualDatepickerComponent implements OnInit, OnChanges, ControlValueA
   selectedRanges = signal<DateRange[]>([]);
   currentRangeIndex = signal<number>(-1);
 
+  // Keyboard navigation
+  focusedDay = signal<{ date: string; monthIndex: number } | null>(null); // monthIndex: 0 = previous, 1 = current
+  
   // Computed values
   currentMonthName = computed(() => this.getMonthName(this.currentMonth()));
   previousMonthName = computed(() => this.getMonthName(this.previousMonth()));
@@ -123,6 +126,261 @@ export class DualDatepickerComponent implements OnInit, OnChanges, ControlValueA
         this.closeDatePicker();
       }
     }
+  }
+
+  @HostListener('keydown', ['$event'])
+  handleKeyboardNavigation(event: KeyboardEvent): void {
+    if (!this.showDatePicker()) {
+      // When picker is closed, allow Enter/Space to open it
+      if (event.key === 'Enter' || event.key === ' ') {
+        const target = event.target as HTMLElement;
+        if (target.classList.contains('datepicker-input')) {
+          event.preventDefault();
+          this.toggleDatePicker();
+        }
+      }
+      return;
+    }
+
+    // When picker is open
+    switch (event.key) {
+      case 'Escape':
+        event.preventDefault();
+        this.closeDatePicker();
+        break;
+
+      case 'ArrowUp':
+        event.preventDefault();
+        this.moveFocusVertical(-1);
+        break;
+
+      case 'ArrowDown':
+        event.preventDefault();
+        this.moveFocusVertical(1);
+        break;
+
+      case 'ArrowLeft':
+        event.preventDefault();
+        this.moveFocusHorizontal(-1);
+        break;
+
+      case 'ArrowRight':
+        event.preventDefault();
+        this.moveFocusHorizontal(1);
+        break;
+
+      case 'Enter':
+      case ' ':
+        event.preventDefault();
+        this.selectFocusedDay();
+        break;
+
+      case 'Home':
+        event.preventDefault();
+        this.moveFocusToFirstDay();
+        break;
+
+      case 'End':
+        event.preventDefault();
+        this.moveFocusToLastDay();
+        break;
+
+      case 'PageUp':
+        event.preventDefault();
+        if (event.shiftKey) {
+          this.moveFocusYear(-1);
+        } else {
+          this.changeMonth(-1);
+          this.adjustFocusAfterMonthChange();
+        }
+        break;
+
+      case 'PageDown':
+        event.preventDefault();
+        if (event.shiftKey) {
+          this.moveFocusYear(1);
+        } else {
+          this.changeMonth(1);
+          this.adjustFocusAfterMonthChange();
+        }
+        break;
+    }
+  }
+
+  // Keyboard navigation methods
+  private initializeFocus(): void {
+    // Set initial focus to start date, end date, or first available day
+    if (this.startDate) {
+      const startMonth = this.isDateInMonth(this.startDate, this.previousMonth()) ? 0 : 1;
+      this.focusedDay.set({ date: this.startDate, monthIndex: startMonth });
+    } else if (this.endDate) {
+      const endMonth = this.isDateInMonth(this.endDate, this.previousMonth()) ? 0 : 1;
+      this.focusedDay.set({ date: this.endDate, monthIndex: endMonth });
+    } else {
+      // Focus first day of current month
+      const currentMonthDays = this.currentMonthDays();
+      const firstDay = currentMonthDays.find(day => day.isCurrentMonth);
+      if (firstDay) {
+        this.focusedDay.set({ date: firstDay.date, monthIndex: 1 });
+      }
+    }
+  }
+
+  private isDateInMonth(dateStr: string, monthDate: Date): boolean {
+    const date = this.dateAdapter.parse(dateStr);
+    if (!date) return false;
+    const year = this.dateAdapter.getYear(date);
+    const month = this.dateAdapter.getMonth(date);
+    const monthYear = this.dateAdapter.getYear(monthDate);
+    const monthMonth = this.dateAdapter.getMonth(monthDate);
+    return year === monthYear && month === monthMonth;
+  }
+
+  private moveFocusHorizontal(direction: number): void {
+    const focused = this.focusedDay();
+    if (!focused) {
+      this.initializeFocus();
+      return;
+    }
+
+    const currentDate = this.dateAdapter.parse(focused.date);
+    if (!currentDate) return;
+
+    const newDate = this.dateAdapter.addDays(currentDate, direction);
+    const newDateStr = this.formatDate(newDate);
+
+    // Determine which month the new date belongs to
+    const inPrevMonth = this.isDateInMonth(newDateStr, this.previousMonth());
+    const inCurrMonth = this.isDateInMonth(newDateStr, this.currentMonth());
+
+    if (inPrevMonth || inCurrMonth) {
+      this.focusedDay.set({ 
+        date: newDateStr, 
+        monthIndex: inPrevMonth ? 0 : 1 
+      });
+    } else {
+      // Date is outside visible months, navigate month
+      if (direction > 0) {
+        this.changeMonth(1);
+      } else {
+        this.changeMonth(-1);
+      }
+      this.focusedDay.set({ date: newDateStr, monthIndex: direction > 0 ? 0 : 1 });
+    }
+  }
+
+  private moveFocusVertical(direction: number): void {
+    const focused = this.focusedDay();
+    if (!focused) {
+      this.initializeFocus();
+      return;
+    }
+
+    const currentDate = this.dateAdapter.parse(focused.date);
+    if (!currentDate) return;
+
+    const newDate = this.dateAdapter.addDays(currentDate, direction * 7); // Move by week
+    const newDateStr = this.formatDate(newDate);
+
+    const inPrevMonth = this.isDateInMonth(newDateStr, this.previousMonth());
+    const inCurrMonth = this.isDateInMonth(newDateStr, this.currentMonth());
+
+    if (inPrevMonth || inCurrMonth) {
+      this.focusedDay.set({ 
+        date: newDateStr, 
+        monthIndex: inPrevMonth ? 0 : 1 
+      });
+    } else {
+      // Navigate to month containing the new date
+      if (direction > 0) {
+        this.changeMonth(1);
+      } else {
+        this.changeMonth(-1);
+      }
+      this.focusedDay.set({ date: newDateStr, monthIndex: direction > 0 ? 0 : 1 });
+    }
+  }
+
+  private moveFocusToFirstDay(): void {
+    const prevMonthDays = this.previousMonthDays();
+    const firstDay = prevMonthDays.find(day => day.isCurrentMonth);
+    if (firstDay) {
+      this.focusedDay.set({ date: firstDay.date, monthIndex: 0 });
+    }
+  }
+
+  private moveFocusToLastDay(): void {
+    const currMonthDays = this.currentMonthDays();
+    const validDays = currMonthDays.filter(day => day.isCurrentMonth);
+    const lastDay = validDays[validDays.length - 1];
+    if (lastDay) {
+      this.focusedDay.set({ date: lastDay.date, monthIndex: 1 });
+    }
+  }
+
+  private moveFocusYear(direction: number): void {
+    const focused = this.focusedDay();
+    if (!focused) {
+      this.initializeFocus();
+      return;
+    }
+
+    const currentDate = this.dateAdapter.parse(focused.date);
+    if (!currentDate) return;
+
+    const currentYear = this.dateAdapter.getYear(currentDate);
+    const currentMonth = this.dateAdapter.getMonth(currentDate);
+    const currentDay = this.dateAdapter.getDate(currentDate);
+    
+    const newDate = this.dateAdapter.createDate(currentYear + direction, currentMonth, currentDay);
+    const newDateStr = this.formatDate(newDate);
+
+    // Update months to show the new year
+    this.currentMonth.set(this.dateAdapter.createDate(currentYear + direction, currentMonth, 1));
+    this.previousMonth.set(this.dateAdapter.createDate(currentYear + direction, currentMonth - 1, 1));
+    this.generateCalendars();
+
+    const inPrevMonth = this.isDateInMonth(newDateStr, this.previousMonth());
+    this.focusedDay.set({ 
+      date: newDateStr, 
+      monthIndex: inPrevMonth ? 0 : 1 
+    });
+  }
+
+  private adjustFocusAfterMonthChange(): void {
+    const focused = this.focusedDay();
+    if (!focused) return;
+
+    const inPrevMonth = this.isDateInMonth(focused.date, this.previousMonth());
+    const inCurrMonth = this.isDateInMonth(focused.date, this.currentMonth());
+
+    if (!inPrevMonth && !inCurrMonth) {
+      // Focused day is no longer visible, move to equivalent day in visible months
+      this.initializeFocus();
+    } else {
+      // Update month index if needed
+      this.focusedDay.set({
+        date: focused.date,
+        monthIndex: inPrevMonth ? 0 : 1
+      });
+    }
+  }
+
+  private selectFocusedDay(): void {
+    const focused = this.focusedDay();
+    if (!focused) return;
+
+    const monthDays = focused.monthIndex === 0 ? this.previousMonthDays() : this.currentMonthDays();
+    const dayObj = monthDays.find(day => day.date === focused.date && day.isCurrentMonth);
+    
+    if (dayObj) {
+      this.selectDay(dayObj);
+    }
+  }
+
+  hasKeyboardFocus(date: string, monthIndex: number): boolean {
+    const focused = this.focusedDay();
+    return focused !== null && focused.date === date && focused.monthIndex === monthIndex;
   }
 
   ngOnInit(): void {
@@ -178,12 +436,18 @@ export class DualDatepickerComponent implements OnInit, OnChanges, ControlValueA
       const previousMonthDate = this.dateAdapter.createDate(year, month - 1, 1);
       this.previousMonth.set(previousMonthDate);
       this.generateCalendars();
+      // Initialize keyboard focus
+      this.initializeFocus();
+    } else {
+      // Clear focus when closing
+      this.focusedDay.set(null);
     }
     this.onTouched();
   }
 
   closeDatePicker(): void {
     this.showDatePicker.set(false);
+    this.focusedDay.set(null);
     this.onTouched();
   }
 

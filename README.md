@@ -48,7 +48,7 @@ npm install @oneluiz/dual-datepicker
 - 🎨 **Fully Customizable** – Every color, padding, border configurable
 - 📦 **Lightweight** – ~60 KB gzipped total bundle
 - 🚀 **Performance** – OnPush change detection + trackBy optimization
-- ♿ **Accessible** – ARIA labels, semantic HTML, keyboard navigation (in progress)
+- ♿ **Accessible** – ARIA labels, semantic HTML, full keyboard navigation
 - 🌍 **i18n Ready** – Customizable month/day names
 - 📱 **Responsive** – Works on desktop and mobile
 
@@ -83,14 +83,41 @@ npm install @oneluiz/dual-datepicker
 
 ## ♿ Accessibility (A11y)
 
-**Current Status:**
-- ✅ **Screen reader support** - ARIA labels included for all interactive elements
-- ✅ **Semantic HTML** - Proper HTML structure
-- 🚧 **Full keyboard navigation** - In active development (see [Roadmap](#-roadmap))
-  - Mouse/touch interaction: ✅ Fully supported
-  - Keyboard navigation: 🚧 In progress
+**✅ WCAG 2.1 Level AA Compliant**
 
-> **Note:** Full keyboard navigation support is planned and will be included in a future release. This includes arrow key navigation, Enter/Space selection, and Escape to close.
+- ✅ **Full keyboard navigation** – Complete keyboard control (v3.1.0)
+- ✅ **Screen reader support** – ARIA labels included for all interactive elements
+- ✅ **Semantic HTML** – Proper HTML structure with `role` attributes
+- ✅ **Focus management** – Intelligent focus tracking and visual indicators
+
+### ⌨️ Keyboard Navigation (NEW in v3.1.0)
+
+Navigate the datepicker entirely with your keyboard:
+
+| Key(s) | Action |
+|--------|--------|
+| **Arrow Keys** | |
+| `←` / `→` | Navigate between days (horizontal) |
+| `↑` / `↓` | Navigate by weeks (vertical) |
+| **Selection** | |
+| `Enter` / `Space` | Select focused day |
+| `Escape` | Close datepicker |
+| **Navigation Shortcuts** | |
+| `Home` | Jump to first day of visible range |
+| `End` | Jump to last day of visible range |
+| `PageUp` / `PageDown` | Navigate months |
+| `Shift + PageUp` / `Shift + PageDown` | Navigate years |
+| `Tab` | Navigate between input, presets, and calendar |
+
+**Visual Indicators:**
+- Blue outline ring indicates focused day
+- Light blue background on keyboard-focused days
+- Automatic focus management when opening/closing picker
+
+**Screen Reader Support:**
+- `role="combobox"` on input field
+- `aria-expanded`, `aria-haspopup` states
+- `aria-label`, `aria-selected`, `aria-current` on calendar days
 
 ## 📦 Installation
 

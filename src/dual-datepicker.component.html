@@ -8,6 +8,10 @@
     (click)="toggleDatePicker()" 
     [placeholder]="placeholder"
     [disabled]="isDisabled()"
+    [attr.aria-label]="placeholder"
+    [attr.aria-expanded]="showDatePicker()"
+    [attr.aria-haspopup]="'dialog'"
+    role="combobox"
     [ngStyle]="{
       'background-color': inputBackgroundColor,
       'color': inputTextColor,
@@ -67,6 +71,11 @@
               [class.empty]="!dayObj.isCurrentMonth"
               [class.selected]="dayObj.isStart || dayObj.isEnd"
               [class.in-range]="dayObj.inRange && !dayObj.isStart && !dayObj.isEnd"
+              [class.keyboard-focused]="hasKeyboardFocus(dayObj.date, 0)"
+              [attr.tabindex]="dayObj.isCurrentMonth && hasKeyboardFocus(dayObj.date, 0) ? 0 : -1"
+              [attr.aria-label]="formatDateDisplay(dayObj.date)"
+              [attr.aria-selected]="dayObj.isStart || dayObj.isEnd"
+              [attr.aria-current]="dayObj.isStart ? 'date' : null"
               (click)="selectDay(dayObj)"
               [disabled]="!dayObj.isCurrentMonth">
               {{ dayObj.day }}
@@ -103,6 +112,11 @@
               [class.empty]="!dayObj.isCurrentMonth"
               [class.selected]="dayObj.isStart || dayObj.isEnd"
               [class.in-range]="dayObj.inRange && !dayObj.isStart && !dayObj.isEnd"
+              [class.keyboard-focused]="hasKeyboardFocus(dayObj.date, 1)"
+              [attr.tabindex]="dayObj.isCurrentMonth && hasKeyboardFocus(dayObj.date, 1) ? 0 : -1"
+              [attr.aria-label]="formatDateDisplay(dayObj.date)"
+              [attr.aria-selected]="dayObj.isStart || dayObj.isEnd"
+              [attr.aria-current]="dayObj.isStart ? 'date' : null"
               (click)="selectDay(dayObj)"
               [disabled]="!dayObj.isCurrentMonth">
               {{ dayObj.day }}
