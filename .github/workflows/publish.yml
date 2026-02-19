@@ -29,7 +29,14 @@ jobs:
       - name: Build library
         run: npm run build
       
+      - name: Setup .npmrc for dist directory
+        run: |
+          echo "//registry.npmjs.org/:_authToken=\${NODE_AUTH_TOKEN}" > dist/.npmrc
+          echo "registry=https://registry.npmjs.org/" >> dist/.npmrc
+          echo "always-auth=true" >> dist/.npmrc
+      
       - name: Publish to npm with provenance
-        run: cd dist && npm publish --provenance --access public
+        working-directory: dist
+        run: npm publish --provenance --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
