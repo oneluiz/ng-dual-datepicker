@@ -38,6 +38,12 @@ Use this if:
 - 🔄 **Reactive Forms Support** - Full ControlValueAccessor implementation
 - ⚡ **Angular Signals** - Modern reactive state management
 
+## ⚡ Performance
+
+- **OnPush change detection** - Optimized for performance
+- **No external dependencies** - Lightweight bundle size
+- **Optimized rendering with trackBy** - Efficient list rendering
+
 ## 📦 Installation
 
 ```bash
