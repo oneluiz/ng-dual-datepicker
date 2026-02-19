@@ -697,7 +697,7 @@ export class MyComponent &#123;
   &#64;ViewChild('datepicker') datepicker!: DualDatepickerComponent;
 
   clearSelection() &#123;
-    this.datepicker.limpiar(); // Clears the date selection
+    this.datepicker.clear(); // v3.0.0: method renamed from limpiar() to clear()
   &#125;
 &#125;</pre>
             </div>
@@ -912,9 +912,9 @@ onMultiRangeChange(data: MultiDateRange) &#123;
   console.log('Selected ranges:', data.ranges);
   // Output:
   // [
-  //   &#123; fechaInicio: '2026-01-01', fechaFin: '2026-01-05', rangoTexto: 'Jan 1 – Jan 5' &#125;,
-  //   &#123; fechaInicio: '2026-01-10', fechaFin: '2026-01-15', rangoTexto: 'Jan 10 – Jan 15' &#125;,
-  //   &#123; fechaInicio: '2026-02-01', fechaFin: '2026-02-07', rangoTexto: 'Feb 1 – Feb 7' &#125;
+  //   &#123; startDate: '2026-01-01', endDate: '2026-01-05', rangeText: 'Jan 1 – Jan 5' &#125;,
+  //   &#123; startDate: '2026-01-10', endDate: '2026-01-15', rangeText: 'Jan 10 – Jan 15' &#125;,
+  //   &#123; startDate: '2026-02-01', endDate: '2026-02-07', rangeText: 'Feb 1 – Feb 7' &#125;
   // ]
 &#125;</pre>
             </div>
@@ -1076,16 +1076,16 @@ export class BookingComponent &#123;
                 </thead>
                 <tbody>
                   <tr>
-                    <td><code>fechaInicio</code></td>
+                    <td><code>startDate</code></td>
                     <td><code>string</code></td>
                     <td><code>''</code></td>
-                    <td>Initial start date in ISO format (YYYY-MM-DD)</td>
+                    <td>Initial start date in ISO format (YYYY-MM-DD) - v3.0.0: renamed from <code>fechaInicio</code></td>
                   </tr>
                   <tr>
-                    <td><code>fechaFin</code></td>
+                    <td><code>endDate</code></td>
                     <td><code>string</code></td>
                     <td><code>''</code></td>
-                    <td>Initial end date in ISO format (YYYY-MM-DD)</td>
+                    <td>Initial end date in ISO format (YYYY-MM-DD) - v3.0.0: renamed from <code>fechaFin</code></td>
                   </tr>
                   <tr>
                     <td><code>placeholder</code></td>
@@ -1214,9 +1214,9 @@ export class BookingComponent &#123;
                 </thead>
                 <tbody>
                   <tr>
-                    <td><code>limpiar()</code></td>
+                    <td><code>clear()</code></td>
                     <td><code>void</code></td>
-                    <td>Clears the current date selection and resets the component</td>
+                    <td>Clears the current date selection and resets the component - v3.0.0: renamed from <code>limpiar()</code></td>
                   </tr>
                 </tbody>
               </table>
@@ -1229,9 +1229,9 @@ export class BookingComponent &#123;
             <h3>DateRange</h3>
             <div class="code-block">
               <pre>interface DateRange &#123;
-  fechaInicio: string;  // ISO date format: 'YYYY-MM-DD'
-  fechaFin: string;     // ISO date format: 'YYYY-MM-DD'
-  rangoTexto: string;   // Human-readable text: 'MM/DD/YYYY - MM/DD/YYYY'
+  startDate: string;   // v3.0.0: renamed from 'fechaInicio' - ISO format: 'YYYY-MM-DD'
+  endDate: string;     // v3.0.0: renamed from 'fechaFin' - ISO format: 'YYYY-MM-DD'
+  rangeText: string;   // v3.0.0: renamed from 'rangoTexto' - Display text: 'DD Mon - DD Mon'
 &#125;</pre>
             </div>
 
@@ -1258,9 +1258,9 @@ import &#123; getLastNDays &#125; from '&#64;oneluiz/dual-datepicker';
 // Example:
 &#123;
   ranges: [
-    &#123; fechaInicio: '2026-01-01', fechaFin: '2026-01-05', rangoTexto: 'Jan 1 – Jan 5' &#125;,
-    &#123; fechaInicio: '2026-01-10', fechaFin: '2026-01-15', rangoTexto: 'Jan 10 – Jan 15' &#125;,
-    &#123; fechaInicio: '2026-02-01', fechaFin: '2026-02-07', rangoTexto: 'Feb 1 – Feb 7' &#125;
+    &#123; startDate: '2026-01-01', endDate: '2026-01-05', rangeText: 'Jan 1 – Jan 5' &#125;,
+    &#123; startDate: '2026-01-10', endDate: '2026-01-15', rangeText: 'Jan 10 – Jan 15' &#125;,
+    &#123; startDate: '2026-02-01', endDate: '2026-02-07', rangeText: 'Feb 1 – Feb 7' &#125;
   ]
 &#125;</pre>
             </div>
