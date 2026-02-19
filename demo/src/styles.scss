@@ -505,6 +505,118 @@ body {
     }
   }
 
+  .comparison-table-wrapper {
+    overflow-x: auto;
+    margin: 1.5rem 0;
+  }
+
+  .comparison-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.875rem;
+
+    thead {
+      background: #f7fafc;
+      
+      th {
+        text-align: left;
+        padding: 0.875rem 1rem;
+        font-weight: 600;
+        color: #2d3748;
+        border-bottom: 2px solid #e2e8f0;
+      }
+    }
+
+    tbody {
+      tr {
+        border-bottom: 1px solid #e2e8f0;
+        
+        &:hover {
+          background: #f7fafc;
+        }
+
+        &:last-child {
+          border-bottom: none;
+        }
+      }
+
+      td {
+        padding: 0.875rem 1rem;
+        color: #4a5568;
+        line-height: 1.5;
+
+        &:first-child {
+          font-weight: 500;
+          color: #2d3748;
+        }
+
+        &.highlight-good {
+          color: #2f855a;
+          font-weight: 500;
+        }
+
+        &.highlight-warning {
+          color: #dd6b20;
+        }
+
+        &.highlight-bad {
+          color: #c53030;
+        }
+      }
+    }
+  }
+
+  .when-to-use {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin: 1.5rem 0;
+
+    .use-case {
+      padding: 1.5rem;
+      background: #f0fdf4;
+      border-radius: 8px;
+      border-left: 4px solid #48bb78;
+
+      &.alternative {
+        background: #fef3c7;
+        border-left-color: #ed8936;
+      }
+
+      h3 {
+        margin: 0 0 1rem 0;
+        font-size: 1rem;
+        color: #1a202c;
+      }
+
+      ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+
+        li {
+          margin-bottom: 0.75rem;
+          padding-left: 1.5rem;
+          position: relative;
+          color: #2d3748;
+          font-size: 0.875rem;
+          line-height: 1.6;
+
+          &:before {
+            content: "•";
+            position: absolute;
+            left: 0.5rem;
+            font-weight: bold;
+          }
+
+          &:last-child {
+            margin-bottom: 0;
+          }
+        }
+      }
+    }
+  }
+
   .section-intro {
     font-weight: 500;
     color: #2d3748;

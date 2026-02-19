@@ -282,59 +282,133 @@
         <div class="doc-content">
           <section class="doc-section">
             <h2>📦 Installation</h2>
-            <p>Install the package from npm:</p>
             <div class="code-block">
               <pre>npm install &#64;oneluiz/dual-datepicker</pre>
             </div>
           </section>
 
           <section class="doc-section">
-            <h2>✨ Features</h2>
+            <h2>🎯 Why ng-dual-datepicker?</h2>
+            <div class="comparison-table-wrapper">
+              <table class="comparison-table">
+                <thead>
+                  <tr>
+                    <th>Feature</th>
+                    <th>ng-dual-datepicker</th>
+                    <th>Angular Material DateRangePicker</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>Bundle Size</strong></td>
+                    <td class="highlight-good">~60 KB gzipped</td>
+                    <td class="highlight-warning">~300+ KB (with dependencies)</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Dependencies</strong></td>
+                    <td class="highlight-good">Zero</td>
+                    <td class="highlight-warning">Requires &#64;angular/material, &#64;angular/cdk</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Standalone</strong></td>
+                    <td class="highlight-good">✅ Native</td>
+                    <td class="highlight-warning">⚠️ Requires module setup</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Signals Support</strong></td>
+                    <td class="highlight-good">✅ Built-in</td>
+                    <td class="highlight-bad">❌ Not yet</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Customization</strong></td>
+                    <td class="highlight-good">Full styling control</td>
+                    <td class="highlight-warning">Theme-constrained</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Learning Curve</strong></td>
+                    <td class="highlight-good">Minimal</td>
+                    <td class="highlight-warning">Requires Material knowledge</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Change Detection</strong></td>
+                    <td class="highlight-good">OnPush optimized</td>
+                    <td>Default</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Setup Time</strong></td>
+                    <td class="highlight-good">&lt; 1 minute</td>
+                    <td class="highlight-warning">~10+ minutes (theming, modules)</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <section class="doc-section">
+            <h2>✨ Key Features</h2>
             <ul class="feature-list">
-              <li>📅 <strong>Dual Calendar Display</strong> - Side-by-side month view for easy range selection</li>
-              <li>🎨 <strong>Fully Customizable</strong> - Color scheme, padding, and styling</li>
-              <li>⚡ <strong>Preset Ranges</strong> - Configurable quick-select options</li>
-              <li>🧹 <strong>Clear Button</strong> - Built-in button to reset selection</li>
-              <li>🎯 <strong>Standalone Component</strong> - No module imports required</li>
-              <li>🚀 <strong>Zero Dependencies</strong> - No Bootstrap or other CSS frameworks required</li>
-              <li>🌍 <strong>i18n Support</strong> - Customizable month and day names for any language</li>
-              <li>📱 <strong>Responsive Design</strong> - Works on desktop and mobile</li>
-              <li>🌐 <strong>TypeScript</strong> - Full type safety</li>
-              <li>♿ <strong>Basic Accessibility</strong> - ARIA labels included (keyboard navigation in progress)</li>
-              <li>🔄 <strong>Reactive Forms</strong> - Full ControlValueAccessor implementation</li>
-              <li>⚡ <strong>Angular Signals</strong> - Modern reactive state management</li>
+              <li>🪶 <strong>Zero Dependencies</strong> – No external libraries required</li>
+              <li>🎯 <strong>Standalone Component</strong> – No NgModule imports needed</li>
+              <li>⚡ <strong>Angular Signals</strong> – Modern reactive state management</li>
+              <li>🔄 <strong>Reactive Forms</strong> – Full ControlValueAccessor implementation</li>
+              <li>🎨 <strong>Fully Customizable</strong> – Every color, padding, border configurable</li>
+              <li>📦 <strong>Lightweight</strong> – ~60 KB gzipped total bundle</li>
+              <li>🚀 <strong>Performance</strong> – OnPush change detection + trackBy optimization</li>
+              <li>♿ <strong>Accessible</strong> – ARIA labels, semantic HTML, keyboard navigation (in progress)</li>
+              <li>🌍 <strong>i18n Ready</strong> – Customizable month/day names</li>
+              <li>📱 <strong>Responsive</strong> – Works on desktop and mobile</li>
             </ul>
           </section>
 
           <section class="doc-section">
-            <h2>🤔 When to use this</h2>
-            <p class="section-intro">Use this component if:</p>
-            <ul class="checklist">
-              <li>✅ You need a lightweight date range picker</li>
-              <li>✅ You use Angular 17+</li>
-              <li>✅ You prefer standalone components</li>
-              <li>✅ You want full control over styling</li>
-              <li>✅ You need Reactive Forms support (ControlValueAccessor)</li>
-              <li>✅ You want modern Angular Signals</li>
-              <li>✅ You need internationalization (i18n)</li>
-              <li>✅ You want zero external dependencies</li>
-            </ul>
+            <h2>🤔 When Should I Use This?</h2>
+            <div class="when-to-use">
+              <div class="use-case">
+                <h3>✅ Use ng-dual-datepicker if you:</h3>
+                <ul>
+                  <li>Don't want to install Angular Material just for a date picker</li>
+                  <li>Need precise control over styling and behavior</li>
+                  <li>Want minimal bundle size impact</li>
+                  <li>Prefer standalone components over NgModules</li>
+                  <li>Need Angular Signals support now</li>
+                  <li>Are building a custom design system</li>
+                </ul>
+              </div>
+              <div class="use-case alternative">
+                <h3>⚠️ Use Angular Material DateRangePicker if you:</h3>
+                <ul>
+                  <li>Already use Angular Material throughout your app</li>
+                  <li>Need Material Design compliance</li>
+                  <li>Want a battle-tested enterprise solution with extensive ecosystem support</li>
+                </ul>
+              </div>
+            </div>
           </section>
 
           <section class="doc-section">
             <h2>⚡ Performance</h2>
+            <div class="code-block">
+              <pre>&#64;Component(&#123;
+  changeDetection: ChangeDetectionStrategy.OnPush, // ✅ Optimized
+  standalone: true                                   // ✅ No module overhead
+&#125;)</pre>
+            </div>
             <ul class="performance-list">
               <li>
                 <strong>OnPush change detection</strong>
-                <p>Optimized for performance with minimal re-rendering</p>
+                <p>Minimal re-renders for optimal performance</p>
               </li>
               <li>
-                <strong>No external dependencies</strong>
-                <p>Lightweight bundle size with zero external CSS or JS libraries</p>
-              </li>
-              <li>
-                <strong>Optimized rendering with trackBy</strong>
+                <strong>trackBy functions</strong>
                 <p>Efficient list rendering for calendar days</p>
+              </li>
+              <li>
+                <strong>No external CSS</strong>
+                <p>No runtime stylesheet downloads</p>
+              </li>
+              <li>
+                <strong>Tree-shakeable</strong>
+                <p>Only import what you use</p>
               </li>
             </ul>
           </section>
