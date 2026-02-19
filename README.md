@@ -211,6 +211,221 @@ export class SignalsExampleComponent {
 }
 ```
 
+## 🔌 Date Adapter System
+
+The library supports custom date adapters, allowing you to use different date libraries (DayJS, date-fns, Luxon) or custom backend models instead of native JavaScript `Date` objects.
+
+### Using Native Date (Default)
+
+By default, the component uses `NativeDateAdapter` which works with JavaScript `Date` objects:
+
+```typescript
+import { DualDatepickerComponent } from '@oneluiz/dual-datepicker';
+
+@Component({
+  standalone: true,
+  imports: [DualDatepickerComponent],
+  template: `<ngx-dual-datepicker></ngx-dual-datepicker>`
+})
+export class AppComponent {}
+```
+
+### Creating a Custom Adapter
+
+Example using **date-fns**:
+
+```typescript
+import { Injectable } from '@angular/core';
+import { DateAdapter } from '@oneluiz/dual-datepicker';
+import { 
+  parse, format, addDays, addMonths, 
+  getYear, getMonth, getDate, getDay,
+  isSameDay, isBefore, isAfter, isWithinInterval,
+  isValid 
+} from 'date-fns';
+
+@Injectable()
+export class DateFnsAdapter extends DateAdapter<Date> {
+  parse(value: any): Date | null {
+    if (!value) return null;
+    if (value instanceof Date) return value;
+    
+    const parsed = parse(value, 'yyyy-MM-dd', new Date());
+    return isValid(parsed) ? parsed : null;
+  }
+
+  format(date: Date, formatStr: string = 'yyyy-MM-dd'): string {
+    return format(date, formatStr);
+  }
+
+  addDays(date: Date, days: number): Date {
+    return addDays(date, days);
+  }
+
+  addMonths(date: Date, months: number): Date {
+    return addMonths(date, months);
+  }
+
+  getYear(date: Date): number {
+    return getYear(date);
+  }
+
+  getMonth(date: Date): number {
+    return getMonth(date);
+  }
+
+  getDate(date: Date): number {
+    return getDate(date);
+  }
+
+  getDay(date: Date): number {
+    return getDay(date);
+  }
+
+  createDate(year: number, month: number, day: number): Date {
+    return new Date(year, month, day);
+  }
+
+  today(): Date {
+    return new Date();
+  }
+
+  isSameDay(a: Date | null, b: Date | null): boolean {
+    if (!a || !b) return false;
+    return isSameDay(a, b);
+  }
+
+  isBefore(a: Date | null, b: Date | null): boolean {
+    if (!a || !b) return false;
+    return isBefore(a, b);
+  }
+
+  isAfter(a: Date | null, b: Date | null): boolean {
+    if (!a || !b) return false;
+    return isAfter(a, b);
+  }
+
+  isBetween(date: Date | null, start: Date | null, end: Date | null): boolean {
+    if (!date || !start || !end) return false;
+    return isWithinInterval(date, { start, end });
+  }
+
+  clone(date: Date): Date {
+    return new Date(date);
+  }
+
+  isValid(date: any): boolean {
+    return isValid(date);
+  }
+}
+```
+
+### Providing Custom Adapter
+
+```typescript
+import { Component } from '@angular/core';
+import { DualDatepickerComponent, DATE_ADAPTER } from '@oneluiz/dual-datepicker';
+import { DateFnsAdapter } from './date-fns-adapter';
+
+@Component({
+  standalone: true,
+  imports: [DualDatepickerComponent],
+  providers: [
+    { provide: DATE_ADAPTER, useClass: DateFnsAdapter }
+  ],
+  template: `<ngx-dual-datepicker></ngx-dual-datepicker>`
+})
+export class AppComponent {}
+```
+
+### Example: DayJS Adapter
+
+```typescript
+import { Injectable } from '@angular/core';
+import { DateAdapter } from '@oneluiz/dual-datepicker';
+import dayjs, { Dayjs } from 'dayjs';
+
+@Injectable()
+export class DayJSAdapter extends DateAdapter<Dayjs> {
+  parse(value: any): Dayjs | null {
+    if (!value) return null;
+    const parsed = dayjs(value);
+    return parsed.isValid() ? parsed : null;
+  }
+
+  format(date: Dayjs, format: string = 'YYYY-MM-DD'): string {
+    return date.format(format);
+  }
+
+  addDays(date: Dayjs, days: number): Dayjs {
+    return date.add(days, 'day');
+  }
+
+  addMonths(date: Dayjs, months: number): Dayjs {
+    return date.add(months, 'month');
+  }
+
+  getYear(date: Dayjs): number {
+    return date.year();
+  }
+
+  getMonth(date: Dayjs): number {
+    return date.month();
+  }
+
+  getDate(date: Dayjs): number {
+    return date.date();
+  }
+
+  getDay(date: Dayjs): number {
+    return date.day();
+  }
+
+  createDate(year: number, month: number, day: number): Dayjs {
+    return dayjs().year(year).month(month).date(day);
+  }
+
+  today(): Dayjs {
+    return dayjs();
+  }
+
+  isSameDay(a: Dayjs | null, b: Dayjs | null): boolean {
+    if (!a || !b) return false;
+    return a.isSame(b, 'day');
+  }
+
+  isBefore(a: Dayjs | null, b: Dayjs | null): boolean {
+    if (!a || !b) return false;
+    return a.isBefore(b);
+  }
+
+  isAfter(a: Dayjs | null, b: Dayjs | null): boolean {
+    if (!a || !b) return false;
+    return a.isAfter(b);
+  }
+
+  isBetween(date: Dayjs | null, start: Dayjs | null, end: Dayjs | null): boolean {
+    if (!date || !start || !end) return false;
+    return date.isAfter(start) && date.isBefore(end) || date.isSame(start) || date.isSame(end);
+  }
+
+  clone(date: Dayjs): Dayjs {
+    return date.clone();
+  }
+
+  isValid(date: any): boolean {
+    return dayjs.isDayjs(date) && date.isValid();
+  }
+}
+```
+
+### Benefits of Date Adapters
+
+- ✅ **Zero vendor lock-in** - Use any date library you prefer
+- ✅ **Consistency** - Use the same date library across your entire app
+- ✅ **Custom backend models** - Adapt to your API's date format
+- ✅ **Type safety** - Full TypeScript support with generics
+
 ## 🎨 Customization
 
 ### Custom Colors (Bootstrap Style)
@@ -464,7 +679,9 @@ export class ExampleComponent {
 - Angular 20.0.0 or higher
 
 ## �️ Roadmap
+Recently shipped (v2.5.0):
 
+- ✅ **Date Adapter System** - Support for DayJS, date-fns, Luxon, and custom date libraries
 Planned features and improvements:
 
 - ⬜ **Complete keyboard navigation** - Arrow keys, Enter/Space, Tab, Escape

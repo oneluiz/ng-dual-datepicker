@@ -1,6 +1,8 @@
-import { Component, Input, Output, EventEmitter, OnInit, OnChanges, SimpleChanges, HostListener, ElementRef, forwardRef, signal, computed, effect } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, OnChanges, SimpleChanges, HostListener, ElementRef, forwardRef, signal, computed, effect, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { DateAdapter, DATE_ADAPTER } from './date-adapter';
+import { NativeDateAdapter } from './native-date-adapter';
 
 export interface DateRange {
   fechaInicio: string;
@@ -32,6 +34,10 @@ export interface LocaleConfig {
       provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => DualDatepickerComponent),
       multi: true
+    },
+    {
+      provide: DATE_ADAPTER,
+      useClass: NativeDateAdapter
     }
   ]
 })
@@ -60,12 +66,15 @@ export class DualDatepickerComponent implements OnInit, OnChanges, ControlValueA
   @Output() dateRangeChange = new EventEmitter<DateRange>();
   @Output() dateRangeSelected = new EventEmitter<DateRange>();
 
+  // Date adapter injection
+  private dateAdapter = inject<DateAdapter>(DATE_ADAPTER);
+
   // Signals for reactive state
   mostrarDatePicker = signal(false);
   rangoFechas = signal('');
   fechaSeleccionandoInicio = signal(true);
-  mesActual = signal(new Date());
-  mesAnterior = signal(new Date());
+  mesActual = signal(this.dateAdapter.today());
+  mesAnterior = signal(this.dateAdapter.today());
   diasMesActual = signal<any[]>([]);
   diasMesAnterior = signal<any[]>([]);
   isDisabled = signal(false);
@@ -123,17 +132,18 @@ export class DualDatepickerComponent implements OnInit, OnChanges, ControlValueA
   }
 
   formatearFecha(fecha: Date): string {
-    const year = fecha.getFullYear();
-    const month = String(fecha.getMonth() + 1).padStart(2, '0');
-    const day = String(fecha.getDate()).padStart(2, '0');
+    const year = this.dateAdapter.getYear(fecha);
+    const month = String(this.dateAdapter.getMonth(fecha) + 1).padStart(2, '0');
+    const day = String(this.dateAdapter.getDate(fecha)).padStart(2, '0');
     return `${year}-${month}-${day}`;
   }
 
   formatearFechaDisplay(fechaStr: string): string {
     if (!fechaStr) return '';
-    const fecha = new Date(fechaStr + 'T00:00:00');
+    const fecha = this.dateAdapter.parse(fechaStr);
+    if (!fecha) return '';
     const monthNames = this.locale.monthNamesShort || this.defaultMonthNamesShort;
-    return `${fecha.getDate()} ${monthNames[fecha.getMonth()]}`;
+    return `${this.dateAdapter.getDate(fecha)} ${monthNames[this.dateAdapter.getMonth(fecha)]}`;
   }
 
   actualizarRangoFechasTexto(): void {
@@ -151,7 +161,10 @@ export class DualDatepickerComponent implements OnInit, OnChanges, ControlValueA
     if (this.mostrarDatePicker()) {
       this.fechaSeleccionandoInicio.set(true);
       const mesActualValue = this.mesActual();
-      this.mesAnterior.set(new Date(mesActualValue.getFullYear(), mesActualValue.getMonth() - 1, 1));
+      const año = this.dateAdapter.getYear(mesActualValue);
+      const mes = this.dateAdapter.getMonth(mesActualValue);
+      const mesAnteriorDate = this.dateAdapter.createDate(año, mes - 1, 1);
+      this.mesAnterior.set(mesAnteriorDate);
       this.generarCalendarios();
     }
     this.onTouched();
@@ -168,12 +181,12 @@ export class DualDatepickerComponent implements OnInit, OnChanges, ControlValueA
   }
 
   generarCalendarioMes(fecha: Date): any[] {
-    const año = fecha.getFullYear();
-    const mes = fecha.getMonth();
-    const primerDia = new Date(año, mes, 1);
-    const ultimoDia = new Date(año, mes + 1, 0);
-    const diasEnMes = ultimoDia.getDate();
-    const primerDiaSemana = primerDia.getDay();
+    const año = this.dateAdapter.getYear(fecha);
+    const mes = this.dateAdapter.getMonth(fecha);
+    const primerDia = this.dateAdapter.createDate(año, mes, 1);
+    const ultimoDia = this.dateAdapter.createDate(año, mes + 1, 0);
+    const diasEnMes = this.dateAdapter.getDate(ultimoDia);
+    const primerDiaSemana = this.dateAdapter.getDay(primerDia);
 
     const diasMes = [];
 
@@ -182,7 +195,7 @@ export class DualDatepickerComponent implements OnInit, OnChanges, ControlValueA
     }
 
     for (let dia = 1; dia <= diasEnMes; dia++) {
-      const fechaDia = new Date(año, mes, dia);
+      const fechaDia = this.dateAdapter.createDate(año, mes, dia);
       const fechaStr = this.formatearFecha(fechaDia);
       diasMes.push({
         dia: dia,
@@ -231,15 +244,21 @@ export class DualDatepickerComponent implements OnInit, OnChanges, ControlValueA
 
   cambiarMes(direccion: number): void {
     const mesActualValue = this.mesActual();
-    this.mesActual.set(new Date(mesActualValue.getFullYear(), mesActualValue.getMonth() + direccion, 1));
-    const nuevoMesActual = this.mesActual();
-    this.mesAnterior.set(new Date(nuevoMesActual.getFullYear(), nuevoMesActual.getMonth() - 1, 1));
+    const año = this.dateAdapter.getYear(mesActualValue);
+    const mes = this.dateAdapter.getMonth(mesActualValue);
+    const nuevoMesActual = this.dateAdapter.createDate(año, mes + direccion, 1);
+    this.mesActual.set(nuevoMesActual);
+    
+    const añoNuevo = this.dateAdapter.getYear(nuevoMesActual);
+    const mesNuevo = this.dateAdapter.getMonth(nuevoMesActual);
+    const mesAnteriorNuevo = this.dateAdapter.createDate(añoNuevo, mesNuevo - 1, 1);
+    this.mesAnterior.set(mesAnteriorNuevo);
     this.generarCalendarios();
   }
 
   getNombreMes(fecha: Date): string {
     const monthNames = this.locale.monthNames || this.defaultMonthNames;
-    return `${monthNames[fecha.getMonth()]} ${fecha.getFullYear()}`;
+    return `${monthNames[this.dateAdapter.getMonth(fecha)]} ${this.dateAdapter.getYear(fecha)}`;
   }
 
   getDayNames(): string[] {
@@ -247,9 +266,8 @@ export class DualDatepickerComponent implements OnInit, OnChanges, ControlValueA
   }
 
   seleccionarRangoPredefinido(preset: PresetConfig): void {
-    const hoy = new Date();
-    const fechaInicio = new Date(hoy);
-    fechaInicio.setDate(hoy.getDate() - preset.daysAgo);
+    const hoy = this.dateAdapter.today();
+    const fechaInicio = this.dateAdapter.addDays(hoy, -preset.daysAgo);
 
     this.fechaInicio = this.formatearFecha(fechaInicio);
     this.fechaFin = this.formatearFecha(hoy);
