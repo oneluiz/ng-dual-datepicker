@@ -64,6 +64,56 @@
     <!-- Examples Tab -->
     @if (activeTab === 'examples') {
       <div class="tab-content fade-in">
+        <!-- NEW: Keyboard Navigation Banner -->
+        <div class="feature-banner keyboard-banner">
+          <div class="banner-badge">🆕 NEW IN v3.1.0</div>
+          <h2>⌨️ Full Keyboard Navigation</h2>
+          <p class="banner-description">
+            Navigate the datepicker entirely with your keyboard! Professional accessibility with WCAG 2.1 Level AA compliance.
+          </p>
+          <div class="keyboard-shortcuts">
+            <div class="shortcut-group">
+              <h4>Navigation</h4>
+              <div class="shortcut-item">
+                <kbd>←</kbd><kbd>→</kbd><kbd>↑</kbd><kbd>↓</kbd>
+                <span>Navigate days & weeks</span>
+              </div>
+              <div class="shortcut-item">
+                <kbd>Home</kbd> / <kbd>End</kbd>
+                <span>First/Last day</span>
+              </div>
+              <div class="shortcut-item">
+                <kbd>PageUp</kbd> / <kbd>PageDown</kbd>
+                <span>Navigate months</span>
+              </div>
+              <div class="shortcut-item">
+                <kbd>Shift</kbd> + <kbd>PageUp</kbd>/<kbd>PageDown</kbd>
+                <span>Navigate years</span>
+              </div>
+            </div>
+            <div class="shortcut-group">
+              <h4>Actions</h4>
+              <div class="shortcut-item">
+                <kbd>Enter</kbd> / <kbd>Space</kbd>
+                <span>Select focused day</span>
+              </div>
+              <div class="shortcut-item">
+                <kbd>Esc</kbd>
+                <span>Close datepicker</span>
+              </div>
+              <div class="shortcut-item">
+                <kbd>Tab</kbd>
+                <span>Navigate elements</span>
+              </div>
+            </div>
+          </div>
+          <div class="banner-footer">
+            <span class="badge-success">✓ Screen Reader Support</span>
+            <span class="badge-success">✓ ARIA Compliant</span>
+            <span class="badge-success">✓ Focus Indicators</span>
+          </div>
+        </div>
+
         <div class="example-grid">
           <!-- Example 1: Basic -->
           <div class="example-card">

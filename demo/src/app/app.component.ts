@@ -108,7 +108,10 @@ export class AppComponent {
     return {
       basic: `<ngx-dual-datepicker
   (dateRangeChange)="onDateRangeChange($event)">
-</ngx-dual-datepicker>`,
+</ngx-dual-datepicker>
+
+<!-- NEW v3.1.0: Full keyboard navigation included! -->
+<!-- Arrow keys, Enter/Space, Escape, Home/End, PageUp/Down -->`,
       presets: `<ngx-dual-datepicker
   [presets]="customPresets"
   (dateRangeChange)="onDateRangeChange($event)">
