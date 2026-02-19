@@ -79,9 +79,9 @@
             @if (example1Range) {
               <div class="selected-range">
                 <strong>Selected Range:</strong>
-                <p>Start: {{ example1Range.fechaInicio || '(empty)' }}</p>
-                <p>End: {{ example1Range.fechaFin || '(empty)' }}</p>
-                <p>Text: {{ example1Range.rangoTexto || '(empty)' }}</p>
+                <p>Start: {{ example1Range.startDate || '(empty)' }}</p>
+                <p>End: {{ example1Range.endDate || '(empty)' }}</p>
+                <p>Text: {{ example1Range.rangeText || '(empty)' }}</p>
               </div>
             }
             <div class="code-block">
@@ -104,9 +104,9 @@
             @if (example2Range) {
               <div class="selected-range">
                 <strong>Selected Range:</strong>
-                <p>Start: {{ example2Range.fechaInicio || '(empty)' }}</p>
-                <p>End: {{ example2Range.fechaFin || '(empty)' }}</p>
-                <p>Text: {{ example2Range.rangoTexto || '(empty)' }}</p>
+                <p>Start: {{ example2Range.startDate || '(empty)' }}</p>
+                <p>End: {{ example2Range.endDate || '(empty)' }}</p>
+                <p>Text: {{ example2Range.rangeText || '(empty)' }}</p>
               </div>
             }
             <div class="code-block">
@@ -133,9 +133,9 @@
             @if (example3Range) {
               <div class="selected-range">
                 <strong>Selected Range:</strong>
-                <p>Start: {{ example3Range.fechaInicio || '(empty)' }}</p>
-                <p>End: {{ example3Range.fechaFin || '(empty)' }}</p>
-                <p>Text: {{ example3Range.rangoTexto || '(empty)' }}</p>
+                <p>Start: {{ example3Range.startDate || '(empty)' }}</p>
+                <p>End: {{ example3Range.endDate || '(empty)' }}</p>
+                <p>Text: {{ example3Range.rangeText || '(empty)' }}</p>
               </div>
             }
             <div class="code-block">
@@ -158,9 +158,9 @@
             @if (example5Range) {
               <div class="selected-range">
                 <strong>Selected Range:</strong>
-                <p>Start: {{ example5Range.fechaInicio || '(empty)' }}</p>
-                <p>End: {{ example5Range.fechaFin || '(empty)' }}</p>
-                <p>Text: {{ example5Range.rangoTexto || '(empty)' }}</p>
+                <p>Start: {{ example5Range.startDate || '(empty)' }}</p>
+                <p>End: {{ example5Range.endDate || '(empty)' }}</p>
+                <p>Text: {{ example5Range.rangeText || '(empty)' }}</p>
               </div>
             }
             <div class="code-block">
@@ -183,9 +183,9 @@
             @if (example7Range) {
               <div class="selected-range">
                 <strong>Selected Range:</strong>
-                <p>Start: {{ example7Range.fechaInicio || '(empty)' }}</p>
-                <p>End: {{ example7Range.fechaFin || '(empty)' }}</p>
-                <p>Text: {{ example7Range.rangoTexto || '(empty)' }}</p>
+                <p>Start: {{ example7Range.startDate || '(empty)' }}</p>
+                <p>End: {{ example7Range.endDate || '(empty)' }}</p>
+                <p>Text: {{ example7Range.rangeText || '(empty)' }}</p>
               </div>
             }
             <div class="code-block">
@@ -201,17 +201,17 @@
             </p>
             <div class="example-demo">
               <ngx-dual-datepicker
-                [fechaInicio]="fechaInicio"
-                [fechaFin]="fechaFin"
+                [startDate]="startDate"
+                [endDate]="endDate"
                 (dateRangeChange)="onDateRangeChange(6, $event)">
               </ngx-dual-datepicker>
             </div>
             @if (example6Range) {
               <div class="selected-range">
                 <strong>Selected Range:</strong>
-                <p>Start: {{ example6Range.fechaInicio || '(empty)' }}</p>
-                <p>End: {{ example6Range.fechaFin || '(empty)' }}</p>
-                <p>Text: {{ example6Range.rangoTexto || '(empty)' }}</p>
+                <p>Start: {{ example6Range.startDate || '(empty)' }}</p>
+                <p>End: {{ example6Range.endDate || '(empty)' }}</p>
+                <p>Text: {{ example6Range.rangeText || '(empty)' }}</p>
               </div>
             }
             <div class="code-block">
@@ -239,9 +239,9 @@
             @if (example8Range) {
               <div class="selected-range">
                 <strong>Selected Range:</strong>
-                <p>Start: {{ example8Range.fechaInicio || '(empty)' }}</p>
-                <p>End: {{ example8Range.fechaFin || '(empty)' }}</p>
-                <p>Text: {{ example8Range.rangoTexto || '(empty)' }}</p>
+                <p>Start: {{ example8Range.startDate || '(empty)' }}</p>
+                <p>End: {{ example8Range.endDate || '(empty)' }}</p>
+                <p>Text: {{ example8Range.rangeText || '(empty)' }}</p>
               </div>
             }
             <div class="code-block">
@@ -263,9 +263,9 @@
             @if (example9Range) {
               <div class="selected-range">
                 <strong>Selected Range:</strong>
-                <p>Start: {{ example9Range.fechaInicio || '(empty)' }}</p>
-                <p>End: {{ example9Range.fechaFin || '(empty)' }}</p>
-                <p>Text: {{ example9Range.rangoTexto || '(empty)' }}</p>
+                <p>Start: {{ example9Range.startDate || '(empty)' }}</p>
+                <p>End: {{ example9Range.endDate || '(empty)' }}</p>
+                <p>Text: {{ example9Range.rangeText || '(empty)' }}</p>
               </div>
             }
             <div class="code-block">
@@ -288,9 +288,9 @@
             @if (example10Range) {
               <div class="selected-range">
                 <strong>Selected Range:</strong>
-                <p>Start: {{ example10Range.fechaInicio || '(empty)' }}</p>
-                <p>End: {{ example10Range.fechaFin || '(empty)' }}</p>
-                <p>Text: {{ example10Range.rangoTexto || '(empty)' }}</p>
+                <p>Start: {{ example10Range.startDate || '(empty)' }}</p>
+                <p>End: {{ example10Range.endDate || '(empty)' }}</p>
+                <p>Text: {{ example10Range.rangeText || '(empty)' }}</p>
               </div>
             }
             <div class="adapter-info">
@@ -331,9 +331,9 @@
             @if (example11Range) {
               <div class="selected-range">
                 <strong>Selected Range:</strong>
-                <p>Start: {{ example11Range.fechaInicio || '(empty)' }}</p>
-                <p>End: {{ example11Range.fechaFin || '(empty)' }}</p>
-                <p>Text: {{ example11Range.rangoTexto || '(empty)' }}</p>
+                <p>Start: {{ example11Range.startDate || '(empty)' }}</p>
+                <p>End: {{ example11Range.endDate || '(empty)' }}</p>
+                <p>Text: {{ example11Range.rangeText || '(empty)' }}</p>
               </div>
             }
             <div class="adapter-info">
@@ -382,8 +382,8 @@
                   @for (range of example12MultiRange.ranges; track $index) {
                     <div class="range-item">
                       <span class="range-badge">Range {{ $index + 1 }}</span>
-                      <span class="range-text">{{ range.rangoTexto }}</span>
-                      <span class="range-dates">{{ range.fechaInicio }} → {{ range.fechaFin }}</span>
+                      <span class="range-text">{{ range.rangeText }}</span>
+                      <span class="range-dates">{{ range.startDate }} → {{ range.endDate }}</span>
                     </div>
                   }
                 </div>
@@ -630,13 +630,19 @@ export class AppComponent &#123;
 
             <h3>2. Use with Custom Presets</h3>
             <div class="code-block">
-              <pre>import &#123; PresetConfig &#125; from '&#64;oneluiz/dual-datepicker';
+              <pre>import &#123; CommonPresets &#125; from '&#64;oneluiz/dual-datepicker';
+
+// Use pre-built presets
+presets = CommonPresets.dashboard;
+
+// Or create custom presets
+import &#123; PresetConfig, getLastNDays, getToday &#125; from '&#64;oneluiz/dual-datepicker';
 
 customPresets: PresetConfig[] = [
-  &#123; label: 'Today', daysAgo: 0 &#125;,
-  &#123; label: 'Last week', daysAgo: 7 &#125;,
-  &#123; label: 'Last month', daysAgo: 30 &#125;,
-  &#123; label: 'Last 3 months', daysAgo: 90 &#125;
+  &#123; label: 'Today', getValue: getToday &#125;,
+  &#123; label: 'Last week', getValue: () => getLastNDays(7) &#125;,
+  &#123; label: 'Last month', getValue: () => getLastNDays(30) &#125;,
+  &#123; label: 'Last 3 months', getValue: () => getLastNDays(90) &#125;
 ];</pre>
             </div>
           </section>
@@ -871,12 +877,11 @@ customPresets: PresetConfig[] = [
 
             <div class="backward-compat">
               <h3>🔄 Fully Backward Compatible</h3>
-              <p>The old <code>daysAgo</code> pattern still works (now deprecated):</p>
+              <p><strong>v3.0.0 Note:</strong> The <code>daysAgo</code> pattern has been removed. Use <code>getValue()</code> instead:</p>
               <div class="code-block">
-                <pre>// Old pattern (still works, but deprecated)
-&#123; label: 'Last 30 days', daysAgo: 30 &#125;
+                <pre>// v3.0.0+ Correct pattern
+import &#123; getLastNDays &#125; from '&#64;oneluiz/dual-datepicker';
 
-// New recommended pattern
 &#123; label: 'Last 30 days', getValue: () => getLastNDays(30) &#125;</pre>
               </div>
             </div>
@@ -1026,7 +1031,7 @@ import &#123; DualDatepickerComponent, MultiDateRange &#125; from '&#64;oneluiz/
         &#64;for (range of blockedRanges.ranges; track $index) &#123;
           &lt;div class="period"&gt;
             &lt;strong&gt;Period &#123;&#123; $index + 1 &#125;&#125;:&lt;/strong&gt; 
-            &#123;&#123; range.rangoTexto &#125;&#125;
+            &#123;&#123; range.rangeText &#125;&#125;
           &lt;/div&gt;
         &#125;
       &lt;/div&gt;
@@ -1230,18 +1235,16 @@ export class BookingComponent &#123;
 &#125;</pre>
             </div>
 
-            <h3>PresetConfig <span class="badge-updated">Updated v2.6.0</span></h3>
+            <h3>PresetConfig</h3>
             <div class="code-block">
               <pre>interface PresetConfig &#123;
   label: string;  // Display label for the preset
-  daysAgo?: number;  // DEPRECATED: Number of days ago from today
-  getValue?: () => DateRange;  // NEW: Function that returns a DateRange
+  getValue: () => PresetRange;  // Function that returns a PresetRange
 &#125;
 
-// Old pattern (still works, but deprecated):
-&#123; label: 'Last 7 days', daysAgo: 7 &#125;
+// Example:
+import &#123; getLastNDays &#125; from '&#64;oneluiz/dual-datepicker';
 
-// NEW recommended pattern (v2.6.0+):
 &#123; label: 'Last 7 days', getValue: () => getLastNDays(7) &#125;
 &#123; label: 'This Month', getValue: () => getThisMonth() &#125;</pre>
             </div>

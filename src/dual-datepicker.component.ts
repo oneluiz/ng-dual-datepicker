@@ -5,9 +5,9 @@ import { DateAdapter, DATE_ADAPTER } from './date-adapter';
 import { NativeDateAdapter } from './native-date-adapter';
 
 export interface DateRange {
-  fechaInicio: string;
-  fechaFin: string;
-  rangoTexto: string;
+  startDate: string;
+  endDate: string;
+  rangeText: string;
 }
 
 export interface MultiDateRange {
@@ -21,9 +21,7 @@ export interface PresetRange {
 
 export interface PresetConfig {
   label: string;
-  /** @deprecated Use getValue() instead for more flexibility */
-  daysAgo?: number;
-  getValue?: () => PresetRange;
+  getValue: () => PresetRange;
 }
 
 export interface LocaleConfig {
@@ -54,19 +52,15 @@ export interface LocaleConfig {
 })
 export class DualDatepickerComponent implements OnInit, OnChanges, ControlValueAccessor {
   @Input() placeholder: string = 'Select date range';
-  @Input() fechaInicio: string = '';
-  @Input() fechaFin: string = '';
+  @Input() startDate: string = '';
+  @Input() endDate: string = '';
   @Input() showPresets: boolean = true;
   @Input() showClearButton: boolean = false;
   @Input() multiRange: boolean = false;
   @Input() closeOnSelection: boolean = true;
   @Input() closeOnPresetSelection: boolean = true;
   @Input() closeOnClickOutside: boolean = true;
-  @Input() presets: PresetConfig[] = [
-    { label: 'Last month', daysAgo: 30 },
-    { label: 'Last 6 months', daysAgo: 180 },
-    { label: 'Last year', daysAgo: 365 }
-  ];
+  @Input() presets: PresetConfig[] = [];
   @Input() inputBackgroundColor: string = '#fff';
   @Input() inputTextColor: string = '#495057';
   @Input() inputBorderColor: string = '#ced4da';
@@ -84,13 +78,13 @@ export class DualDatepickerComponent implements OnInit, OnChanges, ControlValueA
   private dateAdapter = inject<DateAdapter>(DATE_ADAPTER);
 
   // Signals for reactive state
-  mostrarDatePicker = signal(false);
-  rangoFechas = signal('');
-  fechaSeleccionandoInicio = signal(true);
-  mesActual = signal(this.dateAdapter.today());
-  mesAnterior = signal(this.dateAdapter.today());
-  diasMesActual = signal<any[]>([]);
-  diasMesAnterior = signal<any[]>([]);
+  showDatePicker = signal(false);
+  dateRangeText = signal('');
+  selectingStartDate = signal(true);
+  currentMonth = signal(this.dateAdapter.today());
+  previousMonth = signal(this.dateAdapter.today());
+  currentMonthDays = signal<any[]>([]);
+  previousMonthDays = signal<any[]>([]);
   isDisabled = signal(false);
   
   // Multi-range support
@@ -98,9 +92,9 @@ export class DualDatepickerComponent implements OnInit, OnChanges, ControlValueA
   currentRangeIndex = signal<number>(-1);
 
   // Computed values
-  nombreMesActual = computed(() => this.getNombreMes(this.mesActual()));
-  nombreMesAnterior = computed(() => this.getNombreMes(this.mesAnterior()));
-  diasSemana = computed(() => this.getDayNames());
+  currentMonthName = computed(() => this.getMonthName(this.currentMonth()));
+  previousMonthName = computed(() => this.getMonthName(this.previousMonth()));
+  weekDayNames = computed(() => this.getDayNames());
 
   private readonly defaultMonthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
   private readonly defaultMonthNamesShort = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -114,8 +108,8 @@ export class DualDatepickerComponent implements OnInit, OnChanges, ControlValueA
   constructor(private elementRef: ElementRef) {
     // Effect to emit changes when dates change
     effect(() => {
-      const rango = this.rangoFechas();
-      if (this.fechaInicio || this.fechaFin) {
+      const range = this.dateRangeText();
+      if (this.startDate || this.endDate) {
         this.onChange(this.getDateRangeValue());
       }
     });
@@ -123,146 +117,146 @@ export class DualDatepickerComponent implements OnInit, OnChanges, ControlValueA
 
   @HostListener('document:click', ['$event'])
   onClickOutside(event: MouseEvent): void {
-    if (this.mostrarDatePicker() && this.closeOnClickOutside) {
+    if (this.showDatePicker() && this.closeOnClickOutside) {
       const clickedInside = this.elementRef.nativeElement.contains(event.target);
       if (!clickedInside) {
-        this.cerrarDatePicker();
+        this.closeDatePicker();
       }
     }
   }
 
   ngOnInit(): void {
-    if (this.fechaInicio && this.fechaFin) {
-      this.actualizarRangoFechasTexto();
-      this.generarCalendarios();
+    if (this.startDate && this.endDate) {
+      this.updateDateRangeText();
+      this.generateCalendars();
     }
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['fechaInicio'] || changes['fechaFin']) {
-      if (this.fechaInicio && this.fechaFin) {
-        this.actualizarRangoFechasTexto();
-        this.generarCalendarios();
-      } else if (!this.fechaInicio && !this.fechaFin) {
-        this.rangoFechas.set('');
+    if (changes['startDate'] || changes['endDate']) {
+      if (this.startDate && this.endDate) {
+        this.updateDateRangeText();
+        this.generateCalendars();
+      } else if (!this.startDate && !this.endDate) {
+        this.dateRangeText.set('');
       }
     }
   }
 
-  formatearFecha(fecha: Date): string {
-    const year = this.dateAdapter.getYear(fecha);
-    const month = String(this.dateAdapter.getMonth(fecha) + 1).padStart(2, '0');
-    const day = String(this.dateAdapter.getDate(fecha)).padStart(2, '0');
+  formatDate(date: Date): string {
+    const year = this.dateAdapter.getYear(date);
+    const month = String(this.dateAdapter.getMonth(date) + 1).padStart(2, '0');
+    const day = String(this.dateAdapter.getDate(date)).padStart(2, '0');
     return `${year}-${month}-${day}`;
   }
 
-  formatearFechaDisplay(fechaStr: string): string {
-    if (!fechaStr) return '';
-    const fecha = this.dateAdapter.parse(fechaStr);
-    if (!fecha) return '';
+  formatDateDisplay(dateStr: string): string {
+    if (!dateStr) return '';
+    const date = this.dateAdapter.parse(dateStr);
+    if (!date) return '';
     const monthNames = this.locale.monthNamesShort || this.defaultMonthNamesShort;
-    return `${this.dateAdapter.getDate(fecha)} ${monthNames[this.dateAdapter.getMonth(fecha)]}`;
+    return `${this.dateAdapter.getDate(date)} ${monthNames[this.dateAdapter.getMonth(date)]}`;
   }
 
-  actualizarRangoFechasTexto(): void {
-    if (this.fechaInicio && this.fechaFin) {
-      const inicio = this.formatearFechaDisplay(this.fechaInicio);
-      const fin = this.formatearFechaDisplay(this.fechaFin);
-      this.rangoFechas.set(`${inicio} - ${fin}`);
+  updateDateRangeText(): void {
+    if (this.startDate && this.endDate) {
+      const start = this.formatDateDisplay(this.startDate);
+      const end = this.formatDateDisplay(this.endDate);
+      this.dateRangeText.set(`${start} - ${end}`);
     } else {
-      this.rangoFechas.set('');
+      this.dateRangeText.set('');
     }
   }
 
   toggleDatePicker(): void {
-    this.mostrarDatePicker.update(value => !value);
-    if (this.mostrarDatePicker()) {
-      this.fechaSeleccionandoInicio.set(true);
-      const mesActualValue = this.mesActual();
-      const año = this.dateAdapter.getYear(mesActualValue);
-      const mes = this.dateAdapter.getMonth(mesActualValue);
-      const mesAnteriorDate = this.dateAdapter.createDate(año, mes - 1, 1);
-      this.mesAnterior.set(mesAnteriorDate);
-      this.generarCalendarios();
+    this.showDatePicker.update(value => !value);
+    if (this.showDatePicker()) {
+      this.selectingStartDate.set(true);
+      const currentMonthValue = this.currentMonth();
+      const year = this.dateAdapter.getYear(currentMonthValue);
+      const month = this.dateAdapter.getMonth(currentMonthValue);
+      const previousMonthDate = this.dateAdapter.createDate(year, month - 1, 1);
+      this.previousMonth.set(previousMonthDate);
+      this.generateCalendars();
     }
     this.onTouched();
   }
 
-  cerrarDatePicker(): void {
-    this.mostrarDatePicker.set(false);
+  closeDatePicker(): void {
+    this.showDatePicker.set(false);
     this.onTouched();
   }
 
-  generarCalendarios(): void {
-    this.diasMesAnterior.set(this.generarCalendarioMes(this.mesAnterior()));
-    this.diasMesActual.set(this.generarCalendarioMes(this.mesActual()));
+  generateCalendars(): void {
+    this.previousMonthDays.set(this.generateMonthCalendar(this.previousMonth()));
+    this.currentMonthDays.set(this.generateMonthCalendar(this.currentMonth()));
   }
 
-  generarCalendarioMes(fecha: Date): any[] {
-    const año = this.dateAdapter.getYear(fecha);
-    const mes = this.dateAdapter.getMonth(fecha);
-    const primerDia = this.dateAdapter.createDate(año, mes, 1);
-    const ultimoDia = this.dateAdapter.createDate(año, mes + 1, 0);
-    const diasEnMes = this.dateAdapter.getDate(ultimoDia);
-    const primerDiaSemana = this.dateAdapter.getDay(primerDia);
+  generateMonthCalendar(date: Date): any[] {
+    const year = this.dateAdapter.getYear(date);
+    const month = this.dateAdapter.getMonth(date);
+    const firstDay = this.dateAdapter.createDate(year, month, 1);
+    const lastDay = this.dateAdapter.createDate(year, month + 1, 0);
+    const daysInMonth = this.dateAdapter.getDate(lastDay);
+    const firstDayOfWeek = this.dateAdapter.getDay(firstDay);
 
-    const diasMes = [];
+    const monthDays = [];
 
-    for (let i = 0; i < primerDiaSemana; i++) {
-      diasMes.push({ dia: null, esMesActual: false });
+    for (let i = 0; i < firstDayOfWeek; i++) {
+      monthDays.push({ day: null, isCurrentMonth: false });
     }
 
-    for (let dia = 1; dia <= diasEnMes; dia++) {
-      const fechaDia = this.dateAdapter.createDate(año, mes, dia);
-      const fechaStr = this.formatearFecha(fechaDia);
-      diasMes.push({
-        dia: dia,
-        fecha: fechaStr,
-        esMesActual: true,
-        esInicio: this.fechaInicio === fechaStr,
-        esFin: this.fechaFin === fechaStr,
-        enRango: this.estaEnRango(fechaStr)
+    for (let day = 1; day <= daysInMonth; day++) {
+      const dayDate = this.dateAdapter.createDate(year, month, day);
+      const dateStr = this.formatDate(dayDate);
+      monthDays.push({
+        day: day,
+        date: dateStr,
+        isCurrentMonth: true,
+        isStart: this.startDate === dateStr,
+        isEnd: this.endDate === dateStr,
+        inRange: this.isInRange(dateStr)
       });
     }
 
-    return diasMes;
+    return monthDays;
   }
 
-  estaEnRango(fechaStr: string): boolean {
+  isInRange(dateStr: string): boolean {
     if (this.multiRange) {
       // Check if date is in any of the selected ranges
       return this.selectedRanges().some(range => {
-        return fechaStr >= range.fechaInicio && fechaStr <= range.fechaFin;
+        return dateStr >= range.startDate && dateStr <= range.endDate;
       });
     } else {
-      if (!this.fechaInicio || !this.fechaFin) return false;
-      return fechaStr >= this.fechaInicio && fechaStr <= this.fechaFin;
+      if (!this.startDate || !this.endDate) return false;
+      return dateStr >= this.startDate && dateStr <= this.endDate;
     }
   }
 
-  seleccionarDia(diaObj: any): void {
-    if (!diaObj.esMesActual || this.isDisabled()) return;
+  selectDay(dayObj: any): void {
+    if (!dayObj.isCurrentMonth || this.isDisabled()) return;
 
     if (this.multiRange) {
       // Multi-range mode: add ranges to array
-      if (this.fechaSeleccionandoInicio()) {
-        this.fechaInicio = diaObj.fecha;
-        this.fechaFin = '';
-        this.rangoFechas.set('');
-        this.fechaSeleccionandoInicio.set(false);
+      if (this.selectingStartDate()) {
+        this.startDate = dayObj.date;
+        this.endDate = '';
+        this.dateRangeText.set('');
+        this.selectingStartDate.set(false);
       } else {
-        if (diaObj.fecha < this.fechaInicio) {
-          this.fechaFin = this.fechaInicio;
-          this.fechaInicio = diaObj.fecha;
+        if (dayObj.date < this.startDate) {
+          this.endDate = this.startDate;
+          this.startDate = dayObj.date;
         } else {
-          this.fechaFin = diaObj.fecha;
+          this.endDate = dayObj.date;
         }
         
         // Add the new range to the array
         const newRange: DateRange = {
-          fechaInicio: this.fechaInicio,
-          fechaFin: this.fechaFin,
-          rangoTexto: this.formatearFechaDisplay(this.fechaInicio) + ' – ' + this.formatearFechaDisplay(this.fechaFin)
+          startDate: this.startDate,
+          endDate: this.endDate,
+          rangeText: this.formatDateDisplay(this.startDate) + ' – ' + this.formatDateDisplay(this.endDate)
         };
         
         const currentRanges = [...this.selectedRanges()];
@@ -270,170 +264,155 @@ export class DualDatepickerComponent implements OnInit, OnChanges, ControlValueA
         this.selectedRanges.set(currentRanges);
         
         // Reset for next range selection
-        this.fechaInicio = '';
-        this.fechaFin = '';
-        this.fechaSeleccionandoInicio.set(true);
+        this.startDate = '';
+        this.endDate = '';
+        this.selectingStartDate.set(true);
         
         // Update display text
-        this.actualizarMultiRangoTexto();
+        this.updateMultiRangeText();
         
         // Don't close if multiRange, allow adding more ranges
         if (this.closeOnSelection && !this.multiRange) {
-          this.mostrarDatePicker.set(false);
+          this.showDatePicker.set(false);
         }
         
-        this.emitirMultiCambio();
-        this.emitirMultiSeleccion();
+        this.emitMultiChange();
+        this.emitMultiSelection();
       }
-      this.generarCalendarios();
+      this.generateCalendars();
     } else {
       // Single range mode (original behavior)
-      if (this.fechaSeleccionandoInicio()) {
-        this.fechaInicio = diaObj.fecha;
-        this.fechaFin = '';
-        this.rangoFechas.set('');
-        this.fechaSeleccionandoInicio.set(false);
-        this.emitirCambio();
+      if (this.selectingStartDate()) {
+        this.startDate = dayObj.date;
+        this.endDate = '';
+        this.dateRangeText.set('');
+        this.selectingStartDate.set(false);
+        this.emitChange();
       } else {
-        if (diaObj.fecha < this.fechaInicio) {
-          this.fechaFin = this.fechaInicio;
-          this.fechaInicio = diaObj.fecha;
+        if (dayObj.date < this.startDate) {
+          this.endDate = this.startDate;
+          this.startDate = dayObj.date;
         } else {
-          this.fechaFin = diaObj.fecha;
+          this.endDate = dayObj.date;
         }
-        this.actualizarRangoFechasTexto();
+        this.updateDateRangeText();
         if (this.closeOnSelection) {
-          this.mostrarDatePicker.set(false);
+          this.showDatePicker.set(false);
         }
-        this.fechaSeleccionandoInicio.set(true);
-        this.emitirCambio();
-        this.emitirSeleccion();
+        this.selectingStartDate.set(true);
+        this.emitChange();
+        this.emitSelection();
       }
-      this.generarCalendarios();
+      this.generateCalendars();
     }
   }
 
-  cambiarMes(direccion: number): void {
-    const mesActualValue = this.mesActual();
-    const año = this.dateAdapter.getYear(mesActualValue);
-    const mes = this.dateAdapter.getMonth(mesActualValue);
-    const nuevoMesActual = this.dateAdapter.createDate(año, mes + direccion, 1);
-    this.mesActual.set(nuevoMesActual);
+  changeMonth(direction: number): void {
+    const currentMonthValue = this.currentMonth();
+    const year = this.dateAdapter.getYear(currentMonthValue);
+    const month = this.dateAdapter.getMonth(currentMonthValue);
+    const newCurrentMonth = this.dateAdapter.createDate(year, month + direction, 1);
+    this.currentMonth.set(newCurrentMonth);
     
-    const añoNuevo = this.dateAdapter.getYear(nuevoMesActual);
-    const mesNuevo = this.dateAdapter.getMonth(nuevoMesActual);
-    const mesAnteriorNuevo = this.dateAdapter.createDate(añoNuevo, mesNuevo - 1, 1);
-    this.mesAnterior.set(mesAnteriorNuevo);
-    this.generarCalendarios();
+    const newYear = this.dateAdapter.getYear(newCurrentMonth);
+    const newMonth = this.dateAdapter.getMonth(newCurrentMonth);
+    const newPreviousMonth = this.dateAdapter.createDate(newYear, newMonth - 1, 1);
+    this.previousMonth.set(newPreviousMonth);
+    this.generateCalendars();
   }
 
-  getNombreMes(fecha: Date): string {
+  getMonthName(date: Date): string {
     const monthNames = this.locale.monthNames || this.defaultMonthNames;
-    return `${monthNames[this.dateAdapter.getMonth(fecha)]} ${this.dateAdapter.getYear(fecha)}`;
+    return `${monthNames[this.dateAdapter.getMonth(date)]} ${this.dateAdapter.getYear(date)}`;
   }
 
   getDayNames(): string[] {
     return this.locale.dayNamesShort || this.defaultDayNamesShort;
   }
 
-  seleccionarRangoPredefinido(preset: PresetConfig): void {
-    let start: string;
-    let end: string;
-
-    // New flexible pattern with getValue()
-    if (preset.getValue) {
-      const range = preset.getValue();
-      start = range.start;
-      end = range.end;
-    }
-    // Backward compatibility with daysAgo pattern
-    else if (preset.daysAgo !== undefined) {
-      const hoy = this.dateAdapter.today();
-      const fechaInicio = this.dateAdapter.addDays(hoy, -preset.daysAgo);
-      start = this.formatearFecha(fechaInicio);
-      end = this.formatearFecha(hoy);
-    }
-    else {
-      console.error('PresetConfig must have either getValue() or daysAgo');
+  selectPresetRange(preset: PresetConfig): void {
+    if (!preset.getValue) {
+      console.error('PresetConfig must have getValue() function');
       return;
     }
 
-    this.fechaInicio = start;
-    this.fechaFin = end;
-    this.actualizarRangoFechasTexto();
-    this.generarCalendarios();
+    const range = preset.getValue();
+    this.startDate = range.start;
+    this.endDate = range.end;
+    this.updateDateRangeText();
+    this.generateCalendars();
     if (this.closeOnPresetSelection) {
-      this.mostrarDatePicker.set(false);
+      this.showDatePicker.set(false);
     }
-    this.emitirSeleccion();
+    this.emitSelection();
   }
 
-  limpiar(): void {
-    this.fechaInicio = '';
-    this.fechaFin = '';
-    this.rangoFechas.set('');
-    this.mostrarDatePicker.set(false);
-    this.fechaSeleccionandoInicio.set(true);
+  clear(): void {
+    this.startDate = '';
+    this.endDate = '';
+    this.dateRangeText.set('');
+    this.showDatePicker.set(false);
+    this.selectingStartDate.set(true);
     
     if (this.multiRange) {
       this.selectedRanges.set([]);
       this.currentRangeIndex.set(-1);
-      this.emitirMultiCambio();
+      this.emitMultiChange();
     } else {
-      this.emitirCambio();
+      this.emitChange();
     }
     
     this.onTouched();
-    this.generarCalendarios();
+    this.generateCalendars();
   }
   
-  eliminarRango(index: number): void {
+  removeRange(index: number): void {
     if (!this.multiRange) return;
     
     const currentRanges = [...this.selectedRanges()];
     currentRanges.splice(index, 1);
     this.selectedRanges.set(currentRanges);
     
-    this.actualizarMultiRangoTexto();
-    this.emitirMultiCambio();
-    this.emitirMultiSeleccion();
-    this.generarCalendarios();
+    this.updateMultiRangeText();
+    this.emitMultiChange();
+    this.emitMultiSelection();
+    this.generateCalendars();
   }
   
-  private actualizarMultiRangoTexto(): void {
+  private updateMultiRangeText(): void {
     const count = this.selectedRanges().length;
     if (count === 0) {
-      this.rangoFechas.set('');
+      this.dateRangeText.set('');
     } else if (count === 1) {
-      this.rangoFechas.set('1 range selected');
+      this.dateRangeText.set('1 range selected');
     } else {
-      this.rangoFechas.set(`${count} ranges selected`);
+      this.dateRangeText.set(`${count} ranges selected`);
     }
   }
 
-  private emitirCambio(): void {
+  private emitChange(): void {
     this.dateRangeChange.emit({
-      fechaInicio: this.fechaInicio,
-      fechaFin: this.fechaFin,
-      rangoTexto: this.rangoFechas()
+      startDate: this.startDate,
+      endDate: this.endDate,
+      rangeText: this.dateRangeText()
     });
   }
 
-  private emitirSeleccion(): void {
+  private emitSelection(): void {
     this.dateRangeSelected.emit({
-      fechaInicio: this.fechaInicio,
-      fechaFin: this.fechaFin,
-      rangoTexto: this.rangoFechas()
+      startDate: this.startDate,
+      endDate: this.endDate,
+      rangeText: this.dateRangeText()
     });
   }
   
-  private emitirMultiCambio(): void {
+  private emitMultiChange(): void {
     this.multiDateRangeChange.emit({
       ranges: this.selectedRanges()
     });
   }
   
-  private emitirMultiSeleccion(): void {
+  private emitMultiSelection(): void {
     this.multiDateRangeSelected.emit({
       ranges: this.selectedRanges()
     });
@@ -441,25 +420,25 @@ export class DualDatepickerComponent implements OnInit, OnChanges, ControlValueA
 
   private getDateRangeValue(): DateRange {
     return {
-      fechaInicio: this.fechaInicio,
-      fechaFin: this.fechaFin,
-      rangoTexto: this.rangoFechas()
+      startDate: this.startDate,
+      endDate: this.endDate,
+      rangeText: this.dateRangeText()
     };
   }
 
   // ControlValueAccessor implementation
   writeValue(value: DateRange | null): void {
     if (value) {
-      this.fechaInicio = value.fechaInicio || '';
-      this.fechaFin = value.fechaFin || '';
-      if (this.fechaInicio && this.fechaFin) {
-        this.actualizarRangoFechasTexto();
-        this.generarCalendarios();
+      this.startDate = value.startDate || '';
+      this.endDate = value.endDate || '';
+      if (this.startDate && this.endDate) {
+        this.updateDateRangeText();
+        this.generateCalendars();
       }
     } else {
-      this.fechaInicio = '';
-      this.fechaFin = '';
-      this.rangoFechas.set('');
+      this.startDate = '';
+      this.endDate = '';
+      this.dateRangeText.set('');
     }
   }
 

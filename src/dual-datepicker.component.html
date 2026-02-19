@@ -4,7 +4,7 @@
   <input 
     type="text" 
     class="datepicker-input" 
-    [value]="rangoFechas()" 
+    [value]="dateRangeText()" 
     (click)="toggleDatePicker()" 
     [placeholder]="placeholder"
     [disabled]="isDisabled()"
@@ -16,14 +16,14 @@
     }"
     readonly>
 
-  @if (mostrarDatePicker()) {
+  @if (showDatePicker()) {
   <div class="date-picker-dropdown">
     @if (showPresets) {
     <div class="date-picker-presets">
       @for (preset of presets; track preset.label) {
-      <button type="button" (click)="seleccionarRangoPredefinido(preset)">{{ preset.label }}</button>
+      <button type="button" (click)="selectPresetRange(preset)">{{ preset.label }}</button>
       }
-      <button type="button" class="btn-close-calendar" (click)="cerrarDatePicker()" title="Close">
+      <button type="button" class="btn-close-calendar" (click)="closeDatePicker()" title="Close">
         ×
       </button>
     </div>
@@ -31,7 +31,7 @@
 
     @if (!showPresets) {
     <div class="date-picker-header-only-close">
-      <button type="button" class="btn-close-calendar" (click)="cerrarDatePicker()" title="Close">
+      <button type="button" class="btn-close-calendar" (click)="closeDatePicker()" title="Close">
         ×
       </button>
     </div>
@@ -42,12 +42,12 @@
       <!-- Previous month calendar -->
       <div class="date-picker-calendar">
         <div class="date-picker-header">
-          <button type="button" (click)="cambiarMes(-1)">
+          <button type="button" (click)="changeMonth(-1)">
             <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
               <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
             </svg>
           </button>
-          <span>{{ nombreMesAnterior() }}</span>
+          <span>{{ previousMonthName() }}</span>
           <button type="button" style="visibility: hidden;">
             <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
               <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
@@ -55,21 +55,21 @@
           </button>
         </div>
         <div class="date-picker-weekdays">
-          @for (dayName of diasSemana(); track $index) {
+          @for (dayName of weekDayNames(); track $index) {
             <span>{{ dayName }}</span>
           }
         </div>
         <div class="date-picker-days">
-          @for (diaObj of diasMesAnterior(); track diaObj.fecha || $index) {
+          @for (dayObj of previousMonthDays(); track dayObj.date || $index) {
             <button 
               type="button"
               class="date-picker-day" 
-              [class.empty]="!diaObj.esMesActual"
-              [class.selected]="diaObj.esInicio || diaObj.esFin"
-              [class.in-range]="diaObj.enRango && !diaObj.esInicio && !diaObj.esFin"
-              (click)="seleccionarDia(diaObj)"
-              [disabled]="!diaObj.esMesActual">
-              {{ diaObj.dia }}
+              [class.empty]="!dayObj.isCurrentMonth"
+              [class.selected]="dayObj.isStart || dayObj.isEnd"
+              [class.in-range]="dayObj.inRange && !dayObj.isStart && !dayObj.isEnd"
+              (click)="selectDay(dayObj)"
+              [disabled]="!dayObj.isCurrentMonth">
+              {{ dayObj.day }}
             </button>
           }
         </div>
@@ -83,29 +83,29 @@
               <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
             </svg>
           </button>
-          <span>{{ nombreMesActual() }}</span>
-          <button type="button" (click)="cambiarMes(1)">
+          <span>{{ currentMonthName() }}</span>
+          <button type="button" (click)="changeMonth(1)">
             <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
               <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
             </svg>
           </button>
         </div>
         <div class="date-picker-weekdays">
-          @for (dayName of diasSemana(); track $index) {
+          @for (dayName of weekDayNames(); track $index) {
             <span>{{ dayName }}</span>
           }
         </div>
         <div class="date-picker-days">
-          @for (diaObj of diasMesActual(); track diaObj.fecha || $index) {
+          @for (dayObj of currentMonthDays(); track dayObj.date || $index) {
             <button 
               type="button"
               class="date-picker-day" 
-              [class.empty]="!diaObj.esMesActual"
-              [class.selected]="diaObj.esInicio || diaObj.esFin"
-              [class.in-range]="diaObj.enRango && !diaObj.esInicio && !diaObj.esFin"
-              (click)="seleccionarDia(diaObj)"
-              [disabled]="!diaObj.esMesActual">
-              {{ diaObj.dia }}
+              [class.empty]="!dayObj.isCurrentMonth"
+              [class.selected]="dayObj.isStart || dayObj.isEnd"
+              [class.in-range]="dayObj.inRange && !dayObj.isStart && !dayObj.isEnd"
+              (click)="selectDay(dayObj)"
+              [disabled]="!dayObj.isCurrentMonth">
+              {{ dayObj.day }}
             </button>
           }
         </div>
@@ -121,11 +121,11 @@
       <div class="multi-range-items">
         @for (range of selectedRanges(); track $index) {
         <div class="multi-range-item">
-          <span class="multi-range-text">{{ range.rangoTexto }}</span>
+          <span class="multi-range-text">{{ range.rangeText }}</span>
           <button 
             type="button" 
             class="btn-remove-range" 
-            (click)="eliminarRango($index)"
+            (click)="removeRange($index)"
             title="Remove this range">
             <svg width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
               <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
@@ -142,16 +142,16 @@
     <div class="date-picker-footer">
       @if (multiRange) {
         <div class="multi-range-footer-actions">
-          <button type="button" class="btn-clear" (click)="limpiar()" title="Clear all ranges">
+          <button type="button" class="btn-clear" (click)="clear()" title="Clear all ranges">
             Clear All
           </button>
-          <button type="button" class="btn-done" (click)="cerrarDatePicker()" title="Done selecting">
+          <button type="button" class="btn-done" (click)="closeDatePicker()" title="Done selecting">
             Done
           </button>
         </div>
       }
       @if (!multiRange && showClearButton) {
-        <button type="button" class="btn-clear" (click)="limpiar()" title="Clear selection">
+        <button type="button" class="btn-clear" (click)="clear()" title="Clear selection">
           Clear
         </button>
       }

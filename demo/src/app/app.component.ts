@@ -18,12 +18,7 @@ export class AppComponent {
 
   // Example 2: With custom presets
   example2Range: DateRange | null = null;
-  customPresets: PresetConfig[] = [
-    { label: 'Today', daysAgo: 0 },
-    { label: 'Last week', daysAgo: 7 },
-    { label: 'Last month', daysAgo: 30 },
-    { label: 'Last 3 months', daysAgo: 90 }
-  ];
+  customPresets: PresetConfig[] = CommonPresets.simple;
 
   // Example 3: With custom colors (GitHub style)
   example3Range: DateRange | null = null;
@@ -36,8 +31,8 @@ export class AppComponent {
 
   // Example 6: With initial dates
   example6Range: DateRange | null = null;
-  fechaInicio = '2026-02-01';
-  fechaFin = '2026-02-18';
+  startDate = '2026-02-01';
+  endDate = '2026-02-18';
 
   // Example 7: Clear button
   example7Range: DateRange | null = null;
@@ -60,7 +55,7 @@ export class AppComponent {
   example12MultiRange: MultiDateRange | null = null;
 
   clearExternalButton() {
-    this.datepicker8.limpiar();
+    this.datepicker8.clear();
   }
 
   setActiveTab(tab: 'examples' | 'docs' | 'api') {
@@ -120,10 +115,13 @@ export class AppComponent {
 </ngx-dual-datepicker>
 
 // In your component:
+import { CommonPresets } from '@oneluiz/dual-datepicker';
+
+customPresets = CommonPresets.simple;
+// Or create custom:
 customPresets: PresetConfig[] = [
-  { label: 'Today', daysAgo: 0 },
-  { label: 'Last week', daysAgo: 7 },
-  { label: 'Last month', daysAgo: 30 }
+  { label: 'Last 7 days', getValue: () => getLastNDays(7) },
+  { label: 'Last 30 days', getValue: () => getLastNDays(30) }
 ];`,
       colors: `<ngx-dual-datepicker
   inputBackgroundColor="#0d1117"
@@ -138,14 +136,14 @@ customPresets: PresetConfig[] = [
   (dateRangeChange)="onDateRangeChange($event)">
 </ngx-dual-datepicker>`,
       initial: `<ngx-dual-datepicker
-  [fechaInicio]="fechaInicio"
-  [fechaFin]="fechaFin"
+  [startDate]="startDate"
+  [endDate]="endDate"
   (dateRangeChange)="onDateRangeChange($event)">
 </ngx-dual-datepicker>
 
 // In your component:
-fechaInicio = '2026-02-01';
-fechaFin = '2026-02-18';`,
+startDate = '2026-02-01';
+endDate = '2026-02-18';`,
       externalButton: `<!-- Template -->
 <div style="display: flex; gap: 10px; align-items: flex-start;">
   <ngx-dual-datepicker
@@ -164,7 +162,7 @@ import { DualDatepickerComponent } from '@oneluiz/dual-datepicker';
 @ViewChild('datepicker8') datepicker8!: DualDatepickerComponent;
 
 clearExternalButton() {
-    this.datepicker8.limpiar();
+    this.datepicker8.clear();
   }`,
       clearButton: `<ngx-dual-datepicker
   [showClearButton]="true"
@@ -238,7 +236,7 @@ analyticsPresets = CommonPresets.analytics;
 </ngx-dual-datepicker>`,
       multiRange: `import { MultiDateRange } from '@oneluiz/dual-datepicker';
 
-// Enable multi-range mode (NEW v2.7.0!)
+// Enable multi-range mode (NEW v3.0.0!)
 multiRanges: MultiDateRange | null = null;
 
 onMultiRangeChange(ranges: MultiDateRange) {
@@ -246,8 +244,8 @@ onMultiRangeChange(ranges: MultiDateRange) {
   console.log('Selected ranges:', ranges.ranges);
   // Example output:
   // [
-  //   { fechaInicio: '2026-01-01', fechaFin: '2026-01-05', rangoTexto: 'Jan 1 – Jan 5' },
-  //   { fechaInicio: '2026-01-10', fechaFin: '2026-01-15', rangoTexto: 'Jan 10 – Jan 15' }
+  //   { startDate: '2026-01-01', endDate: '2026-01-05', rangeText: 'Jan 1 – Jan 5' },
+  //   { startDate: '2026-01-10', endDate: '2026-01-15', rangeText: 'Jan 10 – Jan 15' }
   // ]
 }
 

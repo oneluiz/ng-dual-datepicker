@@ -10,6 +10,16 @@ A lightweight, zero-dependency date range picker for Angular 17+. Built with sta
 npm install @oneluiz/dual-datepicker
 ```
 
+> ## ⚠️ **BREAKING CHANGES in v3.0.0**
+>
+> - **All DateRange properties renamed to English**: `fechaInicio` → `startDate`, `fechaFin` → `endDate`, `rangoTexto` → `rangeText`
+> - **Deprecated `daysAgo` removed**: Use `getValue: () => PresetRange` pattern or `CommonPresets` instead
+> - **All component methods renamed to English**: `limpiar()` → `clear()`, etc.
+> 
+> **📖 See [MIGRATION_V3.md](MIGRATION_V3.md) for complete migration guide**
+>
+> To stay on v2.x: `npm install @oneluiz/dual-datepicker@2.7.0`
+
 ## 🎯 [Live Demo](https://oneluiz.github.io/ng-dual-datepicker/)
 
 **[Check out the interactive examples →](https://oneluiz.github.io/ng-dual-datepicker/)**
@@ -108,8 +118,8 @@ import { DualDatepickerComponent, DateRange } from '@oneluiz/dual-datepicker';
 })
 export class AppComponent {
   onRangeChange(range: DateRange) {
-    console.log('Start:', range.fechaInicio);
-    console.log('End:', range.fechaFin);
+    console.log('Start:', range.startDate);
+    console.log('End:', range.endDate);
   }
 }
 ```
@@ -154,8 +164,6 @@ dateRange = signal<DateRange | null>(null);
 ```
 
 ## 📚 Advanced Usage
-}
-```
 
 ### 4. Use with Angular Signals ⚡ New!
 
@@ -171,8 +179,8 @@ import { DualDatepickerComponent, DateRange } from '@oneluiz/dual-datepicker';
   imports: [DualDatepickerComponent],
   template: `
     <ngx-dual-datepicker
-      [fechaInicio]="fechaInicio()"
-      [fechaFin]="fechaFin()"
+      [startDate]="startDate()"
+      [endDate]="endDate()"
       (dateRangeChange)="onDateChange($event)">
     </ngx-dual-datepicker>
     
@@ -185,30 +193,30 @@ import { DualDatepickerComponent, DateRange } from '@oneluiz/dual-datepicker';
   `
 })
 export class SignalsExampleComponent {
-  fechaInicio = signal('');
-  fechaFin = signal('');
+  startDate = signal('');
+  endDate = signal('');
   
   // Computed values
   isRangeSelected = computed(() => 
-    this.fechaInicio() !== '' && this.fechaFin() !== ''
+    this.startDate() !== '' && this.endDate() !== ''
   );
   
   rangeText = computed(() => 
     this.isRangeSelected() 
-      ? `${this.fechaInicio()} to ${this.fechaFin()}`
+      ? `${this.startDate()} to ${this.endDate()}`
       : 'No range selected'
   );
   
   daysDifference = computed(() => {
     if (!this.isRangeSelected()) return 0;
-    const start = new Date(this.fechaInicio());
-    const end = new Date(this.fechaFin());
+    const start = new Date(this.startDate());
+    const end = new Date(this.endDate());
     return Math.ceil((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24));
   });
 
   onDateChange(range: DateRange) {
-    this.fechaInicio.set(range.fechaInicio);
-    this.fechaFin.set(range.fechaFin);
+    this.startDate.set(range.startDate);
+    this.endDate.set(range.endDate);
   }
 }
 ```
@@ -237,9 +245,9 @@ import { DualDatepickerComponent, MultiDateRange } from '@oneluiz/dual-datepicke
         <h3>Selected Ranges ({{ selectedRanges.ranges.length }})</h3>
         @for (range of selectedRanges.ranges; track $index) {
           <div class="range-item">
-            <strong>Range {{ $index + 1 }}:</strong> {{ range.rangoTexto }}
-            <br>
-            <span>{{ range.fechaInicio }} → {{ range.fechaFin }}</span>
+            <strong>Range {{ $index + 1 }}:</strong> {{ range.rangeText }}
+            <br />
+            <span>{{ range.startDate }} → {{ range.endDate }}</span>
           </div>
         }
       </div>
@@ -254,9 +262,9 @@ export class MultiRangeExample {
     console.log('Selected ranges:', ranges.ranges);
     // Output example:
     // [
-    //   { fechaInicio: '2026-01-01', fechaFin: '2026-01-05', rangoTexto: 'Jan 1 – Jan 5' },
-    //   { fechaInicio: '2026-01-10', fechaFin: '2026-01-15', rangoTexto: 'Jan 10 – Jan 15' },
-    //   { fechaInicio: '2026-02-01', fechaFin: '2026-02-07', rangoTexto: 'Feb 1 – Feb 7' }
+    //   { startDate: '2026-01-01', endDate: '2026-01-05', rangeText: 'Jan 1 – Jan 5' },
+    //   { startDate: '2026-01-10', endDate: '2026-01-15', rangeText: 'Jan 10 – Jan 15' },
+    //   { startDate: '2026-02-01', endDate: '2026-02-07', rangeText: 'Feb 1 – Feb 7' }
     // ]
   }
 }
@@ -721,22 +729,22 @@ export class MyComponent {
   @ViewChild('datepicker') datepicker!: DualDatepickerComponent;
 
   clearSelection() {
-    this.datepicker.limpiar(); // Clears the date selection
+    this.datepicker.clear(); // v3.0.0: method renamed from limpiar() to clear()
   }
 }
 ```
 
 | Method | Description |
-|--------|-------------|
-| `limpiar()` | Clears the current date selection and resets the component |
+|--------|----------|
+| `clear()` | Clears the current date selection and resets the component (v3.0.0: renamed from `limpiar()`) |
 
 ### Types
 
 ```typescript
 interface DateRange {
-  fechaInicio: string;  // ISO date format: 'YYYY-MM-DD'
-  fechaFin: string;     // ISO date format: 'YYYY-MM-DD'
-  rangoTexto: string;   // Display text: 'DD Mon - DD Mon'
+  startDate: string;   // v3.0.0: renamed from 'fechaInicio' - ISO format: 'YYYY-MM-DD'
+  endDate: string;     // v3.0.0: renamed from 'fechaFin' - ISO format: 'YYYY-MM-DD'
+  rangeText: string;   // v3.0.0: renamed from 'rangoTexto' - Display text: 'DD Mon - DD Mon'
 }
 
 interface PresetRange {
@@ -746,10 +754,7 @@ interface PresetRange {
 
 interface PresetConfig {
   label: string;
-  /** @deprecated Use getValue() instead for more flexibility */
-  daysAgo?: number;
-  /** NEW v2.6.0 - Function that returns date range with custom logic */
-  getValue?: () => PresetRange;
+  getValue: () => PresetRange;  // v3.0.0: NOW REQUIRED (daysAgo removed)
 }
 
 interface LocaleConfig {
@@ -761,48 +766,37 @@ interface LocaleConfig {
 }
 ```
 
-### Default Presets
+### CommonPresets
+
+v3.0.0: No default presets shipped with component. Use `CommonPresets` utility or create custom:
 
 ```typescript
-[
-  { label: 'Last month', daysAgo: 30 },
-  { label: 'Last 6 months', daysAgo: 180 },
-  { label: 'Last yea
-  [fechaInicio]="startDate"
-  [fechaFin]="endDate"
-  (dateRangeSelected)="onDateRangeSelected($event)">
-</ngx-dual-datepicker>
+import { CommonPresets, getLastNDays } from '@oneluiz/dual-datepicker';
+
+// Use pre-built collections
+presets = CommonPresets.dashboard;  // Last 7, 15, 30, 60, 90 days + last 6 months
+
+// Or create custom presets
+presets: PresetConfig[] = [
+  { label: 'Last 15 days', getValue: () => getLastNDays(15) },
+  { label: 'Last 3 months', getValue: () => getLastNDays(90) },
+  { label: 'Last 6 months', getValue: () => getLastNDays(180) },
+  { label: 'Last year', getValue: () => getLastNDays(365) }
+];
 ```
 
-###fechaInicio]="startDate"
-  [fechaFin]="endDate"
-  [closeOnSelection]="true"
-  [closeOnPresetSelection]="true"
-  (dateRangeSelected)="onDateRangeSelected($event)
-spanishLocale: LocaleConfig = {
-  monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 
-               'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-  monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 
-                    'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
-  dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
-  dayNamesShort: ['D', 'L', 'M', 'X', 'J', 'V', 'S']
-};
-```
+Available `CommonPresets` collections:
+- `CommonPresets.simple` - Last 7, 30, 60, 90 days
+- `CommonPresets.dashboard` - Last 7, 15, 30, 60, 90 days + last 6 months
+- `CommonPresets.analytics` - Last 30, 60, 90, 180, 365 days + YTD
 
-```html
-<ngx-dual-datepicker
-  [fechaInicio]="startDate"
-  [fechaFin]="endDate"
-  [fechaInicio]="startDate"
-  [fechaFin]="endDate"
-  placeholder="Pick your dates"
-  inputBackgroundColor="#fef3c7"
-  inputTextColor="#92400e"
-  inputBorderColor="#fbbf24"
-  inputBorderColorHover="#f59e0b"
-  inputBorderColorFocus="#d97706"
-  inputPadding="8px 12px"
-  (dateRangeSelected)="onDateRangeSelected($event)
+Helper functions:
+- `getLastNDays(n)` - Returns range for last N days
+- `getThisMonth()` - Returns range for current month
+- `getLastMonth()` - Returns range for previous month
+- `getYearToDate()` - Returns range from Jan 1 to today
+
+## Usage Examples
 
 ### Minimal Usage
 
@@ -810,15 +804,31 @@ spanishLocale: LocaleConfig = {
 <ngx-dual-datepicker [(ngModel)]="dateRange"></ngx-dual-datepicker>
 ```
 
-### With Auto-close
-fechaInicio]="startDate"
-      [fechaFin]="endDate"
+### With Initial Dates
+
+```html
+<ngx-dual-datepicker
+  [startDate]="'2024-01-15'"
+  [endDate]="'2024-01-30'"
+  (dateRangeSelected)="onDateRangeSelected($event)">
+</ngx-dual-datepicker>
+```
+
+### With Events
+
+```typescript
+@Component({
+  selector: 'app-example',
+  template: `
+    <ngx-dual-datepicker
+      [startDate]="startDate"
+      [endDate]="endDate"
       (dateRangeSelected)="onDateRangeSelected($event)"
       (dateRangeChange)="onDateRangeChange($event)">
     </ngx-dual-datepicker>
     
     <div *ngIf="selectedRange">
-      Selected: {{ selectedRange.rangoTexto }}
+      Selected: {{ selectedRange.rangeText }}
     </div>
   `
 })
@@ -828,7 +838,7 @@ export class ExampleComponent {
   selectedRange: DateRange | null = null;
 
   onDateRangeChange(range: DateRange) {
-    console.log('Date changed:', range.fechaInicio);
+    console.log('Date changed:', range.startDate);
     // Emitted when user selects first date (before completing range)
   }
 
@@ -837,53 +847,65 @@ export class ExampleComponent {
     this.selectedRange = range;
     
     // Both dates selected - do something
-    this.fetchData(range.fechaInicio, range.fechaFin);
+    this.fetchData(range.startDate, range.endDate);
   }
 
   fetchData(startDate: string, endDate: string) {
     // Your API call here
-    // Dates are in 'YYYY-MM-DD' format,
+    // Dates are in 'YYYY-MM-DD' format
+  }
+}
+```
+
+### With ngModel
+
+```typescript
+@Component({
+  selector: 'app-example',
   template: `
     <ngx-dual-datepicker
       [(ngModel)]="dateRange"
       (ngModelChange)="onDateRangeChange($event)">
     </ngx-dual-datepicker>
     
-    <div *ngIf="dateRange.start && dateRange.end">
-      Selected: {{ formatDateRange() }}
+    <div *ngIf="dateRange">
+      Selected: {{ dateRange.rangeText }}
+      <br>
+      From: {{ dateRange.startDate }} to {{ dateRange.endDate }}
     </div>
   `
 })
 export class ExampleComponent {
-  dateRange: DateRange = { start: null, end: null };
+  dateRange: DateRange | null = null;
 
   onDateRangeChange(range: DateRange) {
-    console.log('Start:', range.start);
-    console.log('End:', range.end);
-    
-    if (range.start && range.end) {
-      // Both dates selected - do something
-      this.fetchData(range.start, range.end);
-    }
-  }
-
-  formatDateRange(): string {
-    if (!this.dateRange.start || !this.dateRange.end) return '';
-    return `${this.dateRange.start.toLocaleDateString()} - ${this.dateRange.end.toLocaleDateString()}`;
-  }
-
-  fetchData(start: Date, end: Date) {
-    // Your API call here
+    console.log('Start:', range.startDate);
+    console.log('End:', range.endDate);
+    console.log('Text:', range.rangeText);
   }
 }
+```
+
+### With Styling
+
+```html
+<ngx-dual-datepicker
+  [startDate]="startDate"
+  [endDate]="endDate"
+  placeholder="Pick your dates"
+  inputBackgroundColor="#fef3c7"
+  inputTextColor="#92400e"
+  inputBorderColor="#fbbf24"
+  inputBorderColorHover="#f59e0b"
+  inputBorderColorFocus="#d97706"
+  inputPadding="12px 16px"
+  (dateRangeSelected)="onDateRangeSelected($event)">
+</ngx-dual-datepicker>
 ```
 
 ## 🛠️ Requirements
 
 - Angular 17.0.0 or higher
-- Angular 18.0.0 or higher
-- Angular 19.0.0 or higher
-- Angular 20.0.0 or higher
 
 ## 🗺️ Roadmap
 
