@@ -15,6 +15,12 @@ export class NativeDateAdapter extends DateAdapter<Date> {
     }
     
     if (typeof value === 'string' || typeof value === 'number') {
+      // Fix timezone issues: parse YYYY-MM-DD as local date, not UTC
+      if (typeof value === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(value)) {
+        const [year, month, day] = value.split('-').map(Number);
+        return new Date(year, month - 1, day);
+      }
+      
       const date = new Date(value);
       return this.isValid(date) ? date : null;
     }
