@@ -85,7 +85,7 @@
             <div class="row justify-content-center">
               <div class="col-lg-8 col-xl-7 text-center">
                 <div class="hero-badge mb-3">
-                  <span class="badge bg-warning text-dark px-3 py-2 rounded-pill fw-semibold">Currently v3.3.0</span>
+                  <span class="badge bg-warning text-dark px-3 py-2 rounded-pill fw-semibold">Currently v3.4.0</span>
                 </div>
                 <div class="display-3 fw-bold mb-4 text-emphasis">
                   Build fast, beautiful date pickers<br>with ng-dual-datepicker
@@ -101,7 +101,7 @@
                     Download
                   </button>
                 </div>
-                <p class="text-muted small mb-3">Currently v3.3.0 · <a href="https://github.com/oneluiz/ng-dual-datepicker" class="link-secondary">Download</a> · <a href="https://github.com/oneluiz/ng-dual-datepicker/releases" class="link-secondary">Release notes</a></p>
+                <p class="text-muted small mb-3">Currently v3.4.0 · <a href="https://github.com/oneluiz/ng-dual-datepicker" class="link-secondary">Download</a> · <a href="https://github.com/oneluiz/ng-dual-datepicker/releases" class="link-secondary">Release notes</a></p>
                 <div class="hero-install d-flex align-items-center gap-2">
                   <code class="user-select-all flex-grow-1">npm install &#64;oneluiz/dual-datepicker</code>
                   <button class="btn btn-sm btn-outline-secondary" (click)="copyToClipboard('npm install @oneluiz/dual-datepicker')" title="Copy to clipboard">
@@ -516,6 +516,11 @@
                   <span class="badge-new">v3.3.0</span> Theming System
                 </button>
               </li>
+              <li>
+                <button class="sidebar-link" (click)="scrollToExample('example-timepicker')">
+                  <span class="badge-new">v3.4.0</span> Time Picker
+                </button>
+              </li>
             </ul>
           </div>
 
@@ -794,6 +799,87 @@
               <i class="bi bi-info-circle"></i>
               <strong>Note:</strong> To use themes, import the corresponding stylesheet in your styles.scss:
               <code>&#64;import '&#64;oneluiz/dual-datepicker/themes/{{ selectedTheme }}';</code>
+            </div>
+          </div>
+
+          <!-- Example Time Picker: Time Selection -->
+          <div class="example-card" id="example-timepicker">
+            <h2><span class="badge-new">v3.4.0</span> Time Picker</h2>
+            <p class="example-description">
+              Enable time selection to pick precise datetime ranges. Perfect for appointments, events, and scheduling applications.
+            </p>
+            
+            <!-- Basic Time Picker (24h) -->
+            <h4 class="mt-4 mb-3">Basic Time Picker (24h format)</h4>
+            <div class="example-demo">
+              <ngx-dual-datepicker
+                [enableTimePicker]="true"
+                (dateRangeChange)="onDateRangeChange(21, $event)">
+              </ngx-dual-datepicker>
+            </div>
+            @if (example21Range) {
+              <div class="selected-range">
+                <strong>Selected Range:</strong>
+                <p>Start Date: {{ example21Range.startDate || '(empty)' }}</p>
+                <p>Start Time: {{ example21Range.startTime || '(empty)' }}</p>
+                <p>End Date: {{ example21Range.endDate || '(empty)' }}</p>
+                <p>End Time: {{ example21Range.endTime || '(empty)' }}</p>
+                <p>Text: {{ example21Range.rangeText || '(empty)' }}</p>
+              </div>
+            }
+
+            <!-- 12h Format with AM/PM -->
+            <h4 class="mt-4 mb-3">12-hour Format with AM/PM</h4>
+            <div class="example-demo">
+              <ngx-dual-datepicker
+                [enableTimePicker]="true"
+                timeFormat="12h"
+                defaultStartTime="09:00"
+                defaultEndTime="17:00"
+                (dateRangeChange)="onDateRangeChange(21.1, $event)">
+              </ngx-dual-datepicker>
+            </div>
+            @if (example21aRange) {
+              <div class="selected-range">
+                <strong>Selected Range:</strong>
+                <p>Start: {{ example21aRange.startDate || '(empty)' }} at {{ example21aRange.startTime || '(empty)' }}</p>
+                <p>End: {{ example21aRange.endDate || '(empty)' }} at {{ example21aRange.endTime || '(empty)' }}</p>
+              </div>
+            }
+
+            <!-- With minute steps and requireApply -->
+            <h4 class="mt-4 mb-3">Custom Minute Steps + Apply Button</h4>
+            <div class="example-demo">
+              <ngx-dual-datepicker
+                [enableTimePicker]="true"
+                [minuteStep]="30"
+                [requireApply]="true"
+                defaultStartTime="08:00"
+                defaultEndTime="18:00"
+                (dateRangeChange)="onDateRangeChange(21.2, $event)">
+              </ngx-dual-datepicker>
+            </div>
+            @if (example21bRange) {
+              <div class="selected-range">
+                <strong>Selected Range:</strong>
+                <p>Start: {{ example21bRange.startDate || '(empty)' }} at {{ example21bRange.startTime || '(empty)' }}</p>
+                <p>End: {{ example21bRange.endDate || '(empty)' }} at {{ example21bRange.endTime || '(empty)' }}</p>
+              </div>
+            }
+
+            <div class="code-block">
+              <pre>{{ codeExamples.timePicker }}</pre>
+            </div>
+            <div class="alert alert-info mt-3">
+              <i class="bi bi-info-circle"></i>
+              <strong>Features:</strong>
+              <ul class="mb-0 mt-2">
+                <li>Choose between 12h (AM/PM) or 24h time format</li>
+                <li>Configurable minute steps: 1, 5, 15, or 30 minutes</li>
+                <li>Set default start and end times</li>
+                <li>Works with all themes and other features</li>
+                <li>Backward compatible - disabled by default</li>
+              </ul>
             </div>
           </div>
 
@@ -2969,10 +3055,10 @@ import &#123; getLastNDays &#125; from '&#64;oneluiz/dual-datepicker';
       Made with ❤️ by <a href="https://github.com/oneluiz" target="_blank">&#64;oneluiz</a>
     </p>
     <p>
-      <strong>v3.3.0</strong> 🎉 | 
+      <strong>v3.4.0</strong> 🎉 | 
       <a href="https://github.com/oneluiz/ng-dual-datepicker" target="_blank">GitHub</a> | 
       <a href="https://www.npmjs.com/package/@oneluiz/dual-datepicker" target="_blank">NPM</a> |
-      <a href="https://github.com/oneluiz/ng-dual-datepicker/releases/tag/v3.3.0" target="_blank">What's New in v3.3.0</a>
+      <a href="https://github.com/oneluiz/ng-dual-datepicker/releases/tag/v3.4.0" target="_blank">What's New in v3.4.0</a>
     </p>
   </footer>
 </div>

@@ -535,3 +535,118 @@
   }
 }
 
+// Time Picker Styles
+.time-picker-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 16px;
+  border-top: 1px solid #e5e7eb;
+  border-bottom: 1px solid #e5e7eb;
+  margin: 12px 0;
+  background-color: #f9fafb;
+
+  .time-picker-section {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex: 1;
+    align-items: center;
+
+    .time-picker-label {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: #374151;
+      text-align: center;
+    }
+
+    .time-picker-inputs {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      .time-input-group {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        align-items: center;
+
+        .time-input {
+          width: 48px;
+          padding: 8px 6px;
+          text-align: center;
+          font-size: 1.25rem;
+          font-weight: 600;
+          color: #1f2937;
+          background-color: #fff;
+          border: 2px solid #e5e7eb;
+          border-radius: 6px;
+          outline: none;
+          transition: all 0.15s ease;
+          cursor: default;
+          user-select: none;
+
+          &:focus {
+            border-color: var(--primary-color, #3b82f6);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+          }
+        }
+
+        .time-btn {
+          padding: 4px 8px;
+          background-color: #fff;
+          border: 1px solid #d1d5db;
+          border-radius: 4px;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: #6b7280;
+          transition: all 0.15s ease;
+
+          &:hover {
+            background-color: var(--primary-color, #3b82f6);
+            border-color: var(--primary-color, #3b82f6);
+            color: #fff;
+            transform: translateY(-1px);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+          }
+
+          &:active {
+            transform: translateY(0);
+            box-shadow: none;
+          }
+
+          svg {
+            pointer-events: none;
+          }
+        }
+      }
+
+      .time-separator {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #9ca3af;
+        margin: 0 4px;
+      }
+
+      .time-period {
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: #6b7280;
+        padding: 8px 12px;
+        background-color: #f3f4f6;
+        border-radius: 6px;
+        min-width: 48px;
+        text-align: center;
+      }
+    }
+  }
+
+  .time-separator-vertical {
+    width: 1px;
+    height: 80px;
+    background-color: #e5e7eb;
+  }
+}

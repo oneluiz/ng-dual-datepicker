@@ -31,6 +31,7 @@ npm install @oneluiz/dual-datepicker
   - [Disabled Dates](#disabled-dates)
   - [Display Format](#display-format)
   - [Apply/Confirm Button](#applyconfirm-button)
+  - [Time Picker](#time-picker)
   - [Hover Range Preview](#hover-range-preview)
   - [Custom Presets](#custom-presets)
   - [Date Adapter System](#date-adapter-system)
@@ -470,6 +471,109 @@ export class DashboardExample {
 | User control | Automatic | Explicit confirmation |
 | Best for | Simple forms | Dashboards, reports |
 
+---
+
+### Time Picker
+
+**Select precise datetime ranges with optional time picker.** Choose exact start and end times in addition to dates, with support for 12h/24h formats and configurable minute steps.
+
+#### Basic Usage
+
+```typescript
+import { Component } from '@angular/core';
+import { DateRange } from '@oneluiz/dual-datepicker';
+
+@Component({
+  template: `
+    <ngx-dual-datepicker
+      [enableTimePicker]="true"
+      (dateRangeChange)="onDateRangeChange($event)">
+    </ngx-dual-datepicker>
+  `
+})
+export class AppointmentComponent {
+  onDateRangeChange(range: DateRange) {
+    console.log('Start:', range.startDate, 'at', range.startTime);
+    console.log('End:', range.endDate, 'at', range.endTime);
+    // startTime and endTime are in 'HH:mm' format
+  }
+}
+```
+
+#### Configuration Options
+
+```typescript
+// 12-hour format with AM/PM
+<ngx-dual-datepicker
+  [enableTimePicker]="true"
+  timeFormat="12h"
+  defaultStartTime="09:00"
+  defaultEndTime="17:00"
+  (dateRangeChange)="onDateRangeChange($event)">
+</ngx-dual-datepicker>
+
+// 30-minute intervals
+<ngx-dual-datepicker
+  [enableTimePicker]="true"
+  [minuteStep]="30"
+  (dateRangeChange)="onDateRangeChange($event)">
+</ngx-dual-datepicker>
+
+// With Apply button for controlled changes
+<ngx-dual-datepicker
+  [enableTimePicker]="true"
+  [requireApply]="true"
+  (dateRangeChange)="onDateRangeChange($event)">
+</ngx-dual-datepicker>
+```
+
+#### DateRange with Time
+
+When `enableTimePicker` is true, the DateRange includes optional time properties:
+
+```typescript
+interface DateRange {
+  startDate: string;     // 'YYYY-MM-DD'
+  endDate: string;       // 'YYYY-MM-DD'
+  rangeText: string;     // Display text
+  startTime?: string;    // 'HH:mm' or 'HH:mm AM/PM'
+  endTime?: string;      // 'HH:mm' or 'HH:mm AM/PM'
+}
+```
+
+#### Configuration Inputs
+
+| Input | Type | Default | Description |
+|-------|------|---------|-------------|
+| `enableTimePicker` | boolean | `false` | Enable time selection |
+| `timeFormat` | `'12h'` \| `'24h'` | `'24h'` | Time display format |
+| `minuteStep` | number | `15` | Minute intervals (1, 5, 15, or 30) |
+| `defaultStartTime` | string | `'00:00'` | Default start time (HH:mm) |
+| `defaultEndTime` | string | `'23:59'` | Default end time (HH:mm) |
+
+#### Perfect Use Cases
+
+- 📅 **Appointment booking systems** - Schedule meetings with exact times
+- 🎫 **Event scheduling** - Create events with start and end times
+- 🏢 **Meeting planners** - Book conference rooms with time slots
+- 📊 **Time-based reporting** - Generate reports for specific time ranges
+- 👥 **Shift management** - Assign work shifts with precise times
+- 🎬 **Reservation systems** - Book resources with time constraints
+
+#### Key Features
+
+- ✅ Optional - disabled by default (backward compatible)
+- ✅ 12h (AM/PM) or 24h time format
+- ✅ Configurable minute steps (1, 5, 15, 30)
+- ✅ Default start/end times support
+- ✅ Works with all themes
+- ✅ Integrates with requireApply mode
+- ✅ Fully accessible with keyboard navigation
+
+**For complete documentation, see [TIME_PICKER.md](TIME_PICKER.md)**
+
+---
+
 ### Hover Range Preview
 
 **Automatic visual feedback while selecting dates.** Provides instant visual preview of the date range when hovering over dates before clicking to confirm.
@@ -759,6 +863,12 @@ spanishLocale: LocaleConfig = {
 | `disabledDates` | `Date[] \| ((date: Date) => boolean)` | `undefined` | Array of dates or function to disable specific dates |
 | `displayFormat` | `string` | `'D MMM'` | Format for displaying dates in input (tokens: YYYY, YY, MMMM, MMM, MM, M, DD, D) |
 | `requireApply` | `boolean` | `false` | Require Apply button confirmation before emitting changes |
+| `enableTimePicker` | `boolean` | `false` | Enable time selection |
+| `timeFormat` | `'12h' \| '24h'` | `'24h'` | Time display format (12-hour with AM/PM or 24-hour) |
+| `minuteStep` | `number` | `15` | Step for minute selector (1, 5, 15, or 30) |
+| `defaultStartTime` | `string` | `'00:00'` | Default start time in HH:mm format |
+| `defaultEndTime` | `string` | `'23:59'` | Default end time in HH:mm format |
+| `theme` | `ThemeType` | `'default'` | Theme preset: 'default', 'bootstrap', 'bulma', 'foundation', 'tailwind', 'custom' |
 | `enableKeyboardNavigation` | `boolean` | `true` | Enable keyboard navigation |
 | `inputBackgroundColor` | `string` | `'#fff'` | Input background color |
 | `inputTextColor` | `string` | `'#495057'` | Input text color |
@@ -809,6 +919,8 @@ interface DateRange {
   startDate: string;   // ISO format: 'YYYY-MM-DD'
   endDate: string;     // ISO format: 'YYYY-MM-DD'
   rangeText: string;   // Display text: 'DD Mon - DD Mon'
+  startTime?: string;  // Optional: 'HH:mm' or 'HH:mm AM/PM' (when enableTimePicker=true)
+  endTime?: string;    // Optional: 'HH:mm' or 'HH:mm AM/PM' (when enableTimePicker=true)
 }
 
 interface MultiDateRange {

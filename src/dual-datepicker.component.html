@@ -162,6 +162,144 @@
     </div>
     }
 
+    <!-- Time Picker -->
+    @if (enableTimePicker) {
+    <div class="time-picker-container">
+      <!-- Start Time -->
+      <div class="time-picker-section">
+        <div class="time-picker-label">Start Time</div>
+        <div class="time-picker-inputs">
+          <div class="time-input-group">
+            <button 
+              type="button" 
+              class="time-btn time-btn-up" 
+              (click)="incrementStartHour()"
+              title="Increment hour">
+              <svg width="12" height="12" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M7.247 4.86l-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z"/>
+              </svg>
+            </button>
+            <input
+              type="text"
+              class="time-input"
+              [value]="startHour.toString().padStart(2, '0')"
+              readonly
+              title="Start hour">
+            <button 
+              type="button" 
+              class="time-btn time-btn-down" 
+              (click)="decrementStartHour()"
+              title="Decrement hour">
+              <svg width="12" height="12" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M7.247 11.14l-4.796-5.481C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>
+              </svg>
+            </button>
+          </div>
+          <span class="time-separator">:</span>
+          <div class="time-input-group">
+            <button 
+              type="button" 
+              class="time-btn time-btn-up" 
+              (click)="incrementStartMinute()"
+              title="Increment minute">
+              <svg width="12" height="12" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M7.247 4.86l-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z"/>
+              </svg>
+            </button>
+            <input
+              type="text"
+              class="time-input"
+              [value]="startMinute.toString().padStart(2, '0')"
+              readonly
+              title="Start minute">
+            <button 
+              type="button" 
+              class="time-btn time-btn-down" 
+              (click)="decrementStartMinute()"
+              title="Decrement minute">
+              <svg width="12" height="12" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M7.247 11.14l-4.796-5.481C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>
+              </svg>
+            </button>
+          </div>
+          @if (timeFormat === '12h') {
+          <div class="time-period">
+            {{ startHour >= 12 ? 'PM' : 'AM' }}
+          </div>
+          }
+        </div>
+      </div>
+
+      <!-- Separator -->
+      <div class="time-separator-vertical"></div>
+
+      <!-- End Time -->
+      <div class="time-picker-section">
+        <div class="time-picker-label">End Time</div>
+        <div class="time-picker-inputs">
+          <div class="time-input-group">
+            <button 
+              type="button" 
+              class="time-btn time-btn-up" 
+              (click)="incrementEndHour()"
+              title="Increment hour">
+              <svg width="12" height="12" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M7.247 4.86l-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z"/>
+              </svg>
+            </button>
+            <input
+              type="text"
+              class="time-input"
+              [value]="endHour.toString().padStart(2, '0')"
+              readonly
+              title="End hour">
+            <button 
+              type="button" 
+              class="time-btn time-btn-down" 
+              (click)="decrementEndHour()"
+              title="Decrement hour">
+              <svg width="12" height="12" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M7.247 11.14l-4.796-5.481C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>
+              </svg>
+            </button>
+          </div>
+          <span class="time-separator">:</span>
+          <div class="time-input-group">
+            <button 
+              type="button" 
+              class="time-btn time-btn-up" 
+              (click)="incrementEndMinute()"
+              title="Increment minute">
+              <svg width="12" height="12" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M7.247 4.86l-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z"/>
+              </svg>
+            </button>
+            <input
+              type="text"
+              class="time-input"
+              [value]="endMinute.toString().padStart(2, '0')"
+              readonly
+              title="End minute">
+            <button 
+              type="button" 
+              class="time-btn time-btn-down" 
+              (click)="decrementEndMinute()"
+              title="Decrement minute">
+              <svg width="12" height="12" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M7.247 11.14l-4.796-5.481C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>
+              </svg>
+            </button>
+          </div>
+          @if (timeFormat === '12h') {
+          <div class="time-period">
+            {{ endHour >= 12 ? 'PM' : 'AM' }}
+          </div>
+          }
+        </div>
+      </div>
+    </div>
+    }
+
     <!-- Footer with buttons -->
     @if (showClearButton || multiRange || requireApply) {
     <div class="date-picker-footer">

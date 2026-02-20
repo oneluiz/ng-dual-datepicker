@@ -78,6 +78,11 @@ export class AppComponent {
   example20Range: DateRange | null = null;
   selectedTheme: ThemeType = 'default';
   
+  // Example 21: Time Picker (NEW v3.4.0)
+  example21Range: DateRange | null = null;
+  example21aRange: DateRange | null = null;
+  example21bRange: DateRange | null = null;
+  
   // Costa Rica holidays 2026
   costaRicaHolidays2026: Date[] = [
     new Date(2026, 0, 1),   // Año Nuevo
@@ -556,6 +561,68 @@ selectedTheme: ThemeType = 'bootstrap';
 // ✔ Easy to switch themes
 
 // See THEMING.md for full documentation`,
+      timePicker: `// NEW v3.4.0: Time Picker - Select date + time ranges
+// Enable time picker to select precise datetime ranges
+
+// Basic time picker (24h format)
+<ngx-dual-datepicker
+  [enableTimePicker]="true"
+  (dateRangeChange)="onDateRangeChange($event)">
+</ngx-dual-datepicker>
+
+// Result includes time:
+// {
+//   startDate: '2026-02-01',
+//   endDate: '2026-02-15',
+//   rangeText: '1 Feb - 15 Feb',
+//   startTime: '09:00',
+//   endTime: '17:30'
+// }
+
+// 12-hour format with AM/PM
+<ngx-dual-datepicker
+  [enableTimePicker]="true"
+  timeFormat="12h"
+  (dateRangeChange)="onDateRangeChange($event)">
+</ngx-dual-datepicker>
+
+// Custom minute steps (1, 5, 15, or 30)
+<ngx-dual-datepicker
+  [enableTimePicker]="true"
+  [minuteStep]="30"
+  (dateRangeChange)="onDateRangeChange($event)">
+</ngx-dual-datepicker>
+
+// Default times
+<ngx-dual-datepicker
+  [enableTimePicker]="true"
+  defaultStartTime="09:00"
+  defaultEndTime="18:00"
+  (dateRangeChange)="onDateRangeChange($event)">
+</ngx-dual-datepicker>
+
+// With requireApply for controlled changes
+<ngx-dual-datepicker
+  [enableTimePicker]="true"
+  [requireApply]="true"
+  (dateRangeChange)="onDateRangeChange($event)">
+</ngx-dual-datepicker>
+
+// Key features:
+// ✔ Optional time selection for each date
+// ✔ 12h (AM/PM) or 24h format
+// ✔ Configurable minute steps (1, 5, 15, 30)
+// ✔ Default start/end times
+// ✔ Works with all themes
+// ✔ Backward compatible (disabled by default)
+// ✔ Integrates with requireApply mode
+
+// Perfect for:
+// - Appointment booking systems
+// - Event scheduling
+// - Meeting planners
+// - Time-based reporting
+// - Shift management`,
       install: `npm install @oneluiz/dual-datepicker`
     };
   }

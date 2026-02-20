@@ -8,6 +8,8 @@ export interface DateRange {
   startDate: string;
   endDate: string;
   rangeText: string;
+  startTime?: string; // HH:mm format (optional)
+  endTime?: string; // HH:mm format (optional)
 }
 
 export interface MultiDateRange {
@@ -75,6 +77,11 @@ export class DualDatepickerComponent implements OnInit, OnChanges, ControlValueA
   @Input() disabledDates: Date[] | ((date: Date) => boolean) | undefined;
   @Input() displayFormat: string = 'D MMM'; // Format for displaying dates in input
   @Input() requireApply: boolean = false; // Require Apply button confirmation
+  @Input() enableTimePicker: boolean = false; // Enable time selection
+  @Input() timeFormat: '12h' | '24h' = '24h'; // Time format
+  @Input() minuteStep: number = 15; // Step for minute selector (1, 5, 15, 30)
+  @Input() defaultStartTime: string = '00:00'; // Default start time HH:mm
+  @Input() defaultEndTime: string = '23:59'; // Default end time HH:mm
 
   @Output() dateRangeChange = new EventEmitter<DateRange>();
   @Output() dateRangeSelected = new EventEmitter<DateRange>();
@@ -98,6 +105,14 @@ export class DualDatepickerComponent implements OnInit, OnChanges, ControlValueA
   pendingStartDate: string = '';
   pendingEndDate: string = '';
   hasPendingChanges = signal(false);
+  
+  // Time picker support
+  startHour: number = 0;
+  startMinute: number = 0;
+  endHour: number = 23;
+  endMinute: number = 59;
+  showStartTimePicker = signal(false);
+  showEndTimePicker = signal(false);
   
   // Hover range preview
   hoverDate = signal<string | null>(null);
@@ -463,6 +478,17 @@ export class DualDatepickerComponent implements OnInit, OnChanges, ControlValueA
   }
 
   ngOnInit(): void {
+    // Initialize time picker with default times
+    if (this.enableTimePicker) {
+      const startTime = this.parseTime(this.defaultStartTime);
+      this.startHour = startTime.hour;
+      this.startMinute = startTime.minute;
+      
+      const endTime = this.parseTime(this.defaultEndTime);
+      this.endHour = endTime.hour;
+      this.endMinute = endTime.minute;
+    }
+    
     if (this.startDate && this.endDate) {
       this.updateDateRangeText();
       this.generateCalendars();
@@ -892,19 +918,33 @@ export class DualDatepickerComponent implements OnInit, OnChanges, ControlValueA
   }
 
   private emitChange(): void {
-    this.dateRangeChange.emit({
+    const range: DateRange = {
       startDate: this.startDate,
       endDate: this.endDate,
       rangeText: this.dateRangeText()
-    });
+    };
+    
+    if (this.enableTimePicker) {
+      range.startTime = this.formatTime(this.startHour, this.startMinute);
+      range.endTime = this.formatTime(this.endHour, this.endMinute);
+    }
+    
+    this.dateRangeChange.emit(range);
   }
 
   private emitSelection(): void {
-    this.dateRangeSelected.emit({
+    const range: DateRange = {
       startDate: this.startDate,
       endDate: this.endDate,
       rangeText: this.dateRangeText()
-    });
+    };
+    
+    if (this.enableTimePicker) {
+      range.startTime = this.formatTime(this.startHour, this.startMinute);
+      range.endTime = this.formatTime(this.endHour, this.endMinute);
+    }
+    
+    this.dateRangeSelected.emit(range);
   }
   
   private emitMultiChange(): void {
@@ -920,11 +960,152 @@ export class DualDatepickerComponent implements OnInit, OnChanges, ControlValueA
   }
 
   private getDateRangeValue(): DateRange {
-    return {
+    const range: DateRange = {
       startDate: this.startDate,
       endDate: this.endDate,
       rangeText: this.dateRangeText()
     };
+    
+    if (this.enableTimePicker) {
+      range.startTime = this.formatTime(this.startHour, this.startMinute);
+      range.endTime = this.formatTime(this.endHour, this.endMinute);
+    }
+    
+    return range;
+  }
+
+  // Time Picker Methods
+  toggleStartTimePicker(): void {
+    if (!this.enableTimePicker) return;
+    this.showStartTimePicker.set(!this.showStartTimePicker());
+    this.showEndTimePicker.set(false);
+  }
+
+  toggleEndTimePicker(): void {
+    if (!this.enableTimePicker) return;
+    this.showEndTimePicker.set(!this.showEndTimePicker());
+    this.showStartTimePicker.set(false);
+  }
+
+  incrementStartHour(): void {
+    this.startHour = (this.startHour + 1) % 24;
+    if (this.requireApply) {
+      this.hasPendingChanges.set(true);
+    } else {
+      this.emitChange();
+    }
+  }
+
+  decrementStartHour(): void {
+    this.startHour = this.startHour === 0 ? 23 : this.startHour - 1;
+    if (this.requireApply) {
+      this.hasPendingChanges.set(true);
+    } else {
+      this.emitChange();
+    }
+  }
+
+  incrementStartMinute(): void {
+    this.startMinute = (this.startMinute + this.minuteStep) % 60;
+    if (this.requireApply) {
+      this.hasPendingChanges.set(true);
+    } else {
+      this.emitChange();
+    }
+  }
+
+  decrementStartMinute(): void {
+    this.startMinute = this.startMinute - this.minuteStep;
+    if (this.startMinute < 0) {
+      this.startMinute = 60 - this.minuteStep;
+    }
+    if (this.requireApply) {
+      this.hasPendingChanges.set(true);
+    } else {
+      this.emitChange();
+    }
+  }
+
+  incrementEndHour(): void {
+    this.endHour = (this.endHour + 1) % 24;
+    if (this.requireApply) {
+      this.hasPendingChanges.set(true);
+    } else {
+      this.emitChange();
+    }
+  }
+
+  decrementEndHour(): void {
+    this.endHour = this.endHour === 0 ? 23 : this.endHour - 1;
+    if (this.requireApply) {
+      this.hasPendingChanges.set(true);
+    } else {
+      this.emitChange();
+    }
+  }
+
+  incrementEndMinute(): void {
+    this.endMinute = (this.endMinute + this.minuteStep) % 60;
+    if (this.requireApply) {
+      this.hasPendingChanges.set(true);
+    } else {
+      this.emitChange();
+    }
+  }
+
+  decrementEndMinute(): void {
+    this.endMinute = this.endMinute - this.minuteStep;
+    if (this.endMinute < 0) {
+      this.endMinute = 60 - this.minuteStep;
+    }
+    if (this.requireApply) {
+      this.hasPendingChanges.set(true);
+    } else {
+      this.emitChange();
+    }
+  }
+
+  formatTime(hour: number, minute: number): string {
+    const h = hour.toString().padStart(2, '0');
+    const m = minute.toString().padStart(2, '0');
+    
+    if (this.timeFormat === '12h') {
+      const isPM = hour >= 12;
+      const hour12 = hour === 0 ? 12 : hour > 12 ? hour - 12 : hour;
+      const period = isPM ? 'PM' : 'AM';
+      return `${hour12.toString().padStart(2, '0')}:${m} ${period}`;
+    }
+    
+    return `${h}:${m}`;
+  }
+
+  parseTime(timeString: string): { hour: number; minute: number } {
+    if (!timeString) return { hour: 0, minute: 0 };
+    
+    const time12hRegex = /^(\d{1,2}):(\d{2})\s?(AM|PM)$/i;
+    const time24hRegex = /^(\d{1,2}):(\d{2})$/;
+    
+    let match = timeString.match(time12hRegex);
+    if (match) {
+      let hour = parseInt(match[1], 10);
+      const minute = parseInt(match[2], 10);
+      const period = match[3].toUpperCase();
+      
+      if (period === 'PM' && hour !== 12) hour += 12;
+      if (period === 'AM' && hour === 12) hour = 0;
+      
+      return { hour, minute };
+    }
+    
+    match = timeString.match(time24hRegex);
+    if (match) {
+      return {
+        hour: parseInt(match[1], 10),
+        minute: parseInt(match[2], 10)
+      };
+    }
+    
+    return { hour: 0, minute: 0 };
   }
 
   // ControlValueAccessor implementation
@@ -932,6 +1113,20 @@ export class DualDatepickerComponent implements OnInit, OnChanges, ControlValueA
     if (value) {
       this.startDate = value.startDate || '';
       this.endDate = value.endDate || '';
+      
+      if (this.enableTimePicker) {
+        if (value.startTime) {
+          const startTime = this.parseTime(value.startTime);
+          this.startHour = startTime.hour;
+          this.startMinute = startTime.minute;
+        }
+        if (value.endTime) {
+          const endTime = this.parseTime(value.endTime);
+          this.endHour = endTime.hour;
+          this.endMinute = endTime.minute;
+        }
+      }
+      
       if (this.startDate && this.endDate) {
         this.updateDateRangeText();
         this.generateCalendars();
