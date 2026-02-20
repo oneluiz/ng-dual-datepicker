@@ -31,6 +31,15 @@
     <div class="nav-content">
       <button 
         class="nav-tab" 
+        [class.active]="activeTab === 'home'"
+        (click)="setActiveTab('home')">
+        <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+          <path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L2 8.207V13.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V8.207l.646.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.707 1.5ZM13 7.207V13.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V7.207l5-5 5 5Z"/>
+        </svg>
+        Home
+      </button>
+      <button 
+        class="nav-tab" 
         [class.active]="activeTab === 'examples'"
         (click)="setActiveTab('examples')">
         <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
@@ -71,6 +80,256 @@
 
   <!-- Content -->
   <main class="demo-content">
+    <!-- Home Tab -->
+    @if (activeTab === 'home') {
+      <div class="home-content fade-in">
+        <!-- Hero Section -->
+        <section class="hero-section">
+          <div class="hero-badge">
+            <span class="badge-version">v3.2.0</span>
+            <span class="badge-text">Latest Release</span>
+          </div>
+          <h1 class="hero-title">
+            The Modern Angular<br>Date Range Picker
+          </h1>
+          <p class="hero-subtitle">
+            Zero dependencies. Lightweight. Fully customizable.<br>
+            Built with Angular Signals for blazing-fast performance.
+          </p>
+          <div class="hero-actions">
+            <button class="btn-hero primary" (click)="setActiveTab('examples')">
+              <svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+              </svg>
+              View Examples
+            </button>
+            <button class="btn-hero secondary" (click)="setActiveTab('docs')">
+              <svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M1 2.828c.885-.37 2.154-.769 3.388-.893 1.33-.134 2.458.063 3.112.752v9.746c-.935-.53-2.12-.603-3.213-.493-1.18.12-2.37.461-3.287.811V2.828zm7.5-.141c.654-.689 1.782-.886 3.112-.752 1.234.124 2.503.523 3.388.893v9.923c-.918-.35-2.107-.692-3.287-.81-1.094-.111-2.278-.039-3.213.492V2.687zM8 1.783C7.015.936 5.587.81 4.287.94c-1.514.153-3.042.672-3.994 1.105A.5.5 0 0 0 0 2.5v11a.5.5 0 0 0 .707.455c.882-.4 2.303-.881 3.68-1.02 1.409-.142 2.59.087 3.223.877a.5.5 0 0 0 .78 0c.633-.79 1.814-1.019 3.222-.877 1.378.139 2.8.62 3.681 1.02A.5.5 0 0 0 16 13.5v-11a.5.5 0 0 0-.293-.455c-.952-.433-2.48-.952-3.994-1.105C10.413.809 8.985.936 8 1.783z"/>
+              </svg>
+              Read Docs
+            </button>
+          </div>
+          <div class="hero-install">
+            <code>npm install &#64;oneluiz/dual-datepicker</code>
+          </div>
+        </section>
+
+        <!-- Stats Section -->
+        <section class="stats-section">
+          <div class="stat-item">
+            <div class="stat-number">~60 KB</div>
+            <div class="stat-label">Bundle Size</div>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat-item">
+            <div class="stat-number">Zero</div>
+            <div class="stat-label">Dependencies</div>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat-item">
+            <div class="stat-number">16</div>
+            <div class="stat-label">Live Examples</div>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat-item">
+            <div class="stat-number">WCAG 2.1</div>
+            <div class="stat-label">Accessibility</div>
+          </div>
+        </section>
+
+        <!-- Features Grid -->
+        <section class="features-section">
+          <h2 class="section-title">Why Choose ng-dual-datepicker?</h2>
+          <p class="section-subtitle">The lightweight, powerful alternative to Angular Material DateRangePicker</p>
+          
+          <div class="features-grid">
+            <div class="feature-card">
+              <div class="feature-icon">🪶</div>
+              <h3>Zero Dependencies</h3>
+              <p>No external libraries required. Pure Angular implementation with no bloat.</p>
+            </div>
+
+            <div class="feature-card">
+              <div class="feature-icon">⚡</div>
+              <h3>Angular Signals</h3>
+              <p>Built with modern Angular Signals for optimal reactivity and performance.</p>
+            </div>
+
+            <div class="feature-card">
+              <div class="feature-icon">🎯</div>
+              <h3>Standalone Component</h3>
+              <p>No NgModule imports needed. Works out of the box with Angular 17+.</p>
+            </div>
+
+            <div class="feature-card">
+              <div class="feature-icon">🎨</div>
+              <h3>Fully Customizable</h3>
+              <p>Every color, padding, and border is configurable via inputs.</p>
+            </div>
+
+            <div class="feature-card">
+              <div class="feature-icon">📦</div>
+              <h3>Lightweight</h3>
+              <p>~60 KB gzipped total bundle. 5x smaller than Material alternatives.</p>
+            </div>
+
+            <div class="feature-card">
+              <div class="feature-icon">♿</div>
+              <h3>Accessible</h3>
+              <p>WCAG 2.1 Level AA compliant with full keyboard navigation.</p>
+            </div>
+
+            <div class="feature-card highlight">
+              <div class="feature-icon">🔥</div>
+              <h3>Multi-Range Support</h3>
+              <p>Select UNLIMITED date ranges. Material CAN'T do this!</p>
+              <span class="feature-badge">Exclusive Feature</span>
+            </div>
+
+            <div class="feature-card highlight">
+              <div class="feature-icon">⚙️</div>
+              <h3>Flexible Presets</h3>
+              <p>Dynamic getValue() pattern. Create any custom date logic.</p>
+              <span class="feature-badge">Game Changer</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- Comparison Section -->
+        <section class="comparison-section">
+          <h2 class="section-title">ng-dual-datepicker vs Angular Material</h2>
+          <p class="section-subtitle">See why developers are switching to ng-dual-datepicker</p>
+          
+          <div class="comparison-grid">
+            <div class="comparison-header">
+              <div></div>
+              <div class="product-label ours">ng-dual-datepicker</div>
+              <div class="product-label theirs">Angular Material</div>
+            </div>
+
+            <div class="comparison-row">
+              <div class="comparison-feature">Bundle Size</div>
+              <div class="comparison-value good">~60 KB</div>
+              <div class="comparison-value bad">~300+ KB</div>
+            </div>
+
+            <div class="comparison-row">
+              <div class="comparison-feature">Dependencies</div>
+              <div class="comparison-value good">Zero</div>
+              <div class="comparison-value bad">Material + CDK required</div>
+            </div>
+
+            <div class="comparison-row">
+              <div class="comparison-feature">Standalone</div>
+              <div class="comparison-value good">✅ Native</div>
+              <div class="comparison-value bad">⚠️ Module setup</div>
+            </div>
+
+            <div class="comparison-row">
+              <div class="comparison-feature">Angular Signals</div>
+              <div class="comparison-value good">✅ Built-in</div>
+              <div class="comparison-value bad">❌ Not yet</div>
+            </div>
+
+            <div class="comparison-row">
+              <div class="comparison-feature">Multi-Range</div>
+              <div class="comparison-value good">✅ Unlimited</div>
+              <div class="comparison-value bad">❌ Single only</div>
+            </div>
+
+            <div class="comparison-row">
+              <div class="comparison-feature">Setup Time</div>
+              <div class="comparison-value good">&lt; 1 minute</div>
+              <div class="comparison-value bad">~10+ minutes</div>
+            </div>
+
+            <div class="comparison-row">
+              <div class="comparison-feature">Customization</div>
+              <div class="comparison-value good">Full control</div>
+              <div class="comparison-value neutral">Theme-constrained</div>
+            </div>
+
+            <div class="comparison-row">
+              <div class="comparison-feature">Learning Curve</div>
+              <div class="comparison-value good">Minimal</div>
+              <div class="comparison-value bad">Requires Material knowledge</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Quick Start Section -->
+        <section class="quickstart-section">
+          <h2 class="section-title">Get Started in 60 Seconds</h2>
+          <p class="section-subtitle">Install, import, and you're ready to go</p>
+          
+          <div class="quickstart-steps">
+            <div class="step-item">
+              <div class="step-number">1</div>
+              <div class="step-content">
+                <h3>Install</h3>
+                <div class="code-block">
+                  <pre>npm install &#64;oneluiz/dual-datepicker</pre>
+                </div>
+              </div>
+            </div>
+
+            <div class="step-item">
+              <div class="step-number">2</div>
+              <div class="step-content">
+                <h3>Import</h3>
+                <div class="code-block">
+                  <pre>import &#123; DualDatepickerComponent &#125; from '&#64;oneluiz/dual-datepicker';
+
+&#64;Component(&#123;
+  standalone: true,
+  imports: [DualDatepickerComponent],
+  ...
+&#125;)</pre>
+                </div>
+              </div>
+            </div>
+
+            <div class="step-item">
+              <div class="step-number">3</div>
+              <div class="step-content">
+                <h3>Use</h3>
+                <div class="code-block">
+                  <pre>&lt;ngx-dual-datepicker
+  (dateRangeChange)="onDateRangeChange($event)"&gt;
+&lt;/ngx-dual-datepicker&gt;</pre>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="quickstart-cta">
+            <button class="btn-cta" (click)="setActiveTab('examples')">
+              Explore 16 Interactive Examples
+              <svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
+              </svg>
+            </button>
+          </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section class="cta-section">
+          <h2>Ready to Build Better Date Pickers?</h2>
+          <p>Join developers who chose simplicity, performance, and flexibility.</p>
+          <div class="cta-buttons">
+            <button class="btn-cta primary" (click)="setActiveTab('examples')">View Live Examples</button>
+            <a href="https://github.com/oneluiz/ng-dual-datepicker" target="_blank" class="btn-cta secondary">
+              <svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+              </svg>
+              Star on GitHub
+            </a>
+          </div>
+        </section>
+      </div>
+    }
+
     <!-- Examples Tab -->
     @if (activeTab === 'examples') {
       <!-- Sidebar Navigation -->

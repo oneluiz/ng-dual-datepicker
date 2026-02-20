@@ -11,7 +11,7 @@ import { DualDatepickerComponent, DateRange, MultiDateRange, PresetConfig, Commo
 })
 export class AppComponent {
   // Active tab
-  activeTab: 'examples' | 'docs' | 'api' | 'blog' = 'examples';
+  activeTab: 'home' | 'examples' | 'docs' | 'api' | 'blog' = 'home';
   
   // Active v3.2.0 feature tab
   activeV320Tab: 'disabled-dates' | 'display-format' | 'apply-button' | 'hover-preview' = 'disabled-dates';
@@ -107,7 +107,7 @@ export class AppComponent {
     this.datepicker8.clear();
   }
 
-  setActiveTab(tab: 'examples' | 'docs' | 'api' | 'blog') {
+  setActiveTab(tab: 'home' | 'examples' | 'docs' | 'api' | 'blog') {
     this.activeTab = tab;
   }
   
