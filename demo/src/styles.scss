@@ -1,3 +1,10 @@
+// Import all theming options for demo
+@import '../../src/themes/bootstrap.scss';
+@import '../../src/themes/bulma.scss';
+@import '../../src/themes/foundation.scss';
+@import '../../src/themes/tailwind.scss';
+@import '../../src/themes/custom.scss';
+
 * {
   margin: 0;
   padding: 0;
