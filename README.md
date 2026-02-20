@@ -1886,20 +1886,36 @@ export class ExampleComponent {
 
 Recently shipped:
 
+**v3.3.0:**
+- ✅ **Theming System** - Pre-built themes for Bootstrap, Bulma, Foundation, Tailwind CSS, and Custom
+- ✅ **CSS Variables Support** - 13 customizable variables for branding
+- ✅ **Framework Integration** - Match your existing design system seamlessly
+
+**v3.2.0:**
+- ✅ **Hover Range Preview** - Visual feedback before confirming selection
+- ✅ **Apply/Confirm Button** - Require confirmation for enterprise dashboards
+- ✅ **Display Format** - Customize date display (DD/MM/YYYY, MM/DD/YYYY, etc.)
+- ✅ **Disabled Dates** - Block weekends, holidays, or custom logic
+
+**v3.1.0:**
+- ✅ **Complete Keyboard Navigation** - Arrow keys, Enter/Space, Tab, Escape, Home/End, PageUp/Down
+- ✅ **Full Accessibility Audit** - WCAG 2.1 Level AA compliance
+
+**v2.7.0:**
+- ✅ **Multi-range Support** - Select UNLIMITED date ranges (Material CAN'T do this!)
+
 **v2.6.0:**
-- ✅ **Flexible Preset System** - `getValue()` pattern for custom date logic (This month, Last month, Quarter to date, etc.)
+- ✅ **Flexible Preset System** - `getValue()` pattern for custom date logic
 - ✅ **Pre-built Preset Utilities** - CommonPresets for Dashboard, Reporting, Financial, Analytics
-- ✅ **Real Differentiator** - Perfect for ERP, BI, POS, and Reporting systems
 
 **v2.5.0:**
 - ✅ **Date Adapter System** - Support for DayJS, date-fns, Luxon, and custom date libraries
 
-Planned features and improvements:
+Planned features:
 
-- ⬜ **Complete keyboard navigation** - Arrow keys, Enter/Space, Tab, Escape
-- ⬜ **Full accessibility audit** - WCAG 2.1 AA compliance
-- ⬜ **Multi-range support** - Select multiple date ranges
-- ⬜ **Theming system** - Pre-built theme presets
+- ⬜ **Time Picker** - Select date + time ranges
+- ⬜ **Mobile Optimizations** - Enhanced touch gestures and responsive layout
+- ⬜ **Range Shortcuts** - Quick selection buttons (Today, This Week, etc.)
 
 ## 📄 License
 
