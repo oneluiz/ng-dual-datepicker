@@ -659,6 +659,73 @@
             </div>
           </div>
         </div>
+
+        <!-- Example 15: Apply/Confirm Button -->
+        <div class="demo-example">
+          <div class="demo-box">
+            <h2>✅ Apply/Confirm Button</h2>
+            <p class="example-desc">
+              Require explicit confirmation before emitting changes. Perfect for dashboards where 
+              recalculating data is expensive! User can review selection before applying. 💼
+            </p>
+            <ngx-dual-datepicker
+              [requireApply]="true"
+              [presets]="customPresets"
+              (dateRangeChange)="onDateRangeChange(15, $event)">
+            </ngx-dual-datepicker>
+            @if (example15Range) {
+            <div class="output">
+              <strong>Applied:</strong> {{ example15Range.rangeText }}
+              <br>
+              <small style="color: #6b7280; margin-top: 4px; display: block;">
+                ℹ️ Changes only emit after clicking "Apply" button
+              </small>
+            </div>
+            }
+            <div class="adapter-info material-cant">
+              <h4>🎯 How It Works:</h4>
+              <ol style="margin: 0; padding-left: 20px;">
+                <li><strong>Select dates</strong> - User clicks start and end dates</li>
+                <li><strong>Pending state</strong> - Selection highlighted as "pending"</li>
+                <li><strong>NO events yet</strong> - dateRangeChange NOT emitted</li>
+                <li><strong>Apply</strong> - User clicks Apply → dates confirmed, events emitted</li>
+                <li><strong>Cancel</strong> - Or clicks Cancel → pending selection discarded</li>
+              </ol>
+              <h4>💎 Key Benefits:</h4>
+              <ul>
+                <li>✅ <strong>Prevent unwanted API calls</strong> during date selection</li>
+                <li>✅ <strong>User control</strong> - Explicit confirmation required</li>
+                <li>✅ <strong>Expensive operations</strong> - Perfect for data loading, calculations</li>
+                <li>✅ <strong>Enterprise UX</strong> - Professional dashboard behavior</li>
+                <li>✅ <strong>Works with everything</strong> - Presets, formats, disabled dates, etc.</li>
+              </ul>
+              <h4>🚀 Perfect Use Cases:</h4>
+              <ul>
+                <li>📊 <strong>Dashboards</strong> - Load data only after Apply</li>
+                <li>📈 <strong>Reports</strong> - Expensive calculations/aggregations</li>
+                <li>🔍 <strong>Analytics</strong> - API calls to fetch metrics</li>
+                <li>💰 <strong>Financial systems</strong> - Complex data processing</li>
+                <li>📉 <strong>BI Tools</strong> - Heavy database queries</li>
+              </ul>
+              <div class="material-comparison">
+                <p class="comparison-title">📊 Feature Comparison</p>
+                <div class="comparison">
+                  <div class="our-feature">
+                    <span class="feature-name">ng-dual-datepicker</span>
+                    <span class="feature-value">✅ Apply/Confirm</span>
+                  </div>
+                  <div class="their-feature">
+                    <span class="feature-name">Angular Material</span>
+                    <span class="feature-value">❌ Not Available</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="code-block">
+              <pre>{{ codeExamples.requireApply }}</pre>
+            </div>
+          </div>
+        </div>
       </div>
     }
 

@@ -71,6 +71,7 @@ export class DualDatepickerComponent implements OnInit, OnChanges, ControlValueA
   @Input() locale: LocaleConfig = {};
   @Input() disabledDates: Date[] | ((date: Date) => boolean) | undefined;
   @Input() displayFormat: string = 'D MMM'; // Format for displaying dates in input
+  @Input() requireApply: boolean = false; // Require Apply button confirmation
 
   @Output() dateRangeChange = new EventEmitter<DateRange>();
   @Output() dateRangeSelected = new EventEmitter<DateRange>();
@@ -89,6 +90,11 @@ export class DualDatepickerComponent implements OnInit, OnChanges, ControlValueA
   currentMonthDays = signal<any[]>([]);
   previousMonthDays = signal<any[]>([]);
   isDisabled = signal(false);
+  
+  // Apply/Confirm support
+  pendingStartDate: string = '';
+  pendingEndDate: string = '';
+  hasPendingChanges = signal(false);
   
   // Multi-range support
   selectedRanges = signal<DateRange[]>([]);
@@ -570,13 +576,20 @@ export class DualDatepickerComponent implements OnInit, OnChanges, ControlValueA
     for (let day = 1; day <= daysInMonth; day++) {
       const dayDate = this.dateAdapter.createDate(year, month, day);
       const dateStr = this.formatDate(dayDate);
+      
+      // Check if date is in pending range (for requireApply mode)
+      const isPendingStart = this.requireApply && this.pendingStartDate === dateStr;
+      const isPendingEnd = this.requireApply && this.pendingEndDate === dateStr;
+      const inPendingRange = this.requireApply && this.pendingStartDate && this.pendingEndDate &&
+                             dateStr >= this.pendingStartDate && dateStr <= this.pendingEndDate;
+      
       monthDays.push({
         day: day,
         date: dateStr,
         isCurrentMonth: true,
-        isStart: this.startDate === dateStr,
-        isEnd: this.endDate === dateStr,
-        inRange: this.isInRange(dateStr),
+        isStart: this.startDate === dateStr || isPendingStart,
+        isEnd: this.endDate === dateStr || isPendingEnd,
+        inRange: this.isInRange(dateStr) || inPendingRange,
         isDisabled: this.isDateDisabled(dayDate)
       });
     }
@@ -662,29 +675,83 @@ export class DualDatepickerComponent implements OnInit, OnChanges, ControlValueA
       this.generateCalendars();
     } else {
       // Single range mode (original behavior)
-      if (this.selectingStartDate()) {
-        this.startDate = dayObj.date;
-        this.endDate = '';
-        this.dateRangeText.set('');
-        this.selectingStartDate.set(false);
-        this.emitChange();
-      } else {
-        if (dayObj.date < this.startDate) {
-          this.endDate = this.startDate;
-          this.startDate = dayObj.date;
+      if (this.requireApply) {
+        // Apply mode: use pending dates, don't emit until Apply is clicked
+        if (this.selectingStartDate()) {
+          this.pendingStartDate = dayObj.date;
+          this.pendingEndDate = '';
+          this.selectingStartDate.set(false);
+          this.hasPendingChanges.set(true);
         } else {
-          this.endDate = dayObj.date;
+          if (dayObj.date < this.pendingStartDate) {
+            this.pendingEndDate = this.pendingStartDate;
+            this.pendingStartDate = dayObj.date;
+          } else {
+            this.pendingEndDate = dayObj.date;
+          }
+          this.selectingStartDate.set(true);
+          this.hasPendingChanges.set(true);
         }
-        this.updateDateRangeText();
-        if (this.closeOnSelection) {
-          this.showDatePicker.set(false);
+        this.generateCalendars();
+      } else {
+        // Immediate mode: emit changes immediately
+        if (this.selectingStartDate()) {
+          this.startDate = dayObj.date;
+          this.endDate = '';
+          this.dateRangeText.set('');
+          this.selectingStartDate.set(false);
+          this.emitChange();
+        } else {
+          if (dayObj.date < this.startDate) {
+            this.endDate = this.startDate;
+            this.startDate = dayObj.date;
+          } else {
+            this.endDate = dayObj.date;
+          }
+          this.updateDateRangeText();
+          if (this.closeOnSelection) {
+            this.showDatePicker.set(false);
+          }
+          this.selectingStartDate.set(true);
+          this.emitChange();
+          this.emitSelection();
         }
-        this.selectingStartDate.set(true);
-        this.emitChange();
-        this.emitSelection();
+        this.generateCalendars();
       }
-      this.generateCalendars();
     }
+  }
+
+  applySelection(): void {
+    if (!this.hasPendingChanges()) return;
+    
+    // Apply pending dates
+    this.startDate = this.pendingStartDate;
+    this.endDate = this.pendingEndDate;
+    this.updateDateRangeText();
+    
+    // Clear pending state
+    this.pendingStartDate = '';
+    this.pendingEndDate = '';
+    this.hasPendingChanges.set(false);
+    
+    // Emit changes
+    this.emitChange();
+    this.emitSelection();
+    
+    // Close picker
+    this.showDatePicker.set(false);
+    this.selectingStartDate.set(true);
+  }
+
+  cancelSelection(): void {
+    // Discard pending changes
+    this.pendingStartDate = '';
+    this.pendingEndDate = '';
+    this.hasPendingChanges.set(false);
+    this.selectingStartDate.set(true);
+    
+    // Regenerate calendars to clear pending visual state
+    this.generateCalendars();
   }
 
   changeMonth(direction: number): void {

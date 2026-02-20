@@ -30,6 +30,7 @@ npm install @oneluiz/dual-datepicker
   - [Multi-Range Selection](#multi-range-support)
   - [Disabled Dates](#disabled-dates)
   - [Display Format](#display-format)
+  - [Apply/Confirm Button](#applyconfirm-button)
   - [Custom Presets](#custom-presets)
   - [Date Adapter System](#date-adapter-system)
   - [Keyboard Navigation](#keyboard-navigation)
@@ -57,6 +58,7 @@ npm install @oneluiz/dual-datepicker
 - 🔥 **Multi-Range Support** – Select multiple date ranges (Material CAN'T do this!)
 - 🚫 **Disabled Dates** – Block weekends, holidays, or custom logic
 - 🎨 **Display Format** – Customize date display (DD/MM/YYYY, MM/DD/YYYY, etc.)
+- ✅ **Apply/Confirm Button** – Require confirmation before emitting (perfect for dashboards)
 - 🎨 **Fully Customizable** – Every color, padding, border configurable
 - 📦 **Lightweight** – ~60 KB gzipped total bundle
 - 🚀 **Performance** – OnPush change detection + trackBy optimization
@@ -383,6 +385,88 @@ displayFormat="YY.MM.DD"        // 26.01.01
 - ✅ Works with locale month names
 - ✅ No external dependencies
 
+### Apply/Confirm Button
+
+**Require explicit confirmation before emitting changes.** Perfect for dashboards and enterprise applications where recalculating data or making API calls is expensive.
+
+#### How It Works
+
+```typescript
+import { Component } from '@angular/core';
+import { DateRange } from '@oneluiz/dual-datepicker';
+
+@Component({
+  template: `
+    <ngx-dual-datepicker
+      [requireApply]="true"
+      (dateRangeChange)="onDateRangeChange($event)">
+    </ngx-dual-datepicker>
+
+    @if (selectedRange) {
+      <div class="data-display">
+        <!-- Expensive data loaded only after Apply -->
+        <app-dashboard-data [range]="selectedRange"></app-dashboard-data>
+      </div>
+    }
+  `
+})
+export class DashboardExample {
+  selectedRange: DateRange | null = null;
+
+  onDateRangeChange(range: DateRange) {
+    this.selectedRange = range;
+    // This only fires AFTER user clicks Apply button
+    // Prevents unnecessary API calls during date selection
+    this.loadExpensiveData(range.startDate, range.endDate);
+  }
+
+  loadExpensiveData(start: string, end: string) {
+    // API call, database query, heavy calculation, etc.
+    this.apiService.fetchDashboardData(start, end).subscribe(...);
+  }
+}
+```
+
+#### User Flow
+
+1. **User selects dates** - Clicks start and end dates in calendar
+2. **Pending state** - Selection highlighted as "pending" (not confirmed)
+3. **No events yet** - `dateRangeChange` is NOT emitted
+4. **Apply** - User clicks "Apply" button → dates confirmed, event emitted
+5. **Cancel** - Or clicks "Cancel" button → pending selection discarded
+
+#### Visual Behavior
+
+- Selected dates show in calendar with pending styling
+- Apply button enabled when both dates selected
+- Cancel button enabled when there are pending changes
+- Apply button triggers event emission and closes picker
+- Cancel clears pending selection and keeps current dates
+
+**Perfect Use Cases:**
+- 📊 Dashboards that load data on date change  
+- 📈 Reports with expensive calculations/aggregations
+- 🔍 Analytics with API calls to fetch metrics
+- 💰 Financial systems with complex data processing
+- 📉 BI tools with heavy database queries
+- 🧮 Any scenario where immediate updates are costly
+
+**Key Benefits:**
+- ✅ Prevent unwanted API calls during selection
+- ✅ User control - explicit confirmation required
+- ✅ Professional enterprise UX pattern
+- ✅ Reduces server load and improves performance
+- ✅ Works with all other features (presets, formats, etc.)
+
+**Comparison with Immediate Mode:**
+
+| Behavior | Immediate Mode | Apply Mode |
+|----------|---------------|------------|
+| Event emission | On each date click | Only on Apply click |
+| API calls | Multiple (start + end) | Single (only Apply) |
+| User control | Automatic | Explicit confirmation |
+| Best for | Simple forms | Dashboards, reports |
+
 ### Custom Presets
 
 **Power feature for dashboards, reporting, ERP, and BI systems!**
@@ -591,6 +675,7 @@ spanishLocale: LocaleConfig = {
 | `multiRange` | `boolean` | `false` | Enable multi-range selection mode |
 | `disabledDates` | `Date[] \| ((date: Date) => boolean)` | `undefined` | Array of dates or function to disable specific dates |
 | `displayFormat` | `string` | `'D MMM'` | Format for displaying dates in input (tokens: YYYY, YY, MMMM, MMM, MM, M, DD, D) |
+| `requireApply` | `boolean` | `false` | Require Apply button confirmation before emitting changes |
 | `enableKeyboardNavigation` | `boolean` | `true` | Enable keyboard navigation |
 | `inputBackgroundColor` | `string` | `'#fff'` | Input background color |
 | `inputTextColor` | `string` | `'#495057'` | Input text color |

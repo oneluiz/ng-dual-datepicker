@@ -64,6 +64,9 @@ export class AppComponent {
   example14cRange: DateRange | null = null;
   example14dRange: DateRange | null = null;
   
+  // Example 15: Apply/Confirm Button (NEW v3.2.0)
+  example15Range: DateRange | null = null;
+  
   // Costa Rica holidays 2026
   costaRicaHolidays2026: Date[] = [
     new Date(2026, 0, 1),   // Año Nuevo
@@ -154,6 +157,9 @@ export class AppComponent {
         break;
       case 144:
         this.example14dRange = range;
+        break;
+      case 15:
+        this.example15Range = range;
         break;
     }
   }
@@ -404,6 +410,43 @@ isDateDisabled = (date: Date): boolean => {
 
 // Mix and match tokens with any separators:
 // "D/M/YY", "DD-MM-YYYY", "MMMM D, YYYY", etc.`,
+      requireApply: `// Require explicit confirmation before emitting changes
+// Perfect for dashboards where recalculating data is expensive
+
+<ngx-dual-datepicker
+  [requireApply]="true"
+  [presets]="customPresets"
+  (dateRangeChange)="onDateRangeChange($event)">
+</ngx-dual-datepicker>
+
+// How it works:
+// 1. User selects start and end dates
+// 2. Selection is shown as "pending" (highlighted in calendar)
+// 3. NO events are emitted yet
+// 4. User clicks "Apply" → dates confirmed, events emitted
+// 5. Or clicks "Cancel" → pending selection discarded
+
+// Key benefits:
+// ✔ Prevent unwanted API calls during selection
+// ✔ Give users control to confirm before applying
+// ✔ Perfect for expensive operations (data loading, API calls)
+// ✔ Improves UX in enterprise dashboards
+// ✔ Works with all other features (presets, formats, etc.)
+
+// When to use:
+// → Dashboards that load data on date change
+// → Reports with expensive calculations
+// → Analytics with API calls
+// → Any scenario where immediate updates are costly
+
+// Real-world example:
+selectedRange: DateRange | null = null;
+
+onDateRangeChange(range: DateRange) {
+  this.selectedRange = range;
+  // This only fires AFTER user clicks Apply
+  this.loadExpensiveData(range.startDate, range.endDate);
+}`,
       install: `npm install @oneluiz/dual-datepicker`
     };
   }

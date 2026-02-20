@@ -155,9 +155,29 @@
     </div>
     }
 
-    <!-- Footer with clear button -->
-    @if (showClearButton || multiRange) {
+    <!-- Footer with buttons -->
+    @if (showClearButton || multiRange || requireApply) {
     <div class="date-picker-footer">
+      @if (requireApply && !multiRange) {
+        <div class="apply-footer-actions">
+          <button 
+            type="button" 
+            class="btn-cancel" 
+            (click)="cancelSelection()" 
+            [disabled]="!hasPendingChanges()"
+            title="Cancel selection">
+            Cancel
+          </button>
+          <button 
+            type="button" 
+            class="btn-apply" 
+            (click)="applySelection()" 
+            [disabled]="!hasPendingChanges() || !pendingStartDate || !pendingEndDate"
+            title="Apply selection">
+            Apply
+          </button>
+        </div>
+      }
       @if (multiRange) {
         <div class="multi-range-footer-actions">
           <button type="button" class="btn-clear" (click)="clear()" title="Clear all ranges">
@@ -168,7 +188,7 @@
           </button>
         </div>
       }
-      @if (!multiRange && showClearButton) {
+      @if (!multiRange && !requireApply && showClearButton) {
         <button type="button" class="btn-clear" (click)="clear()" title="Clear selection">
           Clear
         </button>
