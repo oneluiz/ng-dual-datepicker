@@ -1,80 +1,79 @@
 <div class="demo-wrapper">
   <!-- Header -->
-  <header class="demo-header">
-    <div class="header-content">
-      <div class="logo-section">
-        <div class="logo">🗓️</div>
-        <div class="title-section">
-          <h1>Dual Datepicker</h1>
-          <p class="subtitle">Angular Date Range Picker Component</p>
+  <header class="demo-header border-bottom bg-white sticky-top shadow-sm">
+    <div class="container-fluid px-4 py-3">
+      <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+        <div class="d-flex align-items-center gap-3">
+          <div class="logo fs-1">🗓️</div>
+          <div class="title-section">
+            <h1 class="h4 mb-0 fw-bold">ng-dual-datepicker</h1>
+            <p class="mb-0 text-muted small">Angular Date Range Picker Component</p>
+          </div>
         </div>
-      </div>
-      <div class="header-actions">
-        <a href="https://github.com/oneluiz/ng-dual-datepicker" target="_blank" class="btn-header">
-          <svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
-            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
-          </svg>
-          GitHub
-        </a>
-        <a href="https://www.npmjs.com/package/@oneluiz/dual-datepicker" target="_blank" class="btn-header btn-primary">
-          <svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
-            <path d="M0 0v16h16v-16h-16zm13 13h-2v-8h2v8zm-3 0h-2v-11h2v11zm-3 0h-2v-8h2v8zm-3 0h-2v-11h2v11z"/>
-          </svg>
-          NPM
-        </a>
+        <div class="d-flex gap-2">
+          <a href="https://github.com/oneluiz/ng-dual-datepicker" target="_blank" class="btn btn-outline-dark btn-sm d-flex align-items-center gap-2">
+            <i class="bi bi-github"></i>
+            GitHub
+          </a>
+          <a href="https://www.npmjs.com/package/@oneluiz/dual-datepicker" target="_blank" class="btn btn-dark btn-sm d-flex align-items-center gap-2">
+            <i class="bi bi-box-seam"></i>
+            NPM
+          </a>
+        </div>
       </div>
     </div>
   </header>
 
   <!-- Navigation Tabs -->
-  <nav class="demo-nav">
-    <div class="nav-content">
-      <button 
-        class="nav-tab" 
-        [class.active]="activeTab === 'home'"
-        (click)="setActiveTab('home')">
-        <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-          <path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L2 8.207V13.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V8.207l.646.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.707 1.5ZM13 7.207V13.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V7.207l5-5 5 5Z"/>
-        </svg>
-        Home
-      </button>
-      <button 
-        class="nav-tab" 
-        [class.active]="activeTab === 'examples'"
-        (click)="setActiveTab('examples')">
-        <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-          <path d="M2 1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H9.5a1 1 0 0 0-1 1v7.293l2.646-2.647a.5.5 0 0 1 .708.708l-3.5 3.5a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L7 9.293V2a2 2 0 0 1 2-2h5a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h5a2 2 0 0 1 2 2v.5a.5.5 0 0 1-1 0V2a1 1 0 0 0-1-1H2z"/>
-        </svg>
-        Examples
-      </button>
-      <button 
-        class="nav-tab" 
-        [class.active]="activeTab === 'docs'"
-        (click)="setActiveTab('docs')">
-        <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-          <path d="M1 2.828c.885-.37 2.154-.769 3.388-.893 1.33-.134 2.458.063 3.112.752v9.746c-.935-.53-2.12-.603-3.213-.493-1.18.12-2.37.461-3.287.811V2.828zm7.5-.141c.654-.689 1.782-.886 3.112-.752 1.234.124 2.503.523 3.388.893v9.923c-.918-.35-2.107-.692-3.287-.81-1.094-.111-2.278-.039-3.213.492V2.687zM8 1.783C7.015.936 5.587.81 4.287.94c-1.514.153-3.042.672-3.994 1.105A.5.5 0 0 0 0 2.5v11a.5.5 0 0 0 .707.455c.882-.4 2.303-.881 3.68-1.02 1.409-.142 2.59.087 3.223.877a.5.5 0 0 0 .78 0c.633-.79 1.814-1.019 3.222-.877 1.378.139 2.8.62 3.681 1.02A.5.5 0 0 0 16 13.5v-11a.5.5 0 0 0-.293-.455c-.952-.433-2.48-.952-3.994-1.105C10.413.809 8.985.936 8 1.783z"/>
-        </svg>
-        Documentation
-      </button>
-      <button 
-        class="nav-tab" 
-        [class.active]="activeTab === 'api'"
-        (click)="setActiveTab('api')">
-        <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-          <path d="M5.854 4.854a.5.5 0 1 0-.708-.708l-3.5 3.5a.5.5 0 0 0 0 .708l3.5 3.5a.5.5 0 0 0 .708-.708L2.707 8l3.147-3.146zm4.292 0a.5.5 0 0 1 .708-.708l3.5 3.5a.5.5 0 0 1 0 .708l-3.5 3.5a.5.5 0 0 1-.708-.708L13.293 8l-3.147-3.146z"/>
-        </svg>
-        API Reference
-      </button>
-      <button 
-        class="nav-tab" 
-        [class.active]="activeTab === 'blog'"
-        (click)="setActiveTab('blog')">
-        <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-          <path d="M4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H4zm0 1h8a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1z"/>
-          <path d="M4 2.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.5.5h-7a.5.5 0 0 1-.5-.5v-2zm0 4a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm0 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm2-3a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm0 3a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm0 3a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5z"/>
-        </svg>
-        What's New
-      </button>
+  <nav class="bg-light border-bottom">
+    <div class="container-fluid px-4">
+      <ul class="nav nav-tabs border-0">
+        <li class="nav-item">
+          <button 
+            class="nav-link" 
+            [class.active]="activeTab === 'home'"
+            (click)="setActiveTab('home')">
+            <i class="bi bi-house-door me-2"></i>
+            Home
+          </button>
+        </li>
+        <li class="nav-item">
+          <button 
+            class="nav-link" 
+            [class.active]="activeTab === 'examples'"
+            (click)="setActiveTab('examples')">
+            <i class="bi bi-grid-3x3-gap me-2"></i>
+            Examples
+          </button>
+        </li>
+        <li class="nav-item">
+          <button 
+            class="nav-link" 
+            [class.active]="activeTab === 'docs'"
+            (click)="setActiveTab('docs')">
+            <i class="bi bi-book me-2"></i>
+            Documentation
+          </button>
+        </li>
+        <li class="nav-item">
+          <button 
+            class="nav-link" 
+            [class.active]="activeTab === 'api'"
+            (click)="setActiveTab('api')">
+            <i class="bi bi-code-slash me-2"></i>
+            API Reference
+          </button>
+        </li>
+        <li class="nav-item">
+          <button 
+            class="nav-link" 
+            [class.active]="activeTab === 'blog'"
+            (click)="setActiveTab('blog')">
+            <i class="bi bi-newspaper me-2"></i>
+            What's New
+          </button>
+        </li>
+      </ul>
     </div>
   </nav>
 
@@ -97,16 +96,12 @@
             Built with Angular Signals for blazing-fast performance.
           </p>
           <div class="hero-actions">
-            <button class="btn-hero primary" (click)="setActiveTab('examples')">
-              <svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
-                <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
-              </svg>
+            <button class="btn btn-light btn-lg px-4 py-3 fw-semibold shadow" (click)="setActiveTab('examples')">
+              <i class="bi bi-grid-3x3-gap me-2"></i>
               View Examples
             </button>
-            <button class="btn-hero secondary" (click)="setActiveTab('docs')">
-              <svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
-                <path d="M1 2.828c.885-.37 2.154-.769 3.388-.893 1.33-.134 2.458.063 3.112.752v9.746c-.935-.53-2.12-.603-3.213-.493-1.18.12-2.37.461-3.287.811V2.828zm7.5-.141c.654-.689 1.782-.886 3.112-.752 1.234.124 2.503.523 3.388.893v9.923c-.918-.35-2.107-.692-3.287-.81-1.094-.111-2.278-.039-3.213.492V2.687zM8 1.783C7.015.936 5.587.81 4.287.94c-1.514.153-3.042.672-3.994 1.105A.5.5 0 0 0 0 2.5v11a.5.5 0 0 0 .707.455c.882-.4 2.303-.881 3.68-1.02 1.409-.142 2.59.087 3.223.877a.5.5 0 0 0 .78 0c.633-.79 1.814-1.019 3.222-.877 1.378.139 2.8.62 3.681 1.02A.5.5 0 0 0 16 13.5v-11a.5.5 0 0 0-.293-.455c-.952-.433-2.48-.952-3.994-1.105C10.413.809 8.985.936 8 1.783z"/>
-              </svg>
+            <button class="btn btn-outline-light btn-lg px-4 py-3 fw-semibold" (click)="setActiveTab('docs')">
+              <i class="bi bi-book me-2"></i>
               Read Docs
             </button>
           </div>
@@ -116,215 +111,264 @@
         </section>
 
         <!-- Stats Section -->
-        <section class="stats-section">
-          <div class="stat-item">
-            <div class="stat-number">~60 KB</div>
-            <div class="stat-label">Bundle Size</div>
-          </div>
-          <div class="stat-divider"></div>
-          <div class="stat-item">
-            <div class="stat-number">Zero</div>
-            <div class="stat-label">Dependencies</div>
-          </div>
-          <div class="stat-divider"></div>
-          <div class="stat-item">
-            <div class="stat-number">16</div>
-            <div class="stat-label">Live Examples</div>
-          </div>
-          <div class="stat-divider"></div>
-          <div class="stat-item">
-            <div class="stat-number">WCAG 2.1</div>
-            <div class="stat-label">Accessibility</div>
+        <section class="stats-section py-5 bg-light border-bottom">
+          <div class="container">
+            <div class="row text-center g-4">
+              <div class="col-6 col-lg-3">
+                <div class="stat-number display-4 fw-bold text-primary">~60 KB</div>
+                <div class="stat-label text-muted">Bundle Size</div>
+              </div>
+              <div class="col-6 col-lg-3">
+                <div class="stat-number display-4 fw-bold text-primary">Zero</div>
+                <div class="stat-label text-muted">Dependencies</div>
+              </div>
+              <div class="col-6 col-lg-3">
+                <div class="stat-number display-4 fw-bold text-primary">16</div>
+                <div class="stat-label text-muted">Live Examples</div>
+              </div>
+              <div class="col-6 col-lg-3">
+                <div class="stat-number display-4 fw-bold text-primary">WCAG 2.1</div>
+                <div class="stat-label text-muted">Accessibility</div>
+              </div>
+            </div>
           </div>
         </section>
 
         <!-- Features Grid -->
-        <section class="features-section">
-          <h2 class="section-title">Why Choose ng-dual-datepicker?</h2>
-          <p class="section-subtitle">The lightweight, powerful alternative to Angular Material DateRangePicker</p>
-          
-          <div class="features-grid">
-            <div class="feature-card">
-              <div class="feature-icon">🪶</div>
-              <h3>Zero Dependencies</h3>
-              <p>No external libraries required. Pure Angular implementation with no bloat.</p>
-            </div>
+        <section class="features-section py-5">
+          <div class="container">
+            <h2 class="text-center fw-bold mb-3">Why Choose ng-dual-datepicker?</h2>
+            <p class="text-center text-muted mb-5">The lightweight, powerful alternative to Angular Material DateRangePicker</p>
+            
+            <div class="row g-4">
+              <div class="col-md-6 col-lg-3">
+                <div class="card h-100 border-0 shadow-sm hover-lift">
+                  <div class="card-body text-center">
+                    <div class="feature-icon fs-1 mb-3">🪶</div>
+                    <h5 class="card-title fw-semibold">Zero Dependencies</h5>
+                    <p class="card-text text-muted">No external libraries required. Pure Angular implementation with no bloat.</p>
+                  </div>
+                </div>
+              </div>
 
-            <div class="feature-card">
-              <div class="feature-icon">⚡</div>
-              <h3>Angular Signals</h3>
-              <p>Built with modern Angular Signals for optimal reactivity and performance.</p>
-            </div>
+              <div class="col-md-6 col-lg-3">
+                <div class="card h-100 border-0 shadow-sm hover-lift">
+                  <div class="card-body text-center">
+                    <div class="feature-icon fs-1 mb-3">⚡</div>
+                    <h5 class="card-title fw-semibold">Angular Signals</h5>
+                    <p class="card-text text-muted">Built with modern Angular Signals for optimal reactivity and performance.</p>
+                  </div>
+                </div>
+              </div>
 
-            <div class="feature-card">
-              <div class="feature-icon">🎯</div>
-              <h3>Standalone Component</h3>
-              <p>No NgModule imports needed. Works out of the box with Angular 17+.</p>
-            </div>
+              <div class="col-md-6 col-lg-3">
+                <div class="card h-100 border-0 shadow-sm hover-lift">
+                  <div class="card-body text-center">
+                    <div class="feature-icon fs-1 mb-3">🎯</div>
+                    <h5 class="card-title fw-semibold">Standalone Component</h5>
+                    <p class="card-text text-muted">No NgModule imports needed. Works out of the box with Angular 17+.</p>
+                  </div>
+                </div>
+              </div>
 
-            <div class="feature-card">
-              <div class="feature-icon">🎨</div>
-              <h3>Fully Customizable</h3>
-              <p>Every color, padding, and border is configurable via inputs.</p>
-            </div>
+              <div class="col-md-6 col-lg-3">
+                <div class="card h-100 border-0 shadow-sm hover-lift">
+                  <div class="card-body text-center">
+                    <div class="feature-icon fs-1 mb-3">🎨</div>
+                    <h5 class="card-title fw-semibold">Fully Customizable</h5>
+                    <p class="card-text text-muted">Every color, padding, and border is configurable via inputs.</p>
+                  </div>
+                </div>
+              </div>
 
-            <div class="feature-card">
-              <div class="feature-icon">📦</div>
-              <h3>Lightweight</h3>
-              <p>~60 KB gzipped total bundle. 5x smaller than Material alternatives.</p>
-            </div>
+              <div class="col-md-6 col-lg-3">
+                <div class="card h-100 border-0 shadow-sm hover-lift">
+                  <div class="card-body text-center">
+                    <div class="feature-icon fs-1 mb-3">📦</div>
+                    <h5 class="card-title fw-semibold">Lightweight</h5>
+                    <p class="card-text text-muted">~60 KB gzipped total bundle. 5x smaller than Material alternatives.</p>
+                  </div>
+                </div>
+              </div>
 
-            <div class="feature-card">
-              <div class="feature-icon">♿</div>
-              <h3>Accessible</h3>
-              <p>WCAG 2.1 Level AA compliant with full keyboard navigation.</p>
-            </div>
+              <div class="col-md-6 col-lg-3">
+                <div class="card h-100 border-0 shadow-sm hover-lift">
+                  <div class="card-body text-center">
+                    <div class="feature-icon fs-1 mb-3">♿</div>
+                    <h5 class="card-title fw-semibold">Accessible</h5>
+                    <p class="card-text text-muted">WCAG 2.1 Level AA compliant with full keyboard navigation.</p>
+                  </div>
+                </div>
+              </div>
 
-            <div class="feature-card highlight">
-              <div class="feature-icon">🔥</div>
-              <h3>Multi-Range Support</h3>
-              <p>Select UNLIMITED date ranges. Material CAN'T do this!</p>
-              <span class="feature-badge">Exclusive Feature</span>
-            </div>
+              <div class="col-md-6 col-lg-3">
+                <div class="card h-100 border-0 shadow text-white" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                  <div class="card-body text-center">
+                    <div class="feature-icon fs-1 mb-3">🔥</div>
+                    <h5 class="card-title fw-semibold">Multi-Range Support</h5>
+                    <p class="card-text">Select UNLIMITED date ranges. Material CAN'T do this!</p>
+                    <span class="badge bg-light text-primary mt-2">Exclusive Feature</span>
+                  </div>
+                </div>
+              </div>
 
-            <div class="feature-card highlight">
-              <div class="feature-icon">⚙️</div>
-              <h3>Flexible Presets</h3>
-              <p>Dynamic getValue() pattern. Create any custom date logic.</p>
-              <span class="feature-badge">Game Changer</span>
+              <div class="col-md-6 col-lg-3">
+                <div class="card h-100 border-0 shadow text-white" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                  <div class="card-body text-center">
+                    <div class="feature-icon fs-1 mb-3">⚙️</div>
+                    <h5 class="card-title fw-semibold">Flexible Presets</h5>
+                    <p class="card-text">Dynamic getValue() pattern. Create any custom date logic.</p>
+                    <span class="badge bg-light text-primary mt-2">Game Changer</span>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </section>
 
         <!-- Comparison Section -->
-        <section class="comparison-section">
-          <h2 class="section-title">ng-dual-datepicker vs Angular Material</h2>
-          <p class="section-subtitle">See why developers are switching to ng-dual-datepicker</p>
-          
-          <div class="comparison-grid">
-            <div class="comparison-header">
-              <div></div>
-              <div class="product-label ours">ng-dual-datepicker</div>
-              <div class="product-label theirs">Angular Material</div>
-            </div>
-
-            <div class="comparison-row">
-              <div class="comparison-feature">Bundle Size</div>
-              <div class="comparison-value good">~60 KB</div>
-              <div class="comparison-value bad">~300+ KB</div>
-            </div>
-
-            <div class="comparison-row">
-              <div class="comparison-feature">Dependencies</div>
-              <div class="comparison-value good">Zero</div>
-              <div class="comparison-value bad">Material + CDK required</div>
-            </div>
-
-            <div class="comparison-row">
-              <div class="comparison-feature">Standalone</div>
-              <div class="comparison-value good">✅ Native</div>
-              <div class="comparison-value bad">⚠️ Module setup</div>
-            </div>
-
-            <div class="comparison-row">
-              <div class="comparison-feature">Angular Signals</div>
-              <div class="comparison-value good">✅ Built-in</div>
-              <div class="comparison-value bad">❌ Not yet</div>
-            </div>
-
-            <div class="comparison-row">
-              <div class="comparison-feature">Multi-Range</div>
-              <div class="comparison-value good">✅ Unlimited</div>
-              <div class="comparison-value bad">❌ Single only</div>
-            </div>
-
-            <div class="comparison-row">
-              <div class="comparison-feature">Setup Time</div>
-              <div class="comparison-value good">&lt; 1 minute</div>
-              <div class="comparison-value bad">~10+ minutes</div>
-            </div>
-
-            <div class="comparison-row">
-              <div class="comparison-feature">Customization</div>
-              <div class="comparison-value good">Full control</div>
-              <div class="comparison-value neutral">Theme-constrained</div>
-            </div>
-
-            <div class="comparison-row">
-              <div class="comparison-feature">Learning Curve</div>
-              <div class="comparison-value good">Minimal</div>
-              <div class="comparison-value bad">Requires Material knowledge</div>
+        <section class="comparison-section py-5 bg-light">
+          <div class="container">
+            <h2 class="text-center fw-bold mb-3">ng-dual-datepicker vs Angular Material</h2>
+            <p class="text-center text-muted mb-5">See why developers are switching to ng-dual-datepicker</p>
+            
+            <div class="table-responsive">
+              <table class="table table-bordered bg-white shadow-sm">
+                <thead class="table-light">
+                  <tr>
+                    <th scope="col">Feature</th>
+                    <th scope="col" class="text-center text-primary fw-bold">ng-dual-datepicker</th>
+                    <th scope="col" class="text-center text-muted">Angular Material</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row">Bundle Size</th>
+                    <td class="text-center text-success fw-semibold">~60 KB</td>
+                    <td class="text-center text-danger">~300+ KB</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Dependencies</th>
+                    <td class="text-center text-success fw-semibold">Zero</td>
+                    <td class="text-center text-danger">Material + CDK required</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Standalone</th>
+                    <td class="text-center text-success fw-semibold">✅ Native</td>
+                    <td class="text-center text-warning">⚠️ Module setup</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Angular Signals</th>
+                    <td class="text-center text-success fw-semibold">✅ Built-in</td>
+                    <td class="text-center text-danger">❌ Not yet</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Multi-Range</th>
+                    <td class="text-center text-success fw-semibold">✅ Unlimited</td>
+                    <td class="text-center text-danger">❌ Single only</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Setup Time</th>
+                    <td class="text-center text-success fw-semibold">&lt; 1 minute</td>
+                    <td class="text-center text-danger">~10+ minutes</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Customization</th>
+                    <td class="text-center text-success fw-semibold">Full control</td>
+                    <td class="text-center text-muted">Theme-constrained</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Learning Curve</th>
+                    <td class="text-center text-success fw-semibold">Minimal</td>
+                    <td class="text-center text-danger">Requires Material knowledge</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
         </section>
 
         <!-- Quick Start Section -->
-        <section class="quickstart-section">
-          <h2 class="section-title">Get Started in 60 Seconds</h2>
-          <p class="section-subtitle">Install, import, and you're ready to go</p>
-          
-          <div class="quickstart-steps">
-            <div class="step-item">
-              <div class="step-number">1</div>
-              <div class="step-content">
-                <h3>Install</h3>
-                <div class="code-block">
-                  <pre>npm install &#64;oneluiz/dual-datepicker</pre>
+        <section class="quickstart-section py-5">
+          <div class="container">
+            <h2 class="text-center fw-bold mb-3">Get Started in 60 Seconds</h2>
+            <p class="text-center text-muted mb-5">Install, import, and you're ready to go</p>
+            
+            <div class="row g-4">
+              <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+                  <div class="card-body">
+                    <div class="d-flex align-items-center mb-3">
+                      <span class="badge bg-primary text-white fs-5 rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">1</span>
+                      <h4 class="ms-3 mb-0 fw-bold">Install</h4>
+                    </div>
+                    <div class="bg-dark text-white p-3 rounded">
+                      <code class="text-white">npm install &#64;oneluiz/dual-datepicker</code>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
 
-            <div class="step-item">
-              <div class="step-number">2</div>
-              <div class="step-content">
-                <h3>Import</h3>
-                <div class="code-block">
-                  <pre>import &#123; DualDatepickerComponent &#125; from '&#64;oneluiz/dual-datepicker';
+              <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+                  <div class="card-body">
+                    <div class="d-flex align-items-center mb-3">
+                      <span class="badge bg-primary text-white fs-5 rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">2</span>
+                      <h4 class="ms-3 mb-0 fw-bold">Import</h4>
+                    </div>
+                    <div class="bg-dark text-white p-3 rounded" style="font-size: 0.85rem;">
+                      <code class="text-white">import &#123; DualDatepickerComponent &#125; from '&#64;oneluiz/dual-datepicker';
 
 &#64;Component(&#123;
   standalone: true,
   imports: [DualDatepickerComponent],
   ...
-&#125;)</pre>
+&#125;)</code>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
 
-            <div class="step-item">
-              <div class="step-number">3</div>
-              <div class="step-content">
-                <h3>Use</h3>
-                <div class="code-block">
-                  <pre>&lt;ngx-dual-datepicker
+              <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+                  <div class="card-body">
+                    <div class="d-flex align-items-center mb-3">
+                      <span class="badge bg-primary text-white fs-5 rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">3</span>
+                      <h4 class="ms-3 mb-0 fw-bold">Use</h4>
+                    </div>
+                    <div class="bg-dark text-white p-3 rounded" style="font-size: 0.85rem;">
+                      <code class="text-white">&lt;ngx-dual-datepicker
   (dateRangeChange)="onDateRangeChange($event)"&gt;
-&lt;/ngx-dual-datepicker&gt;</pre>
+&lt;/ngx-dual-datepicker&gt;</code>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
 
-          <div class="quickstart-cta">
-            <button class="btn-cta" (click)="setActiveTab('examples')">
-              Explore 16 Interactive Examples
-              <svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
-                <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
-              </svg>
-            </button>
+            <div class="text-center mt-5">
+              <button class="btn btn-primary btn-lg px-5 py-3 fw-semibold" (click)="setActiveTab('examples')">
+                Explore 16 Interactive Examples
+                <i class="bi bi-arrow-right ms-2"></i>
+              </button>
+            </div>
           </div>
         </section>
 
         <!-- CTA Section -->
-        <section class="cta-section">
-          <h2>Ready to Build Better Date Pickers?</h2>
-          <p>Join developers who chose simplicity, performance, and flexibility.</p>
-          <div class="cta-buttons">
-            <button class="btn-cta primary" (click)="setActiveTab('examples')">View Live Examples</button>
-            <a href="https://github.com/oneluiz/ng-dual-datepicker" target="_blank" class="btn-cta secondary">
-              <svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
-                <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
-              </svg>
-              Star on GitHub
-            </a>
+        <section class="cta-section text-center text-white py-5" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); margin: 0 2rem 4rem; border-radius: 24px;">
+          <div class="container py-4">
+            <h2 class="display-5 fw-bold mb-3">Ready to Build Better Date Pickers?</h2>
+            <p class="lead mb-4">Join developers who chose simplicity, performance, and flexibility.</p>
+            <div class="d-flex gap-3 justify-content-center flex-wrap">
+              <button class="btn btn-light btn-lg px-4 py-3 fw-semibold" (click)="setActiveTab('examples')">
+                View Live Examples
+              </button>
+              <a href="https://github.com/oneluiz/ng-dual-datepicker" target="_blank" class="btn btn-outline-light btn-lg px-4 py-3 fw-semibold">
+                <i class="bi bi-github me-2"></i>
+                Star on GitHub
+              </a>
+            </div>
           </div>
         </section>
       </div>

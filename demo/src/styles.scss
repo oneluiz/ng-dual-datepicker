@@ -12,6 +12,80 @@ body {
   line-height: 1.6;
 }
 
+// ============================================
+// BOOTSTRAP CUSTOMIZATIONS & ENHANCEMENTS
+// ============================================
+
+// Smooth hover lift effect for cards
+.hover-lift {
+  transition: all 0.3s ease;
+  
+  &:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15) !important;
+  }
+}
+
+// Custom nav-link styling for nav-tabs
+.nav-tabs {
+  .nav-link {
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    color: #6c757d;
+    font-weight: 500;
+    padding: 0.75rem 1.25rem;
+    cursor: pointer;
+    transition: all 0.2s;
+
+    &:hover {
+      color: #212529;
+      background: #f8f9fa;
+      border-bottom-color: #dee2e6;
+    }
+
+    &.active {
+      color: #0d6efd;
+      background: white;
+      border-bottom-color: #0d6efd;
+    }
+  }
+}
+
+// Enhanced code blocks
+code {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  font-family: 'Monaco', 'Courier New', monospace;
+}
+
+// Sticky header support
+.sticky-top {
+  top: 0;
+  z-index: 1020;
+}
+
+// Primary color override to match gradient
+:root {
+  --bs-primary: #667eea;
+  --bs-primary-rgb: 102, 126, 234;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border: none;
+
+  &:hover {
+    background: linear-gradient(135deg, #5568d3 0%, #65398b 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+  }
+}
+
+// ============================================
+// EXISTING DEMO STYLES
+// ============================================
+
 // Demo Wrapper
 .demo-wrapper {
   min-height: 100vh;
@@ -19,143 +93,14 @@ body {
   flex-direction: column;
 }
 
-// Header
-.demo-header {
-  background: #ffffff;
-  border-bottom: 1px solid #e2e8f0;
-  padding: 1.5rem 0;
-
-  .header-content {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 2rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 1.5rem;
-  }
-
-  .logo-section {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-
-    .logo {
-      font-size: 2rem;
-      line-height: 1;
-    }
-
-    .title-section {
-      h1 {
-        font-size: 1.5rem;
-        margin: 0;
-        font-weight: 600;
-        color: #1a202c;
-      }
-
-      .subtitle {
-        font-size: 0.875rem;
-        color: #718096;
-        margin: 0.125rem 0 0 0;
-      }
-    }
-  }
-
-  .header-actions {
-    display: flex;
-    gap: 0.75rem;
-  }
-
-  .btn-header {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.5rem 1rem;
-    background: #ffffff;
-    color: #4a5568;
-    text-decoration: none;
-    border-radius: 4px;
-    font-weight: 500;
-    border: 1px solid #e5e7eb;
-    font-size: 0.875rem;
-
-    &:hover {
-      background: #f9fafb;
-      border-color: #d1d5db;
-    }
-
-    &.btn-primary {
-      background: #111827;
-      color: white;
-      border-color: #111827;
-
-      &:hover {
-        background: #374151;
-      }
-    }
-
-    svg {
-      flex-shrink: 0;
-    }
-  }
-}
-
-// Navigation
-.demo-nav {
-  background: white;
-  border-bottom: 1px solid #e2e8f0;
-  position: sticky;
-  top: 0;
-  z-index: 100;
-
-  .nav-content {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 2rem;
-    display: flex;
-    gap: 0.5rem;
-  }
-
-  .nav-tab {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 1rem 1.5rem;
-    background: none;
-    border: none;
-    color: #6b7280;
-    font-weight: 500;
-    font-size: 0.875rem;
-    cursor: pointer;
-    position: relative;
-    border-bottom: 2px solid transparent;
-
-    svg {
-      width: 16px;
-      height: 16px;
-      opacity: 0.6;
-    }
-
-    &:hover {
-      color: #111827;
-      background: #f9fafb;
-
-      svg {
-        opacity: 1;
-      }
-    }
-
-    &.active {
-      color: #111827;
-      border-bottom-color: #111827;
-
-      svg {
-        opacity: 1;
-      }
-    }
-  }
-}
+// ============================================
+// OBSOLETE STYLES - Now handled by Bootstrap
+// ============================================
+// .demo-header - Replaced with Bootstrap container-fluid, d-flex, btn classes
+// .demo-nav - Replaced with Bootstrap nav-tabs structure
+// .nav-tab - Replaced with Bootstrap nav-link classes
+// These are commented out to avoid conflicts with Bootstrap
+// ============================================
 
 // Content - Bootstrap Style Layout
 .demo-content {
@@ -2077,23 +2022,26 @@ html {
   margin: 1.5rem 0;
 }
 
-.stat-card {
-  text-align: center;
-  padding: 1.5rem;
-  background: white;
-  border-radius: 4px;
-  border: 1px solid #e5e7eb;
-}
+// ============================================
+// OBSOLETE: .stat-card - Now using Bootstrap grid (row, col-*)
+// ============================================
+// .stat-card {
+//   text-align: center;
+//   padding: 1.5rem;
+//   background: white;
+//   border-radius: 4px;
+//   border: 1px solid #e5e7eb;
+// }
 
-.highlight-stat {
-  background: #3b82f6;
-  color: white;
+// .highlight-stat {
+//   background: #3b82f6;
+//   color: white;
 
-  .stat-value,
-  .stat-label {
-    color: white;
-  }
-}
+//   .stat-value,
+//   .stat-label {
+//     color: white;
+//   }
+// }
 
 .stat-value {
   font-size: 2rem;
@@ -2767,74 +2715,24 @@ html {
     margin: 0 auto;
   }
 
-  .feature-card {
-    background: white;
-    border: 1px solid #e2e8f0;
-    border-radius: 12px;
-    padding: 2rem;
-    transition: all 0.3s;
-    position: relative;
-
-    &:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
-      border-color: #667eea;
-    }
-
-    &.highlight {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: white;
-      border: none;
-
-      h3 {
-        color: white;
-      }
-
-      p {
-        color: rgba(255, 255, 255, 0.9);
-      }
-
-      .feature-icon {
-        background: rgba(255, 255, 255, 0.2);
-      }
-    }
-
-    .feature-icon {
-      font-size: 2.5rem;
-      width: 70px;
-      height: 70px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: #f7fafc;
-      border-radius: 12px;
-      margin-bottom: 1.5rem;
-    }
-
-    h3 {
-      font-size: 1.25rem;
-      font-weight: 600;
-      margin-bottom: 0.75rem;
-      color: #1a202c;
-    }
-
-    p {
-      color: #718096;
-      line-height: 1.6;
-      margin: 0;
-    }
-
-    .feature-badge {
-      display: inline-block;
-      background: rgba(255, 255, 255, 0.2);
-      padding: 0.4rem 0.8rem;
-      border-radius: 50px;
-      font-size: 0.75rem;
-      font-weight: 600;
-      margin-top: 1rem;
-      border: 1px solid rgba(255, 255, 255, 0.3);
-    }
-  }
+  // ============================================
+  // OBSOLETE: .feature-card - Now using Bootstrap card classes
+  // ============================================
+  // .feature-card {
+  //   background: white;
+  //   border: 1px solid #e2e8f0;
+  //   border-radius: 12px;
+  //   padding: 2rem;
+  //   transition: all 0.3s;
+  //   position: relative;
+  //
+  //   &:hover {
+  //     transform: translateY(-4px);
+  //     box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+  //     border-color: #667eea;
+  //   }
+  //   ...etc
+  // }
 }
 
 // Comparison Section
@@ -2856,77 +2754,20 @@ html {
     margin-bottom: 3rem;
   }
 
-  .comparison-grid {
-    max-width: 900px;
-    margin: 0 auto;
-    background: white;
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  }
-
-  .comparison-header {
-    display: grid;
-    grid-template-columns: 2fr 1fr 1fr;
-    gap: 1rem;
-    padding: 1.5rem;
-    background: #f8f9fa;
-    font-weight: 600;
-    border-bottom: 2px solid #e9ecef;
-
-    .product-label {
-      text-align: center;
-      font-size: 1rem;
-
-      &.ours {
-        color: #667eea;
-      }
-
-      &.theirs {
-        color: #6c757d;
-      }
-    }
-  }
-
-  .comparison-row {
-    display: grid;
-    grid-template-columns: 2fr 1fr 1fr;
-    gap: 1rem;
-    padding: 1.25rem 1.5rem;
-    border-bottom: 1px solid #f0f0f0;
-    align-items: center;
-
-    &:last-child {
-      border-bottom: none;
-    }
-
-    &:hover {
-      background: #f8f9fa;
-    }
-
-    .comparison-feature {
-      font-weight: 500;
-      color: #374151;
-    }
-
-    .comparison-value {
-      text-align: center;
-      font-size: 0.95rem;
-      font-weight: 500;
-
-      &.good {
-        color: #10b981;
-      }
-
-      &.bad {
-        color: #ef4444;
-      }
-
-      &.neutral {
-        color: #6b7280;
-      }
-    }
-  }
+  // ============================================
+  // OBSOLETE: .comparison-grid - Now using Bootstrap table
+  // ============================================
+  // .comparison-grid {
+  //   max-width: 900px;
+  //   margin: 0 auto;
+  //   background: white;
+  //   border-radius: 12px;
+  //   overflow: hidden;
+  //   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  // }
+  //
+  // .comparison-header { ... }
+  // .comparison-row { ... }
 }
 
 // Quick Start Section
