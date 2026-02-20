@@ -36,6 +36,7 @@ npm install @oneluiz/dual-datepicker
   - [Date Adapter System](#date-adapter-system)
   - [Keyboard Navigation](#keyboard-navigation)
 - [Customization](#-customization)
+  - [Theming System](#theming-system)
   - [Styling Options](#styling-options)
   - [Localization (i18n)](#localization-i18n)
 - [API Reference](#-api-reference)
@@ -60,7 +61,8 @@ npm install @oneluiz/dual-datepicker
 - 🚫 **Disabled Dates** – Block weekends, holidays, or custom logic
 - 🎨 **Display Format** – Customize date display (DD/MM/YYYY, MM/DD/YYYY, etc.)
 - ✅ **Apply/Confirm Button** – Require confirmation before emitting (perfect for dashboards)
-- 🎨 **Fully Customizable** – Every color, padding, border configurable
+- � **Theming System** – Built-in themes for Bootstrap, Bulma, Foundation, Tailwind, + Custom
+- �🎨 **Fully Customizable** – Every color, padding, border configurable
 - 📦 **Lightweight** – ~60 KB gzipped total bundle
 - 🚀 **Performance** – OnPush change detection + trackBy optimization
 - ♿ **Accessible** – Full keyboard navigation, ARIA labels, WCAG 2.1 AA compliant
@@ -661,6 +663,29 @@ export class AppComponent {}
 ---
 
 ## 🎨 Customization
+
+### Theming System
+
+The datepicker now supports 6 built-in themes: `default`, `bootstrap`, `bulma`, `foundation`, `tailwind`, and `custom`.
+
+```typescript
+<ngx-dual-datepicker theme="bootstrap"></ngx-dual-datepicker>
+```
+
+```scss
+// In your styles.scss
+@import '@oneluiz/dual-datepicker/themes/bootstrap';
+```
+
+**Available Themes:**
+- `default` - Original styling (no import needed)
+- `bootstrap` - Bootstrap 5 compatible styling
+- `bulma` - Bulma CSS compatible styling
+- `foundation` - Foundation CSS compatible styling
+- `tailwind` - Tailwind CSS compatible styling
+- `custom` - CSS variables-based customization
+
+**📚 For detailed theming documentation, see [THEMING.md](./THEMING.md)**
 
 ### Styling Options
 
