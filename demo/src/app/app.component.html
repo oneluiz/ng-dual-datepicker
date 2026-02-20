@@ -73,29 +73,128 @@
   <main class="demo-content">
     <!-- Examples Tab -->
     @if (activeTab === 'examples') {
-      <div class="tab-content fade-in">
-        <!-- Quick Navigation -->
-        <div class="quick-nav">
-          <h3>📑 Jump to Example</h3>
-          <div class="quick-nav-grid">
-            <button (click)="scrollToExample('example-1')" class="quick-nav-btn">1. Basic</button>
-            <button (click)="scrollToExample('example-2')" class="quick-nav-btn">2. Presets</button>
-            <button (click)="scrollToExample('example-3')" class="quick-nav-btn">3. GitHub Style</button>
-            <button (click)="scrollToExample('example-4')" class="quick-nav-btn">4. No Presets</button>
-            <button (click)="scrollToExample('example-5')" class="quick-nav-btn">5. Clear Button</button>
-            <button (click)="scrollToExample('example-6')" class="quick-nav-btn">6. Initial Dates</button>
-            <button (click)="scrollToExample('example-8')" class="quick-nav-btn">8. External Clear</button>
-            <button (click)="scrollToExample('example-9')" class="quick-nav-btn">9. Minimal UI</button>
-            <button (click)="scrollToExample('example-10')" class="quick-nav-btn">10. Date Adapter</button>
-            <button (click)="scrollToExample('example-11')" class="quick-nav-btn">11. CommonPresets</button>
-            <button (click)="scrollToExample('example-12')" class="quick-nav-btn">12. Multi-Range</button>
-            <button (click)="scrollToExample('example-13')" class="quick-nav-btn">13. Disabled Dates 🆕</button>
-            <button (click)="scrollToExample('example-14')" class="quick-nav-btn">14. Display Format 🆕</button>
-            <button (click)="scrollToExample('example-15')" class="quick-nav-btn">15. Apply Button 🆕</button>
-            <button (click)="scrollToExample('example-16')" class="quick-nav-btn">16. Hover Preview 🆕</button>
+      <!-- Sidebar Navigation -->
+      <aside class="docs-sidebar">
+        <nav class="sidebar-nav">
+          <div class="sidebar-section">
+            <h6 class="section-title">Getting Started</h6>
+            <ul class="section-links">
+              <li>
+                <button class="sidebar-link" (click)="scrollToExample('example-1')">
+                  Basic Usage
+                </button>
+              </li>
+              <li>
+                <button class="sidebar-link" (click)="scrollToExample('example-2')">
+                  Custom Presets
+                </button>
+              </li>
+              <li>
+                <button class="sidebar-link" (click)="scrollToExample('example-3')">
+                  GitHub Style
+                </button>
+              </li>
+            </ul>
           </div>
-        </div>
 
+          <div class="sidebar-section">
+            <h6 class="section-title">Configuration</h6>
+            <ul class="section-links">
+              <li>
+                <button class="sidebar-link" (click)="scrollToExample('example-4')">
+                  Without Presets
+                </button>
+              </li>
+              <li>
+                <button class="sidebar-link" (click)="scrollToExample('example-5')">
+                  Clear Button
+                </button>
+              </li>
+              <li>
+                <button class="sidebar-link" (click)="scrollToExample('example-6')">
+                  Initial Dates
+                </button>
+              </li>
+              <li>
+                <button class="sidebar-link" (click)="scrollToExample('example-8')">
+                  External Clear
+                </button>
+              </li>
+              <li>
+                <button class="sidebar-link" (click)="scrollToExample('example-9')">
+                  Minimal UI
+                </button>
+              </li>
+            </ul>
+          </div>
+
+          <div class="sidebar-section">
+            <h6 class="section-title">Advanced</h6>
+            <ul class="section-links">
+              <li>
+                <button class="sidebar-link" (click)="scrollToExample('example-10')">
+                  Date Adapter
+                </button>
+              </li>
+              <li>
+                <button class="sidebar-link" (click)="scrollToExample('example-11')">
+                  CommonPresets
+                </button>
+              </li>
+              <li>
+                <button class="sidebar-link" (click)="scrollToExample('example-12')">
+                  Multi-Range Support
+                </button>
+              </li>
+            </ul>
+          </div>
+
+          <div class="sidebar-section">
+            <h6 class="section-title">v3.2.0 Features</h6>
+            <ul class="section-links">
+              <li>
+                <button class="sidebar-link" (click)="scrollToExample('example-13')">
+                  🚫 Disabled Dates
+                  <span class="badge-new">NEW</span>
+                </button>
+              </li>
+              <li>
+                <button class="sidebar-link" (click)="scrollToExample('example-14')">
+                  🎨 Display Format
+                  <span class="badge-new">NEW</span>
+                </button>
+              </li>
+              <li>
+                <button class="sidebar-link" (click)="scrollToExample('example-15')">
+                  ✅ Apply Button
+                  <span class="badge-new">NEW</span>
+                </button>
+              </li>
+              <li>
+                <button class="sidebar-link" (click)="scrollToExample('example-16')">
+                  🎨 Hover Preview
+                  <span class="badge-new">NEW</span>
+                </button>
+              </li>
+            </ul>
+          </div>
+
+          <div class="sidebar-section">
+            <h6 class="section-title">v3.1.0 Features</h6>
+            <ul class="section-links">
+              <li>
+                <button class="sidebar-link" (click)="scrollToExample('keyboard-nav')">
+                  ⌨️ Keyboard Navigation
+                </button>
+              </li>
+            </ul>
+          </div>
+        </nav>
+      </aside>
+
+      <!-- Main Content -->
+      <div class="docs-main">
+      <div class="tab-content fade-in">
         <!-- Keyboard Navigation Banner (v3.1.0) -->
         <div class="feature-banner keyboard-banner" id="keyboard-nav">
           <div class="banner-badge">⌨️ v3.1.0</div>
@@ -869,20 +968,108 @@
           }
         </div>
       </div>
+      </div>
     }
 
     <!-- Documentation Tab -->
     @if (activeTab === 'docs') {
+      <!-- Sidebar Navigation -->
+      <aside class="docs-sidebar">
+        <nav class="sidebar-nav">
+          <div class="sidebar-section">
+            <h6 class="section-title">Getting Started</h6>
+            <ul class="section-links">
+              <li>
+                <button class="sidebar-link" (click)="scrollToSection('installation')">
+                  Installation
+                </button>
+              </li>
+              <li>
+                <button class="sidebar-link" (click)="scrollToSection('why')">
+                  Why ng-dual-datepicker?
+                </button>
+              </li>
+              <li>
+                <button class="sidebar-link" (click)="scrollToSection('features')">
+                  Key Features
+                </button>
+              </li>
+              <li>
+                <button class="sidebar-link" (click)="scrollToSection('when-use')">
+                  When Should I Use This?
+                </button>
+              </li>
+            </ul>
+          </div>
+
+          <div class="sidebar-section">
+            <h6 class="section-title">Core Features</h6>
+            <ul class="section-links">
+              <li>
+                <button class="sidebar-link" (click)="scrollToSection('performance')">
+                  Performance
+                </button>
+              </li>
+              <li>
+                <button class="sidebar-link" (click)="scrollToSection('a11y')">
+                  Accessibility
+                </button>
+              </li>
+              <li>
+                <button class="sidebar-link" (click)="scrollToSection('quick-start')">
+                  Quick Start
+                </button>
+              </li>
+              <li>
+                <button class="sidebar-link" (click)="scrollToSection('customization')">
+                  Customization
+                </button>
+              </li>
+              <li>
+                <button class="sidebar-link" (click)="scrollToSection('i18n')">
+                  Internationalization
+                </button>
+              </li>
+              <li>
+                <button class="sidebar-link" (click)="scrollToSection('methods')">
+                  Public Methods
+                </button>
+              </li>
+            </ul>
+          </div>
+
+          <div class="sidebar-section">
+            <h6 class="section-title">Advanced</h6>
+            <ul class="section-links">
+              <li>
+                <button class="sidebar-link" (click)="scrollToSection('preset-system')">
+                  <span class="badge-new">NEW</span>
+                  Preset System
+                </button>
+              </li>
+              <li>
+                <button class="sidebar-link" (click)="scrollToSection('multi-range')">
+                  <span class="badge-new">NEW</span>
+                  Multi-Range Support
+                </button>
+              </li>
+            </ul>
+          </div>
+        </nav>
+      </aside>
+
+      <!-- Main Content -->
+      <div class="docs-main">
       <div class="tab-content fade-in">
         <div class="doc-content">
-          <section class="doc-section">
+          <section class="doc-section" id="installation">
             <h2>📦 Installation</h2>
             <div class="code-block">
               <pre>npm install &#64;oneluiz/dual-datepicker</pre>
             </div>
           </section>
 
-          <section class="doc-section">
+          <section class="doc-section" id="why">
             <h2>🎯 Why ng-dual-datepicker?</h2>
             <div class="comparison-table-wrapper">
               <table class="comparison-table">
@@ -939,7 +1126,7 @@
             </div>
           </section>
 
-          <section class="doc-section">
+          <section class="doc-section" id="features">
             <h2>✨ Key Features</h2>
             <ul class="feature-list">
               <li>🪶 <strong>Zero Dependencies</strong> – No external libraries required</li>
@@ -955,7 +1142,7 @@
             </ul>
           </section>
 
-          <section class="doc-section">
+          <section class="doc-section" id="when-use">
             <h2>🤔 When Should I Use This?</h2>
             <div class="when-to-use">
               <div class="use-case">
@@ -980,7 +1167,7 @@
             </div>
           </section>
 
-          <section class="doc-section">
+          <section class="doc-section" id="performance">
             <h2>⚡ Performance</h2>
             <div class="code-block">
               <pre>&#64;Component(&#123;
@@ -1008,7 +1195,7 @@
             </ul>
           </section>
 
-          <section class="doc-section">
+          <section class="doc-section" id="a11y">
             <h2>♿ Accessibility (A11y)</h2>
             <p class="section-intro"><strong>✅ WCAG 2.1 Level AA Compliant (v3.1.0)</strong></p>
             <div class="a11y-status">
@@ -1048,7 +1235,7 @@
             </div>
           </section>
 
-          <section class="doc-section">
+          <section class="doc-section" id="quick-start">
             <h2>🚀 Quick Start</h2>
             <h3>1. Import the Component</h3>
             <div class="code-block">
@@ -1091,7 +1278,7 @@ customPresets: PresetConfig[] = [
             </div>
           </section>
 
-          <section class="doc-section">
+          <section class="doc-section" id="customization">
             <h2>🎨 Customization</h2>
             <p>You can customize the component's appearance by using the input properties for colors and padding:</p>
             <div class="code-block">
@@ -1106,7 +1293,7 @@ customPresets: PresetConfig[] = [
             </div>
           </section>
 
-          <section class="doc-section">
+          <section class="doc-section" id="i18n">
             <h2>🌍 Internationalization (i18n)</h2>
             <p>Customize month and day names for any language:</p>
             <div class="code-block">
@@ -1122,7 +1309,7 @@ spanishLocale: LocaleConfig = &#123;
             </div>
           </section>
 
-          <section class="doc-section">
+          <section class="doc-section" id="methods">
             <h2>🔧 Public Methods</h2>
             <p>You can call these methods programmatically using a template reference or ViewChild:</p>
             <div class="code-block">
@@ -1147,7 +1334,7 @@ export class MyComponent &#123;
             </div>
           </section>
 
-          <section class="doc-section featured-section">
+          <section class="doc-section featured-section" id="preset-system">
             <div class="section-badge">NEW v2.6.0</div>
             <h2>⚡ Flexible Preset System - GAME CHANGER</h2>
             <p class="section-intro">
@@ -1331,7 +1518,7 @@ import &#123; getLastNDays &#125; from '&#64;oneluiz/dual-datepicker';
             </div>
           </section>
 
-          <section class="doc-section featured-section game-changer-section">
+          <section class="doc-section featured-section game-changer-section" id="multi-range">
             <div class="section-badge">NEW v2.7.0 - ULTIMATE!</div>
             <h2>🔥 Multi-Range Support - Material CAN'T Do This!</h2>
             <p class="section-intro">
@@ -1500,13 +1687,58 @@ export class BookingComponent &#123;
           </section>
         </div>
       </div>
+      </div> <!-- End docs-main -->
     }
 
     <!-- API Reference Tab -->
     @if (activeTab === 'api') {
+      <!-- Sidebar Navigation -->
+      <aside class="docs-sidebar">
+        <nav class="sidebar-nav">
+          <div class="sidebar-section">
+            <h6 class="section-title">API Reference</h6>
+            <ul class="section-links">
+              <li>
+                <button class="sidebar-link" (click)="scrollToSection('api-inputs')">
+                  &#64;Inputs
+                </button>
+              </li>
+              <li>
+                <button class="sidebar-link" (click)="scrollToSection('api-outputs')">
+                  &#64;Outputs
+                </button>
+              </li>
+              <li>
+                <button class="sidebar-link" (click)="scrollToSection('api-methods')">
+                  Public Methods
+                </button>
+              </li>
+              <li>
+                <button class="sidebar-link" (click)="scrollToSection('api-interfaces')">
+                  TypeScript Interfaces
+                </button>
+              </li>
+            </ul>
+          </div>
+
+          <div class="sidebar-section">
+            <h6 class="section-title">More</h6>
+            <ul class="section-links">
+              <li>
+                <button class="sidebar-link" (click)="scrollToSection('roadmap')">
+                  Roadmap
+                </button>
+              </li>
+            </ul>
+          </div>
+        </nav>
+      </aside>
+
+      <!-- Main Content -->
+      <div class="docs-main">
       <div class="tab-content fade-in">
         <div class="doc-content">
-          <section class="doc-section">
+          <section class="doc-section" id="api-inputs">
             <h2>&#64;Inputs</h2>
             <div class="api-table-wrapper">
               <table class="api-table">
@@ -1632,7 +1864,7 @@ export class BookingComponent &#123;
             </div>
           </section>
 
-          <section class="doc-section">
+          <section class="doc-section" id="api-outputs">
             <h2>&#64;Outputs</h2>
             <div class="api-table-wrapper">
               <table class="api-table">
@@ -1669,7 +1901,7 @@ export class BookingComponent &#123;
             </div>
           </section>
 
-          <section class="doc-section">
+          <section class="doc-section" id="api-methods">
             <h2>Public Methods</h2>
             <div class="api-table-wrapper">
               <table class="api-table">
@@ -1691,7 +1923,7 @@ export class BookingComponent &#123;
             </div>
           </section>
 
-          <section class="doc-section">
+          <section class="doc-section" id="api-interfaces">
             <h2>TypeScript Interfaces</h2>
             
             <h3>DateRange</h3>
@@ -1748,7 +1980,7 @@ import &#123; getLastNDays &#125; from '&#64;oneluiz/dual-datepicker';
             </div>
           </section>
 
-          <section class="doc-section">
+          <section class="doc-section" id="roadmap">
             <h2>🗺️ Roadmap</h2>
             <p>Completed and planned features:</p>
             <ul class="roadmap-list">
@@ -1763,14 +1995,65 @@ import &#123; getLastNDays &#125; from '&#64;oneluiz/dual-datepicker';
           </section>
         </div>
       </div>
+      </div> <!-- End docs-main -->
     }
 
     <!-- Blog/What's New Tab -->
     @if (activeTab === 'blog') {
+      <!-- Sidebar Navigation -->
+      <aside class="docs-sidebar">
+        <nav class="sidebar-nav">
+          <div class="sidebar-section">
+            <h6 class="section-title">Latest</h6>
+            <ul class="section-links">
+              <li>
+                <button class="sidebar-link" (click)="scrollToSection('v3-2-0')">
+                  <span class="badge-new">NEW</span>
+                  v3.2.0
+                </button>
+              </li>
+            </ul>
+          </div>
+
+          <div class="sidebar-section">
+            <h6 class="section-title">Archive</h6>
+            <ul class="section-links">
+              <li>
+                <button class="sidebar-link" (click)="scrollToSection('v3-1-1')">
+                  v3.1.1
+                </button>
+              </li>
+              <li>
+                <button class="sidebar-link" (click)="scrollToSection('v3-1-0')">
+                  v3.1.0
+                </button>
+              </li>
+              <li>
+                <button class="sidebar-link" (click)="scrollToSection('v3-0-0')">
+                  v3.0.0
+                </button>
+              </li>
+              <li>
+                <button class="sidebar-link" (click)="scrollToSection('v2-7-0')">
+                  v2.7.0
+                </button>
+              </li>
+              <li>
+                <button class="sidebar-link" (click)="scrollToSection('v2-0-0')">
+                  v2.0.0
+                </button>
+              </li>
+            </ul>
+          </div>
+        </nav>
+      </aside>
+
+      <!-- Main Content -->
+      <div class="docs-main">
       <div class="tab-content fade-in">
         <div class="blog-content">
           <!-- Blog Header -->
-          <div class="blog-header">
+          <div class="blog-header" id="v3-2-0">
             <span class="blog-date">February 20, 2026</span>
             <h1 class="blog-title">🎉 Announcing ng-dual-datepicker v3.2.0</h1>
             <p class="blog-subtitle">4 powerful new features for enterprise-ready applications</p>
@@ -1989,7 +2272,7 @@ import &#123; getLastNDays &#125; from '&#64;oneluiz/dual-datepicker';
             <p class="releases-intro">Stay up to date with all the improvements, features, and fixes we've released.</p>
 
             <!-- v3.1.1 -->
-            <article class="release-card news-article">
+            <article class="release-card news-article" id="v3-1-1">
               <div class="release-header">
                 <div class="release-version">v3.1.1</div>
                 <div class="release-date">February 19, 2026</div>
@@ -2012,7 +2295,7 @@ import &#123; getLastNDays &#125; from '&#64;oneluiz/dual-datepicker';
             </article>
 
             <!-- v3.1.0 -->
-            <article class="release-card featured news-article">
+            <article class="release-card featured news-article" id="v3-1-0">
               <div class="release-header">
                 <div class="release-version">v3.1.0</div>
                 <div class="release-date">February 19, 2026</div>
@@ -2054,7 +2337,7 @@ import &#123; getLastNDays &#125; from '&#64;oneluiz/dual-datepicker';
             </article>
 
             <!-- v3.0.0 -->
-            <article class="release-card breaking news-article">
+            <article class="release-card breaking news-article" id="v3-0-0">
               <div class="release-header">
                 <div class="release-version">v3.0.0</div>
                 <div class="release-date">February 19, 2026</div>
@@ -2104,7 +2387,7 @@ import &#123; getLastNDays &#125; from '&#64;oneluiz/dual-datepicker';
             </article>
 
             <!-- v2.7.0 -->
-            <article class="release-card news-article">
+            <article class="release-card news-article" id="v2-7-0">
               <div class="release-header">
                 <div class="release-version">v2.7.0</div>
                 <div class="release-date">February 15, 2026</div>
@@ -2131,7 +2414,7 @@ import &#123; getLastNDays &#125; from '&#64;oneluiz/dual-datepicker';
             </article>
 
             <!-- v2.0.0 -->
-            <article class="release-card featured news-article">
+            <article class="release-card featured news-article" id="v2-0-0">
               <div class="release-header">
                 <div class="release-version">v2.0.0</div>
                 <div class="release-date">December 15, 2024</div>
@@ -2161,6 +2444,7 @@ import &#123; getLastNDays &#125; from '&#64;oneluiz/dual-datepicker';
           </div>
         </div>
       </div>
+      </div> <!-- End docs-main -->
     }
   </main>
 
