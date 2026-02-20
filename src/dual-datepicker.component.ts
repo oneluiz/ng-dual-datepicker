@@ -32,6 +32,8 @@ export interface LocaleConfig {
   firstDayOfWeek?: number; // 0 = Sunday, 1 = Monday, etc.
 }
 
+export type ThemeType = 'default' | 'bootstrap' | 'bulma' | 'foundation' | 'tailwind' | 'custom';
+
 @Component({
   selector: 'ngx-dual-datepicker',
   standalone: true,
@@ -62,6 +64,7 @@ export class DualDatepickerComponent implements OnInit, OnChanges, ControlValueA
   @Input() closeOnClickOutside: boolean = true;
   @Input() enableKeyboardNavigation: boolean = true;
   @Input() presets: PresetConfig[] = [];
+  @Input() theme: ThemeType = 'default';
   @Input() inputBackgroundColor: string = '#fff';
   @Input() inputTextColor: string = '#495057';
   @Input() inputBorderColor: string = '#ced4da';

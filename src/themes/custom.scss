@@ -1,0 +1,236 @@
+/**
+ * Custom Theme Template for ng-dual-datepicker
+ * 
+ * This is a template file that you can copy and customize.
+ * Import this file in your styles.scss and modify the CSS variables:
+ * @import '@oneluiz/dual-datepicker/themes/custom';
+ * 
+ * Or create your own theme file based on this template.
+ */
+
+.datepicker-wrapper.theme-custom {
+  /* CSS Variables for easy customization */
+  --dp-primary-color: #3b82f6;
+  --dp-primary-hover: #2563eb;
+  --dp-danger-color: #ef4444;
+  --dp-danger-hover: #dc2626;
+  --dp-text-color: #1f2937;
+  --dp-text-muted: #6b7280;
+  --dp-border-color: #d1d5db;
+  --dp-border-hover: #9ca3af;
+  --dp-bg-color: #ffffff;
+  --dp-bg-hover: #f3f4f6;
+  --dp-bg-disabled: #f9fafb;
+  --dp-border-radius: 0.375rem;
+  --dp-transition: all 0.15s ease;
+  
+  .datepicker-input {
+    display: block;
+    width: 100%;
+    padding: 0.5rem 0.75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: var(--dp-text-color);
+    background-color: var(--dp-bg-color);
+    border: 1px solid var(--dp-border-color);
+    border-radius: var(--dp-border-radius);
+    transition: var(--dp-transition);
+    cursor: pointer;
+    
+    &:hover {
+      border-color: var(--dp-border-hover);
+    }
+    
+    &:focus {
+      border-color: var(--dp-primary-color);
+      outline: 0;
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    }
+
+    &::placeholder {
+      color: var(--dp-text-muted);
+      opacity: 1;
+    }
+
+    &:disabled,
+    &[readonly] {
+      background-color: var(--dp-bg-disabled);
+      opacity: 1;
+      cursor: not-allowed;
+    }
+  }
+
+  .date-picker-dropdown {
+    background: var(--dp-bg-color);
+    border: 1px solid var(--dp-border-color);
+    border-radius: var(--dp-border-radius);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  }
+
+  .date-picker-presets {
+    button {
+      background-color: var(--dp-bg-color);
+      border: 1px solid var(--dp-border-color);
+      color: var(--dp-primary-color);
+      padding: 0.5rem 1rem;
+      border-radius: var(--dp-border-radius);
+      font-size: 0.875rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: var(--dp-transition);
+
+      &:hover {
+        background-color: var(--dp-primary-color);
+        border-color: var(--dp-primary-color);
+        color: var(--dp-bg-color);
+      }
+
+      &:focus {
+        outline: 0;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+      }
+    }
+
+    .btn-close-calendar {
+      background-color: var(--dp-bg-color);
+      border: 1px solid var(--dp-border-color);
+      color: var(--dp-danger-color);
+      
+      &:hover {
+        background-color: var(--dp-danger-color);
+        border-color: var(--dp-danger-color);
+        color: var(--dp-bg-color);
+      }
+    }
+  }
+
+  .date-picker-header {
+    button {
+      background-color: var(--dp-bg-color);
+      border: 1px solid var(--dp-border-color);
+      color: var(--dp-text-color);
+      border-radius: var(--dp-border-radius);
+      padding: 0.375rem 0.75rem;
+      
+      &:hover {
+        background-color: var(--dp-bg-hover);
+      }
+
+      &:focus {
+        outline: 0;
+        box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+      }
+    }
+  }
+
+  .day {
+    color: var(--dp-text-color);
+    border-radius: var(--dp-border-radius);
+    transition: var(--dp-transition);
+    
+    &:hover:not(.disabled):not(.selected):not(.in-range) {
+      background-color: var(--dp-bg-hover);
+    }
+
+    &.selected {
+      background-color: var(--dp-primary-color);
+      color: var(--dp-bg-color);
+      font-weight: 600;
+    }
+
+    &.in-range {
+      background-color: rgba(59, 130, 246, 0.1);
+      color: var(--dp-primary-color);
+    }
+
+    &.today {
+      border: 2px solid var(--dp-primary-color);
+      font-weight: 600;
+    }
+
+    &.disabled {
+      color: var(--dp-text-muted);
+      background-color: transparent;
+      cursor: not-allowed;
+      opacity: 0.5;
+    }
+  }
+
+  .selected-ranges {
+    .range-tag {
+      background-color: var(--dp-primary-color);
+      color: var(--dp-bg-color);
+      border: none;
+      border-radius: var(--dp-border-radius);
+      padding: 0.375rem 0.75rem;
+      font-size: 0.875rem;
+    }
+
+    .btn-remove {
+      background-color: transparent;
+      border: none;
+      color: var(--dp-bg-color);
+      
+      &:hover {
+        color: var(--dp-danger-color);
+      }
+    }
+  }
+
+  .date-picker-footer {
+    border-top: 1px solid var(--dp-border-color);
+
+    .btn-clear,
+    .btn-cancel {
+      background-color: var(--dp-bg-color);
+      border: 1px solid var(--dp-border-color);
+      color: var(--dp-text-muted);
+      padding: 0.5rem 1rem;
+      border-radius: var(--dp-border-radius);
+      
+      &:hover {
+        background-color: var(--dp-bg-hover);
+        color: var(--dp-text-color);
+      }
+    }
+
+    .btn-apply {
+      background-color: var(--dp-primary-color);
+      border: 1px solid var(--dp-primary-color);
+      color: var(--dp-bg-color);
+      padding: 0.5rem 1rem;
+      border-radius: var(--dp-border-radius);
+      font-weight: 500;
+      
+      &:hover {
+        background-color: var(--dp-primary-hover);
+        border-color: var(--dp-primary-hover);
+      }
+
+      &:focus {
+        outline: 0;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+      }
+
+      &:disabled {
+        background-color: var(--dp-text-muted);
+        border-color: var(--dp-text-muted);
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+    }
+  }
+}
+
+/* 
+ * CUSTOMIZATION EXAMPLE:
+ * 
+ * Override the CSS variables in your own stylesheet:
+ * 
+ * .datepicker-wrapper.theme-custom {
+ *   --dp-primary-color: #ff6b6b;
+ *   --dp-primary-hover: #ee5a6f;
+ *   --dp-border-radius: 0.5rem;
+ * }
+ */

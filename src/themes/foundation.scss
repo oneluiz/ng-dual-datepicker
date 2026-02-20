@@ -1,0 +1,201 @@
+/**
+ * Foundation Theme for ng-dual-datepicker
+ * 
+ * Import this file in your styles.scss to apply Foundation styling:
+ * @import '@oneluiz/dual-datepicker/themes/foundation';
+ * 
+ * Make sure you have Foundation CSS already loaded in your project.
+ */
+
+.datepicker-wrapper.theme-foundation {
+  
+  .datepicker-input {
+    display: block;
+    width: 100%;
+    height: 2.4375rem;
+    padding: 0.5rem;
+    font-size: 1rem;
+    font-weight: normal;
+    line-height: 1.5;
+    color: #0a0a0a;
+    background-color: #fefefe;
+    border: 1px solid #cacaca;
+    border-radius: 0;
+    box-shadow: inset 0 1px 2px rgba(10, 10, 10, 0.1);
+    transition: border-color 0.25s ease-in-out, box-shadow 0.5s;
+    cursor: pointer;
+    
+    &:hover {
+      border-color: #8a8a8a;
+    }
+    
+    &:focus {
+      border-color: #1779ba;
+      background-color: #fefefe;
+      outline: 0;
+      box-shadow: 0 0 5px #cacaca;
+    }
+
+    &::placeholder {
+      color: #cacaca;
+    }
+
+    &:disabled,
+    &[readonly] {
+      background-color: #e6e6e6;
+      cursor: not-allowed;
+    }
+  }
+
+  .date-picker-dropdown {
+    background: #fefefe;
+    border: 1px solid #cacaca;
+    border-radius: 0;
+    box-shadow: 0 0 10px rgba(10, 10, 10, 0.1);
+  }
+
+  .date-picker-presets {
+    button {
+      background-color: #1779ba;
+      border: none;
+      color: #fefefe;
+      padding: 0.85em 1em;
+      border-radius: 0;
+      font-size: 0.9rem;
+      font-weight: normal;
+      cursor: pointer;
+      transition: background-color 0.25s ease-out, color 0.25s ease-out;
+
+      &:hover {
+        background-color: #14679e;
+      }
+
+      &:focus {
+        outline: 0;
+        box-shadow: 0 0 0 2px rgba(23, 121, 186, 0.5);
+      }
+    }
+
+    .btn-close-calendar {
+      background-color: #cc4b37;
+      color: #fefefe;
+      
+      &:hover {
+        background-color: #a53b2a;
+      }
+    }
+  }
+
+  .date-picker-header {
+    button {
+      background-color: #e6e6e6;
+      border: none;
+      color: #0a0a0a;
+      border-radius: 0;
+      padding: 0.5em 0.75em;
+      
+      &:hover {
+        background-color: #d0d0d0;
+      }
+
+      &:focus {
+        outline: 0;
+        box-shadow: 0 0 0 2px rgba(23, 121, 186, 0.5);
+      }
+    }
+  }
+
+  .day {
+    color: #0a0a0a;
+    border-radius: 0;
+    
+    &:hover:not(.disabled):not(.selected):not(.in-range) {
+      background-color: #e6e6e6;
+    }
+
+    &.selected {
+      background-color: #1779ba;
+      color: #fefefe;
+      font-weight: bold;
+    }
+
+    &.in-range {
+      background-color: rgba(23, 121, 186, 0.1);
+      color: #1779ba;
+    }
+
+    &.today {
+      border: 2px solid #1779ba;
+      font-weight: bold;
+    }
+
+    &.disabled {
+      color: #cacaca;
+      background-color: transparent;
+      cursor: not-allowed;
+      opacity: 0.5;
+    }
+  }
+
+  .selected-ranges {
+    .range-tag {
+      background-color: #1779ba;
+      color: #fefefe;
+      border: none;
+      border-radius: 0;
+      padding: 0.5em 1em;
+      font-size: 0.875rem;
+    }
+
+    .btn-remove {
+      background-color: transparent;
+      border: none;
+      color: #fefefe;
+      
+      &:hover {
+        color: #cc4b37;
+      }
+    }
+  }
+
+  .date-picker-footer {
+    border-top: 1px solid #cacaca;
+
+    .btn-clear,
+    .btn-cancel {
+      background-color: #e6e6e6;
+      border: none;
+      color: #0a0a0a;
+      padding: 0.85em 1em;
+      border-radius: 0;
+      
+      &:hover {
+        background-color: #d0d0d0;
+      }
+    }
+
+    .btn-apply {
+      background-color: #1779ba;
+      border: none;
+      color: #fefefe;
+      padding: 0.85em 1em;
+      border-radius: 0;
+      font-weight: normal;
+      
+      &:hover {
+        background-color: #14679e;
+      }
+
+      &:focus {
+        outline: 0;
+        box-shadow: 0 0 0 2px rgba(23, 121, 186, 0.5);
+      }
+
+      &:disabled {
+        background-color: #cacaca;
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+    }
+  }
+}

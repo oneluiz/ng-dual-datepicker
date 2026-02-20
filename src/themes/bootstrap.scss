@@ -1,0 +1,202 @@
+/**
+ * Bootstrap Theme for ng-dual-datepicker
+ * 
+ * Import this file in your styles.scss to apply Bootstrap styling:
+ * @import '@oneluiz/dual-datepicker/themes/bootstrap';
+ * 
+ * Make sure you have Bootstrap CSS already loaded in your project.
+ */
+
+.datepicker-wrapper.theme-bootstrap {
+  
+  .datepicker-input {
+    display: block;
+    width: 100%;
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #212529;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #dee2e6;
+    border-radius: 0.375rem;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    cursor: pointer;
+    
+    &:hover {
+      border-color: #86b7fe;
+    }
+    
+    &:focus {
+      color: #212529;
+      background-color: #fff;
+      border-color: #86b7fe;
+      outline: 0;
+      box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+    }
+
+    &::placeholder {
+      color: #6c757d;
+      opacity: 1;
+    }
+
+    &:disabled,
+    &[readonly] {
+      background-color: #e9ecef;
+      opacity: 1;
+    }
+  }
+
+  .date-picker-dropdown {
+    background: #fff;
+    border: 1px solid #dee2e6;
+    border-radius: 0.375rem;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+  }
+
+  .date-picker-presets {
+    button {
+      background-color: #fff;
+      border: 1px solid #dee2e6;
+      color: #0d6efd;
+      padding: 0.375rem 0.75rem;
+      border-radius: 0.375rem;
+      font-size: 0.875rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.15s ease-in-out;
+
+      &:hover {
+        background-color: #0d6efd;
+        border-color: #0d6efd;
+        color: #fff;
+      }
+
+      &:active,
+      &:focus {
+        box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+      }
+    }
+
+    .btn-close-calendar {
+      background-color: #fff;
+      border: 1px solid #dee2e6;
+      color: #dc3545;
+      
+      &:hover {
+        background-color: #dc3545;
+        border-color: #dc3545;
+        color: #fff;
+      }
+    }
+  }
+
+  .date-picker-header {
+    button {
+      background-color: #fff;
+      border: 1px solid #dee2e6;
+      color: #212529;
+      border-radius: 0.375rem;
+      padding: 0.25rem 0.5rem;
+      
+      &:hover {
+        background-color: #e9ecef;
+        border-color: #dee2e6;
+      }
+    }
+  }
+
+  .day {
+    color: #212529;
+    border-radius: 0.375rem;
+    
+    &:hover:not(.disabled):not(.selected):not(.in-range) {
+      background-color: #e9ecef;
+    }
+
+    &.selected {
+      background-color: #0d6efd;
+      color: #fff;
+      font-weight: 600;
+    }
+
+    &.in-range {
+      background-color: rgba(13, 110, 253, 0.1);
+      color: #0d6efd;
+    }
+
+    &.today {
+      border: 2px solid #0d6efd;
+      font-weight: 600;
+    }
+
+    &.disabled {
+      color: #6c757d;
+      background-color: transparent;
+      cursor: not-allowed;
+      opacity: 0.5;
+    }
+  }
+
+  .selected-ranges {
+    .range-tag {
+      background-color: #0d6efd;
+      color: #fff;
+      border: none;
+      border-radius: 0.375rem;
+      padding: 0.25rem 0.75rem;
+      font-size: 0.875rem;
+    }
+
+    .btn-remove {
+      background-color: transparent;
+      border: none;
+      color: #fff;
+      
+      &:hover {
+        color: #dc3545;
+      }
+    }
+  }
+
+  .date-picker-footer {
+    border-top: 1px solid #dee2e6;
+
+    .btn-clear,
+    .btn-cancel {
+      background-color: #fff;
+      border: 1px solid #dee2e6;
+      color: #6c757d;
+      padding: 0.375rem 0.75rem;
+      border-radius: 0.375rem;
+      
+      &:hover {
+        background-color: #e9ecef;
+        border-color: #dee2e6;
+        color: #495057;
+      }
+    }
+
+    .btn-apply {
+      background-color: #0d6efd;
+      border: 1px solid #0d6efd;
+      color: #fff;
+      padding: 0.375rem 0.75rem;
+      border-radius: 0.375rem;
+      font-weight: 500;
+      
+      &:hover {
+        background-color: #0b5ed7;
+        border-color: #0a58ca;
+      }
+
+      &:disabled {
+        background-color: #6c757d;
+        border-color: #6c757d;
+        opacity: 0.65;
+        cursor: not-allowed;
+      }
+    }
+  }
+}

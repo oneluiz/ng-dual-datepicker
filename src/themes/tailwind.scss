@@ -1,0 +1,109 @@
+/**
+ * Tailwind CSS Theme for ng-dual-datepicker
+ * 
+ * Import this file in your styles.scss to apply Tailwind styling:
+ * @import '@oneluiz/dual-datepicker/themes/tailwind';
+ * 
+ * Make sure you have Tailwind CSS already configured in your project.
+ */
+
+.datepicker-wrapper.theme-tailwind {
+  
+  .datepicker-input {
+    @apply block w-full px-3 py-2 text-base font-normal leading-6 text-gray-900 bg-white border border-gray-300 rounded-md cursor-pointer;
+    @apply transition duration-150 ease-in-out;
+    @apply hover:border-gray-400;
+    @apply focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500;
+    
+    &::placeholder {
+      @apply text-gray-500;
+    }
+
+    &:disabled,
+    &[readonly] {
+      @apply bg-gray-100 cursor-not-allowed opacity-100;
+    }
+  }
+
+  .date-picker-dropdown {
+    @apply bg-white border border-gray-200 rounded-lg shadow-lg;
+  }
+
+  .date-picker-presets {
+    button {
+      @apply bg-white border border-gray-300 text-blue-600 px-3 py-2 rounded-md text-sm font-medium cursor-pointer;
+      @apply transition duration-150 ease-in-out;
+      @apply hover:bg-blue-600 hover:text-white hover:border-blue-600;
+      @apply focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2;
+    }
+
+    .btn-close-calendar {
+      @apply bg-white border border-gray-300 text-red-600;
+      @apply hover:bg-red-600 hover:text-white hover:border-red-600;
+    }
+  }
+
+  .date-picker-header {
+    button {
+      @apply bg-white border border-gray-300 text-gray-700 rounded-md px-2 py-1;
+      @apply hover:bg-gray-100 hover:border-gray-400;
+      @apply focus:outline-none focus:ring-2 focus:ring-blue-500;
+    }
+  }
+
+  .day {
+    @apply text-gray-900 rounded-md;
+    
+    &:hover:not(.disabled):not(.selected):not(.in-range) {
+      @apply bg-gray-100;
+    }
+
+    &.selected {
+      @apply bg-blue-600 text-white font-semibold;
+    }
+
+    &.in-range {
+      @apply bg-blue-50 text-blue-600;
+    }
+
+    &.today {
+      @apply border-2 border-blue-600 font-semibold;
+    }
+
+    &.disabled {
+      @apply text-gray-400 bg-transparent cursor-not-allowed opacity-50;
+    }
+  }
+
+  .selected-ranges {
+    .range-tag {
+      @apply bg-blue-600 text-white rounded-md px-3 py-1 text-sm border-none;
+    }
+
+    .btn-remove {
+      @apply bg-transparent border-none text-white;
+      @apply hover:text-red-500;
+    }
+  }
+
+  .date-picker-footer {
+    @apply border-t border-gray-200;
+
+    .btn-clear,
+    .btn-cancel {
+      @apply bg-white border border-gray-300 text-gray-600 px-3 py-2 rounded-md;
+      @apply hover:bg-gray-100 hover:text-gray-700;
+      @apply focus:outline-none focus:ring-2 focus:ring-gray-500;
+    }
+
+    .btn-apply {
+      @apply bg-blue-600 border border-blue-600 text-white px-3 py-2 rounded-md font-medium;
+      @apply hover:bg-blue-700 hover:border-blue-700;
+      @apply focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2;
+
+      &:disabled {
+        @apply bg-gray-400 border-gray-400 opacity-65 cursor-not-allowed;
+      }
+    }
+  }
+}
