@@ -3,6 +3,7 @@
 A lightweight, zero-dependency date range picker for Angular 17+. Built with standalone components, Reactive Forms, and Angular Signals. No Angular Material required.
 
 [![npm version](https://img.shields.io/npm/v/@oneluiz/dual-datepicker)](https://www.npmjs.com/package/@oneluiz/dual-datepicker)
+[![npm provenance](https://img.shields.io/badge/provenance-available-brightgreen)](https://www.npmjs.com/package/@oneluiz/dual-datepicker)
 ![license](https://img.shields.io/npm/l/@oneluiz/dual-datepicker)
 ![Angular](https://img.shields.io/badge/Angular-17%2B-red)
 
@@ -10,19 +11,611 @@ A lightweight, zero-dependency date range picker for Angular 17+. Built with sta
 npm install @oneluiz/dual-datepicker
 ```
 
-> ## ⚠️ **BREAKING CHANGES in v3.0.0**
->
-> - **All DateRange properties renamed to English**: `fechaInicio` → `startDate`, `fechaFin` → `endDate`, `rangoTexto` → `rangeText`
-> - **Deprecated `daysAgo` removed**: Use `getValue: () => PresetRange` pattern or `CommonPresets` instead
-> - **All component methods renamed to English**: `limpiar()` → `clear()`, etc.
-> 
-> **📖 See [MIGRATION_V3.md](MIGRATION_V3.md) for complete migration guide**
->
-> To stay on v2.x: `npm install @oneluiz/dual-datepicker@2.7.0`
-
 ## 🎯 [Live Demo](https://oneluiz.github.io/ng-dual-datepicker/)
 
 **[Check out the interactive examples →](https://oneluiz.github.io/ng-dual-datepicker/)**
+
+---
+
+## 📋 Table of Contents
+
+- [Features](#-features)
+- [Why Choose This Library?](#-why-choose-this-library)
+- [Installation](#-installation)
+- [Quick Start](#-quick-start)
+  - [Basic Usage](#basic-usage)
+  - [Reactive Forms](#with-reactive-forms)
+  - [Angular Signals](#with-angular-signals)
+- [Advanced Features](#-advanced-features)
+  - [Multi-Range Selection](#multi-range-support)
+  - [Custom Presets](#custom-presets)
+  - [Date Adapter System](#date-adapter-system)
+  - [Keyboard Navigation](#keyboard-navigation)
+- [Customization](#-customization)
+  - [Styling Options](#styling-options)
+  - [Localization (i18n)](#localization-i18n)
+- [API Reference](#-api-reference)
+  - [Inputs](#inputs)
+  - [Outputs](#outputs)
+  - [Methods](#public-methods)
+  - [Types](#types)
+- [Examples](#-usage-examples)
+- [Accessibility](#-accessibility)
+- [Requirements](#-requirements)
+- [License & Support](#-license--support)
+
+---
+
+## ✨ Features
+
+- 🪶 **Zero Dependencies** – No external libraries required
+- 🎯 **Standalone Component** – No NgModule imports needed
+- ⚡ **Angular Signals** – Modern reactive state management
+- 🔄 **Reactive Forms** – Full ControlValueAccessor implementation
+- 🔥 **Multi-Range Support** – Select multiple date ranges (Material CAN'T do this!)
+- 🎨 **Fully Customizable** – Every color, padding, border configurable
+- 📦 **Lightweight** – ~60 KB gzipped total bundle
+- 🚀 **Performance** – OnPush change detection + trackBy optimization
+- ♿ **Accessible** – Full keyboard navigation, ARIA labels, WCAG 2.1 AA compliant
+- 🌍 **i18n Ready** – Customizable month/day names
+- 📱 **Responsive** – Works on desktop and mobile
+- 🔌 **Date Adapters** – Use DayJS, date-fns, Luxon, or custom libraries
+
+---
+
+## 🤔 Why Choose This Library?
+
+| Feature | ng-dual-datepicker | Angular Material DateRangePicker |
+|---------|-------------------|----------------------------------|
+| **Bundle Size** | ~60 KB gzipped | ~300+ KB (with dependencies) |
+| **Dependencies** | Zero | Requires @angular/material, @angular/cdk |
+| **Standalone** | ✅ Native | ⚠️ Requires module setup |
+| **Signals Support** | ✅ Built-in | ❌ Not yet |
+| **Multi-Range Support** | ✅ Yes | ❌ Not available |
+| **Customization** | Full styling control | Theme-constrained |
+| **Learning Curve** | Minimal | Requires Material knowledge |
+| **Change Detection** | OnPush optimized | Default |
+| **Setup Time** | < 1 minute | ~10+ minutes (theming, modules) |
+
+### When to Use This
+
+**✅ Use ng-dual-datepicker if you:**
+- Don't want to install Angular Material just for a date picker
+- Need precise control over styling and behavior
+- Want minimal bundle size impact
+- Prefer standalone components
+- Need Angular Signals support now
+- Need multi-range selection
+- Are building a custom design system
+
+**⚠️ Use Angular Material DateRangePicker if you:**
+- Already use Angular Material throughout your app
+- Need Material Design compliance
+- Want a battle-tested enterprise solution with extensive ecosystem
+
+---
+
+## 📦 Installation
+
+```bash
+npm install @oneluiz/dual-datepicker
+```
+
+**Requirements:** Angular 17.0.0 or higher
+
+---
+
+## 🚀 Quick Start
+
+### Basic Usage
+
+```typescript
+import { Component } from '@angular/core';
+import { DualDatepickerComponent, DateRange } from '@oneluiz/dual-datepicker';
+
+@Component({
+  selector: 'app-root',
+  standalone: true,
+  imports: [DualDatepickerComponent],
+  template: `
+    <ngx-dual-datepicker
+      (dateRangeChange)="onRangeChange($event)">
+    </ngx-dual-datepicker>
+  `
+})
+export class AppComponent {
+  onRangeChange(range: DateRange) {
+    console.log('Start:', range.startDate);
+    console.log('End:', range.endDate);
+  }
+}
+```
+
+### With Reactive Forms
+
+```typescript
+import { FormControl } from '@angular/forms';
+import { DateRange } from '@oneluiz/dual-datepicker';
+
+dateRange = new FormControl<DateRange | null>(null);
+```
+
+```html
+<ngx-dual-datepicker [formControl]="dateRange"></ngx-dual-datepicker>
+```
+
+### With Angular Signals
+
+```typescript
+import { signal } from '@angular/core';
+
+dateRange = signal<DateRange | null>(null);
+```
+
+```html
+<ngx-dual-datepicker
+  [(ngModel)]="dateRange()"
+  (dateRangeChange)="dateRange.set($event)">
+</ngx-dual-datepicker>
+```
+
+---
+
+## 🎯 Advanced Features
+
+### Multi-Range Support
+
+**🔥 Material CAN'T do this!** Select multiple date ranges in a single picker - perfect for booking systems, blackout periods, and complex scheduling.
+
+```typescript
+import { Component } from '@angular/core';
+import { MultiDateRange } from '@oneluiz/dual-datepicker';
+
+@Component({
+  template: `
+    <ngx-dual-datepicker
+      [multiRange]="true"
+      (multiDateRangeChange)="onMultiRangeChange($event)">
+    </ngx-dual-datepicker>
+
+    @if (selectedRanges && selectedRanges.ranges.length > 0) {
+      <div class="selected-ranges">
+        <h3>Selected Ranges ({{ selectedRanges.ranges.length }})</h3>
+        @for (range of selectedRanges.ranges; track $index) {
+          <div class="range-item">
+            {{ range.startDate }} → {{ range.endDate }}
+          </div>
+        }
+      </div>
+    }
+  `
+})
+export class MultiRangeExample {
+  selectedRanges: MultiDateRange | null = null;
+
+  onMultiRangeChange(ranges: MultiDateRange) {
+    this.selectedRanges = ranges;
+    console.log('Selected ranges:', ranges.ranges);
+  }
+}
+```
+
+**Perfect Use Cases:**
+- 🏨 Hotel booking systems
+- 📅 Event blackout periods
+- 🔧 Maintenance windows
+- 📊 Availability calendars
+- 👷 Shift scheduling
+
+### Custom Presets
+
+**Power feature for dashboards, reporting, ERP, and BI systems!**
+
+#### Using Pre-built Presets
+
+```typescript
+import { CommonPresets } from '@oneluiz/dual-datepicker';
+
+// Dashboard presets
+presets = CommonPresets.dashboard;
+// → Last 7, 15, 30, 60, 90 days + last 6 months
+
+// Reporting presets
+presets = CommonPresets.reporting;
+// → Today, This week, Last week, This month, Last month, This quarter
+
+// Financial/ERP presets
+presets = CommonPresets.financial;
+// → Month to date, Quarter to date, Year to date
+
+// Analytics presets
+presets = CommonPresets.analytics;
+// → Last 7/14/30/60/90/180/365 days
+```
+
+#### Creating Custom Presets
+
+```typescript
+import { PresetConfig, getToday, getThisMonth, getLastMonth } from '@oneluiz/dual-datepicker';
+
+customPresets: PresetConfig[] = [
+  { label: 'Today', getValue: getToday },
+  { label: 'This Month', getValue: getThisMonth },
+  { label: 'Last Month', getValue: getLastMonth },
+  { 
+    label: 'Custom Logic', 
+    getValue: () => {
+      // Your custom date calculation
+      const today = new Date();
+      const start = new Date(today.getFullYear(), today.getMonth(), 1);
+      return {
+        start: formatDate(start),
+        end: formatDate(today)
+      };
+    }
+  }
+];
+```
+
+```html
+<ngx-dual-datepicker [presets]="customPresets"></ngx-dual-datepicker>
+```
+
+**Why This Is Powerful:**
+- ✅ Perfect for dashboards: "Last 7 days", "Month to date"
+- ✅ Perfect for reporting: "This quarter", "Last quarter"
+- ✅ Perfect for financial systems: "Quarter to date", "Year to date"
+- ✅ Perfect for analytics: Consistent date ranges for BI tools
+
+### Date Adapter System
+
+Use custom date libraries (DayJS, date-fns, Luxon) instead of native JavaScript `Date` objects.
+
+#### Example: date-fns Adapter
+
+```typescript
+import { Injectable } from '@angular/core';
+import { DateAdapter } from '@oneluiz/dual-datepicker';
+import { parse, format, addDays, isValid } from 'date-fns';
+
+@Injectable()
+export class DateFnsAdapter extends DateAdapter<Date> {
+  parse(value: any): Date | null {
+    if (!value) return null;
+    const parsed = parse(value, 'yyyy-MM-dd', new Date());
+    return isValid(parsed) ? parsed : null;
+  }
+
+  format(date: Date, formatStr: string = 'yyyy-MM-dd'): string {
+    return format(date, formatStr);
+  }
+
+  addDays(date: Date, days: number): Date {
+    return addDays(date, days);
+  }
+
+  // ... implement other required methods
+}
+```
+
+#### Providing the Adapter
+
+```typescript
+import { DATE_ADAPTER } from '@oneluiz/dual-datepicker';
+
+@Component({
+  providers: [
+    { provide: DATE_ADAPTER, useClass: DateFnsAdapter }
+  ]
+})
+export class AppComponent {}
+```
+
+**Benefits:**
+- ✅ Zero vendor lock-in
+- ✅ Use same date library across your app
+- ✅ Adapt to custom backend formats
+- ✅ Full TypeScript support
+
+### Keyboard Navigation
+
+**Full keyboard control** for accessibility (WCAG 2.1 AA compliant):
+
+| Key(s) | Action |
+|--------|--------|
+| `←` / `→` | Navigate between days |
+| `↑` / `↓` | Navigate by weeks |
+| `Enter` / `Space` | Select focused day |
+| `Escape` | Close datepicker |
+| `Home` / `End` | Jump to first/last day |
+| `PageUp` / `PageDown` | Navigate months |
+| `Shift + PageUp/Down` | Navigate years |
+| `Tab` | Navigate between input, presets, and calendar |
+
+```html
+<!-- Enabled by default -->
+<ngx-dual-datepicker></ngx-dual-datepicker>
+
+<!-- Disable if needed -->
+<ngx-dual-datepicker [enableKeyboardNavigation]="false"></ngx-dual-datepicker>
+```
+
+---
+
+## 🎨 Customization
+
+### Styling Options
+
+```html
+<ngx-dual-datepicker
+  inputBackgroundColor="#ffffff"
+  inputTextColor="#495057"
+  inputBorderColor="#ced4da"
+  inputBorderColorHover="#80bdff"
+  inputBorderColorFocus="#0d6efd"
+  inputPadding="0.375rem 0.75rem">
+</ngx-dual-datepicker>
+```
+
+#### Pre-styled Examples
+
+**Bootstrap Style:**
+```html
+<ngx-dual-datepicker
+  inputBackgroundColor="#ffffff"
+  inputBorderColor="#ced4da"
+  inputBorderColorFocus="#80bdff">
+</ngx-dual-datepicker>
+```
+
+**GitHub Style:**
+```html
+<ngx-dual-datepicker
+  inputBackgroundColor="#f3f4f6"
+  inputBorderColor="transparent"
+  inputBorderColorHover="#d1d5db">
+</ngx-dual-datepicker>
+```
+
+### Localization (i18n)
+
+```typescript
+import { LocaleConfig } from '@oneluiz/dual-datepicker';
+
+spanishLocale: LocaleConfig = {
+  monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+               'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+  monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun',
+                    'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+  dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+  dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb']
+};
+```
+
+```html
+<ngx-dual-datepicker [locale]="spanishLocale"></ngx-dual-datepicker>
+```
+
+---
+
+## 📖 API Reference
+
+### Inputs
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| `ngModel` | `DateRange \| null` | `null` | Two-way binding for selected date range |
+| `placeholder` | `string` | `'Select date range'` | Input placeholder text |
+| `presets` | `PresetConfig[]` | `[]` | Array of preset configurations |
+| `showPresets` | `boolean` | `true` | Show/hide the presets sidebar |
+| `showClearButton` | `boolean` | `false` | Show/hide the Clear button |
+| `closeOnSelection` | `boolean` | `false` | Close picker when both dates selected |
+| `closeOnPresetSelection` | `boolean` | `false` | Close picker when preset clicked |
+| `closeOnClickOutside` | `boolean` | `true` | Close picker when clicking outside |
+| `multiRange` | `boolean` | `false` | Enable multi-range selection mode |
+| `enableKeyboardNavigation` | `boolean` | `true` | Enable keyboard navigation |
+| `inputBackgroundColor` | `string` | `'#fff'` | Input background color |
+| `inputTextColor` | `string` | `'#495057'` | Input text color |
+| `inputBorderColor` | `string` | `'#ced4da'` | Input border color |
+| `inputBorderColorHover` | `string` | `'#9ca3af'` | Input border color on hover |
+| `inputBorderColorFocus` | `string` | `'#80bdff'` | Input border color on focus |
+| `inputPadding` | `string` | `'0.375rem 0.75rem'` | Input padding |
+| `locale` | `LocaleConfig` | English defaults | Custom month/day names for i18n |
+
+### Outputs
+
+| Event | Type | Description |
+|-------|------|-------------|
+| `dateRangeChange` | `EventEmitter<DateRange>` | Emitted when date range changes |
+| `dateRangeSelected` | `EventEmitter<DateRange>` | Emitted when both dates are selected |
+| `multiDateRangeChange` | `EventEmitter<MultiDateRange>` | Emitted in multi-range mode |
+| `multiDateRangeSelected` | `EventEmitter<MultiDateRange>` | Emitted when multi-range selection is complete |
+
+### Public Methods
+
+```typescript
+import { Component, ViewChild } from '@angular/core';
+import { DualDatepickerComponent } from '@oneluiz/dual-datepicker';
+
+@Component({
+  template: `
+    <ngx-dual-datepicker #datepicker></ngx-dual-datepicker>
+    <button (click)="clearSelection()">Clear</button>
+  `
+})
+export class MyComponent {
+  @ViewChild('datepicker') datepicker!: DualDatepickerComponent;
+
+  clearSelection() {
+    this.datepicker.clear();
+  }
+}
+```
+
+| Method | Description |
+|--------|-------------|
+| `clear()` | Clears current selection and resets component |
+
+### Types
+
+```typescript
+interface DateRange {
+  startDate: string;   // ISO format: 'YYYY-MM-DD'
+  endDate: string;     // ISO format: 'YYYY-MM-DD'
+  rangeText: string;   // Display text: 'DD Mon - DD Mon'
+}
+
+interface MultiDateRange {
+  ranges: DateRange[];  // Array of selected date ranges
+}
+
+interface PresetRange {
+  start: string;  // ISO format: 'YYYY-MM-DD'
+  end: string;    // ISO format: 'YYYY-MM-DD'
+}
+
+interface PresetConfig {
+  label: string;
+  getValue: () => PresetRange;
+}
+
+interface LocaleConfig {
+  monthNames?: string[];         // Full month names (12 items)
+  monthNamesShort?: string[];    // Short month names (12 items)
+  dayNames?: string[];           // Full day names (7 items, starting Sunday)
+  dayNamesShort?: string[];      // Short day names (7 items, starting Sunday)
+}
+```
+
+---
+
+## 💡 Usage Examples
+
+### With Events
+
+```typescript
+@Component({
+  template: `
+    <ngx-dual-datepicker
+      (dateRangeSelected)="onDateRangeSelected($event)">
+    </ngx-dual-datepicker>
+    
+    @if (selectedRange) {
+      <div>Selected: {{ selectedRange.rangeText }}</div>
+    }
+  `
+})
+export class ExampleComponent {
+  selectedRange: DateRange | null = null;
+
+  onDateRangeSelected(range: DateRange) {
+    this.selectedRange = range;
+    // Both dates selected - fetch data
+    this.fetchData(range.startDate, range.endDate);
+  }
+
+  fetchData(start: string, end: string) {
+    // Dates are in 'YYYY-MM-DD' format
+  }
+}
+```
+
+### With Angular Signals
+
+```typescript
+import { Component, signal, computed } from '@angular/core';
+
+@Component({
+  template: `
+    <ngx-dual-datepicker
+      (dateRangeChange)="onDateChange($event)">
+    </ngx-dual-datepicker>
+    
+    @if (isRangeSelected()) {
+      <div>
+        <p>{{ rangeText() }}</p>
+        <p>Days: {{ daysDifference() }}</p>
+      </div>
+    }
+  `
+})
+export class SignalsExample {
+  startDate = signal('');
+  endDate = signal('');
+  
+  isRangeSelected = computed(() => 
+    this.startDate() !== '' && this.endDate() !== ''
+  );
+  
+  rangeText = computed(() => 
+    `${this.startDate()} to ${this.endDate()}`
+  );
+  
+  daysDifference = computed(() => {
+    if (!this.isRangeSelected()) return 0;
+    const start = new Date(this.startDate());
+    const end = new Date(this.endDate());
+    return Math.ceil((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24));
+  });
+
+  onDateChange(range: DateRange) {
+    this.startDate.set(range.startDate);
+    this.endDate.set(range.endDate);
+  }
+}
+```
+
+### With Complete Customization
+
+```html
+<ngx-dual-datepicker
+  placeholder="Pick your dates"
+  [presets]="customPresets"
+  [showClearButton]="true"
+  [closeOnSelection]="true"
+  [locale]="spanishLocale"
+  inputBackgroundColor="#fef3c7"
+  inputTextColor="#92400e"
+  inputBorderColor="#fbbf24"
+  inputBorderColorFocus="#d97706"
+  inputPadding="12px 16px"
+  (dateRangeSelected)="onDateRangeSelected($event)">
+</ngx-dual-datepicker>
+```
+
+---
+
+## ♿ Accessibility
+
+**WCAG 2.1 Level AA Compliant**
+
+- ✅ Full keyboard navigation
+- ✅ Screen reader support with ARIA labels
+- ✅ Semantic HTML with proper `role` attributes
+- ✅ Focus management with visual indicators
+- ✅ High contrast support
+
+---
+
+## 🛠️ Requirements
+
+- **Angular:** 17.0.0 or higher
+- **TypeScript:** 5.0+ (recommended)
+
+---
+
+## 📄 License & Support
+
+**License:** MIT © Luis Cortes
+
+**Issues:** [Report bugs](https://github.com/oneluiz/ng-dual-datepicker/issues)
+
+**Star this project:** If you find it useful, please ⭐ the [GitHub repository](https://github.com/oneluiz/ng-dual-datepicker)!
+
+---
+
+Made with ❤️ by [Luis Cortes](https://github.com/oneluiz)
+**
 
 ## Why ng-dual-datepicker?
 
