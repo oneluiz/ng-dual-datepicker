@@ -511,9 +511,40 @@
           </div>
         </div>
 
-        <!-- Example 13: Disabled Dates -->
-        <div class="demo-example" id="example-13">
-          <div class="demo-box">
+        <!-- V3.2.0 Features Section with Tabs -->
+        <div class="v320-features-section">
+          <div class="v320-tabs">
+            <button 
+              class="v320-tab"
+              [class.active]="activeV320Tab === 'disabled-dates'"
+              (click)="setActiveV320Tab('disabled-dates')">
+              🚫 Disabled Dates
+            </button>
+            <button 
+              class="v320-tab"
+              [class.active]="activeV320Tab === 'display-format'"
+              (click)="setActiveV320Tab('display-format')">
+              🎨 Display Format
+            </button>
+            <button 
+              class="v320-tab"
+              [class.active]="activeV320Tab === 'apply-button'"
+              (click)="setActiveV320Tab('apply-button')">
+              ✅ Apply Button
+            </button>
+            <button 
+              class="v320-tab"
+              [class.active]="activeV320Tab === 'hover-preview'"
+              (click)="setActiveV320Tab('hover-preview')">
+              🎨 Hover Preview
+            </button>
+          </div>
+
+          <!-- Example 13: Disabled Dates -->
+          @if (activeV320Tab === 'disabled-dates') {
+          <div class="v320-tab-content">
+            <div class="demo-example" id="example-13">
+              <div class="demo-box">
             <h2>🚫 Disabled Dates - Weekends + Holidays</h2>
             <p class="example-desc">
               Block specific dates or use a function to disable weekends, holidays, or any custom logic. 
@@ -574,8 +605,12 @@
             </div>
           </div>
         </div>
+          </div>
+          }
 
-        <!-- Example 14: Display Format -->
+          <!-- Example 14: Display Format -->
+          @if (activeV320Tab === 'display-format') {
+          <div class="v320-tab-content">
         <div class="demo-example" id="example-14">
           <div class="demo-box">
             <h2>🎨 Display Format Customization</h2>
@@ -691,8 +726,12 @@
             </div>
           </div>
         </div>
+          </div>
+          }
 
-        <!-- Example 15: Apply/Confirm Button -->
+          <!-- Example 15: Apply/Confirm Button -->
+          @if (activeV320Tab === 'apply-button') {
+          <div class="v320-tab-content">
         <div class="demo-example" id="example-15">
           <div class="demo-box">
             <h2>✅ Apply/Confirm Button</h2>
@@ -758,8 +797,12 @@
             </div>
           </div>
         </div>
+          </div>
+          }
 
-        <!-- Example 16: Hover Range Preview -->
+          <!-- Example 16: Hover Range Preview -->
+          @if (activeV320Tab === 'hover-preview') {
+          <div class="v320-tab-content">
         <div class="demo-example" id="example-16">
           <div class="demo-box">
             <h2>🎨 Hover Range Preview</h2>
@@ -821,6 +864,9 @@
               <pre>{{ codeExamples.hoverPreview }}</pre>
             </div>
           </div>
+        </div>
+          </div>
+          }
         </div>
       </div>
     }
