@@ -1,79 +1,76 @@
 <div class="demo-wrapper">
-  <!-- Header -->
-  <header class="demo-header border-bottom bg-white sticky-top shadow-sm">
-    <div class="container-fluid px-4 py-3">
-      <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
-        <div class="d-flex align-items-center gap-3">
-          <div class="logo fs-1">🗓️</div>
-          <div class="title-section">
-            <h1 class="h4 mb-0 fw-bold">ng-dual-datepicker</h1>
-            <p class="mb-0 text-muted small">Angular Date Range Picker Component</p>
-          </div>
-        </div>
+  <!-- Bootstrap Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom sticky-top shadow-sm">
+    <div class="container-fluid px-4">
+      <!-- Brand -->
+      <a class="navbar-brand d-flex align-items-center gap-2" href="#" (click)="setActiveTab('home'); $event.preventDefault()">
+        <span class="fs-3">🗓️</span>
+        <span class="fw-bold">ng-dual-datepicker</span>
+      </a>
+
+      <!-- Toggler for mobile -->
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <!-- Navbar content -->
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <!-- Navigation links -->
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link" 
+               [class.active]="activeTab === 'home'"
+               href="#" 
+               (click)="setActiveTab('home'); $event.preventDefault()">
+              Home
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" 
+               [class.active]="activeTab === 'examples'"
+               href="#" 
+               (click)="setActiveTab('examples'); $event.preventDefault()">
+              Examples
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" 
+               [class.active]="activeTab === 'docs'"
+               href="#" 
+               (click)="setActiveTab('docs'); $event.preventDefault()">
+              Documentation
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" 
+               [class.active]="activeTab === 'api'"
+               href="#" 
+               (click)="setActiveTab('api'); $event.preventDefault()">
+              API
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" 
+               [class.active]="activeTab === 'blog'"
+               href="#" 
+               (click)="setActiveTab('blog'); $event.preventDefault()">
+              What's New
+            </a>
+          </li>
+        </ul>
+
+        <!-- Right side buttons -->
         <div class="d-flex gap-2">
-          <a href="https://github.com/oneluiz/ng-dual-datepicker" target="_blank" class="btn btn-outline-dark btn-sm d-flex align-items-center gap-2">
+          <a href="https://github.com/oneluiz/ng-dual-datepicker" target="_blank" class="btn btn-sm btn-outline-secondary d-flex align-items-center gap-2">
             <i class="bi bi-github"></i>
-            GitHub
+            <span class="d-none d-lg-inline">GitHub</span>
           </a>
-          <a href="https://www.npmjs.com/package/@oneluiz/dual-datepicker" target="_blank" class="btn btn-dark btn-sm d-flex align-items-center gap-2">
+          <a href="https://www.npmjs.com/package/@oneluiz/dual-datepicker" target="_blank" class="btn btn-sm btn-primary d-flex align-items-center gap-2">
             <i class="bi bi-box-seam"></i>
-            NPM
+            <span class="d-none d-lg-inline">NPM</span>
           </a>
         </div>
       </div>
-    </div>
-  </header>
-
-  <!-- Navigation Tabs -->
-  <nav class="bg-light border-bottom">
-    <div class="container-fluid px-4">
-      <ul class="nav nav-tabs border-0">
-        <li class="nav-item">
-          <button 
-            class="nav-link" 
-            [class.active]="activeTab === 'home'"
-            (click)="setActiveTab('home')">
-            <i class="bi bi-house-door me-2"></i>
-            Home
-          </button>
-        </li>
-        <li class="nav-item">
-          <button 
-            class="nav-link" 
-            [class.active]="activeTab === 'examples'"
-            (click)="setActiveTab('examples')">
-            <i class="bi bi-grid-3x3-gap me-2"></i>
-            Examples
-          </button>
-        </li>
-        <li class="nav-item">
-          <button 
-            class="nav-link" 
-            [class.active]="activeTab === 'docs'"
-            (click)="setActiveTab('docs')">
-            <i class="bi bi-book me-2"></i>
-            Documentation
-          </button>
-        </li>
-        <li class="nav-item">
-          <button 
-            class="nav-link" 
-            [class.active]="activeTab === 'api'"
-            (click)="setActiveTab('api')">
-            <i class="bi bi-code-slash me-2"></i>
-            API Reference
-          </button>
-        </li>
-        <li class="nav-item">
-          <button 
-            class="nav-link" 
-            [class.active]="activeTab === 'blog'"
-            (click)="setActiveTab('blog')">
-            <i class="bi bi-newspaper me-2"></i>
-            What's New
-          </button>
-        </li>
-      </ul>
     </div>
   </nav>
 
