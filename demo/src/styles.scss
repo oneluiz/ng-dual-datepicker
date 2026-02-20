@@ -2079,6 +2079,19 @@ html {
     color: #4caf50;
     font-weight: 600;
   }
+
+  .btn {
+    white-space: nowrap;
+    transition: all 0.2s ease;
+
+    &:hover {
+      transform: scale(1.05);
+    }
+
+    &:active {
+      transform: scale(0.98);
+    }
+  }
 }
 
 // Stats Grid
@@ -2645,6 +2658,19 @@ html {
       font-family: 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'Liberation Mono', 'Courier New', monospace;
       border: 1px solid #dee2e6;
       font-weight: 600;
+    }
+
+    .btn {
+      white-space: nowrap;
+      transition: all 0.2s ease;
+
+      &:hover {
+        transform: scale(1.05);
+      }
+
+      &:active {
+        transform: scale(0.98);
+      }
     }
   }
 }

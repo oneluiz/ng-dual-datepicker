@@ -589,4 +589,17 @@ selectedTheme: ThemeType = 'bootstrap';
       });
     }
   }
+
+  // Copy text to clipboard
+  copyToClipboard(text: string, event?: Event) {
+    if (event) {
+      event.preventDefault();
+    }
+    navigator.clipboard.writeText(text).then(() => {
+      // Optional: Show feedback (could add a toast notification)
+      console.log('Copied to clipboard:', text);
+    }).catch(err => {
+      console.error('Failed to copy:', err);
+    });
+  }
 }

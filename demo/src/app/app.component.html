@@ -102,8 +102,11 @@
                   </button>
                 </div>
                 <p class="text-muted small mb-3">Currently v3.3.0 · <a href="https://github.com/oneluiz/ng-dual-datepicker" class="link-secondary">Download</a> · <a href="https://github.com/oneluiz/ng-dual-datepicker/releases" class="link-secondary">Release notes</a></p>
-                <div class="hero-install">
-                  <code class="user-select-all">npm install &#64;oneluiz/dual-datepicker</code>
+                <div class="hero-install d-flex align-items-center gap-2">
+                  <code class="user-select-all flex-grow-1">npm install &#64;oneluiz/dual-datepicker</code>
+                  <button class="btn btn-sm btn-outline-secondary" (click)="copyToClipboard('npm install @oneluiz/dual-datepicker')" title="Copy to clipboard">
+                    <i class="bi bi-clipboard"></i>
+                  </button>
                 </div>
               </div>
             </div>
@@ -362,8 +365,11 @@
                       <span class="badge bg-primary text-white fs-5 rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">1</span>
                       <h4 class="ms-3 mb-0 fw-bold">Install</h4>
                     </div>
-                    <div class="bg-dark text-white p-3 rounded">
-                      <code class="text-white">npm install &#64;oneluiz/dual-datepicker</code>
+                    <div class="bg-dark text-white p-3 rounded d-flex align-items-center gap-2">
+                      <code class="text-white flex-grow-1">npm install &#64;oneluiz/dual-datepicker</code>
+                      <button class="btn btn-sm btn-outline-light" (click)="copyToClipboard('npm install @oneluiz/dual-datepicker')" title="Copy to clipboard">
+                        <i class="bi bi-clipboard"></i>
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -1531,8 +1537,11 @@
         <div class="doc-content">
           <section class="doc-section" id="installation">
             <h2>📦 Installation</h2>
-            <div class="code-block">
+            <div class="code-block position-relative">
               <pre>npm install &#64;oneluiz/dual-datepicker</pre>
+              <button class="btn btn-sm btn-outline-secondary position-absolute top-0 end-0 m-2" (click)="copyToClipboard('npm install @oneluiz/dual-datepicker')" title="Copy to clipboard">
+                <i class="bi bi-clipboard"></i>
+              </button>
             </div>
           </section>
 
@@ -2520,10 +2529,10 @@ import &#123; getLastNDays &#125; from '&#64;oneluiz/dual-datepicker';
       <div class="tab-content fade-in">
         <div class="blog-content">
           <!-- Blog Header -->
-          <div class="blog-header" id="v3-2-0">
+          <div class="blog-header" id="v3-3-0">
             <span class="blog-date">February 20, 2026</span>
-            <h1 class="blog-title">🎉 Announcing ng-dual-datepicker v3.2.0</h1>
-            <p class="blog-subtitle">4 powerful new features for enterprise-ready applications</p>
+            <h1 class="blog-title">🎉 Announcing ng-dual-datepicker v3.3.0</h1>
+            <p class="blog-subtitle">Comprehensive theming system + 4 powerful features for enterprise-ready applications</p>
             <div class="blog-author">
               <span class="author-label">Published by</span>
               <span class="author-name">Luis Cortes</span>
@@ -2717,9 +2726,12 @@ import &#123; getLastNDays &#125; from '&#64;oneluiz/dual-datepicker';
                 </p>
               </div>
             </div>
-            <div class="upgrade-command">
+            <div class="upgrade-command d-flex align-items-center gap-2">
               <strong>Upgrade now:</strong>
-              <code>npm install &#64;oneluiz/dual-datepicker&#64;3.2.0</code>
+              <code>npm install &#64;oneluiz/dual-datepicker&#64;3.3.0</code>
+              <button class="btn btn-sm btn-outline-secondary" (click)="copyToClipboard('npm install @oneluiz/dual-datepicker@3.3.0')" title="Copy to clipboard">
+                <i class="bi bi-clipboard"></i>
+              </button>
             </div>
           </div>
 
