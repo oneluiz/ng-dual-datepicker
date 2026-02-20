@@ -416,18 +416,80 @@
         </section>
 
         <!-- CTA Section -->
-        <section class="cta-section text-center text-white py-5 bg-primary" style="margin: 0 2rem 4rem; border-radius: 0.5rem;">
-          <div class="container py-4">
-            <h2 class="display-5 fw-bold mb-3">Ready to Build Better Date Pickers?</h2>
-            <p class="lead mb-4">Join developers who chose simplicity, performance, and flexibility.</p>
-            <div class="d-flex gap-3 justify-content-center flex-wrap">
-              <button class="btn btn-light btn-lg px-4 py-3 fw-semibold" (click)="setActiveTab('examples')">
-                View Live Examples
-              </button>
-              <a href="https://github.com/oneluiz/ng-dual-datepicker" target="_blank" class="btn btn-outline-light btn-lg px-4 py-3 fw-semibold">
-                <i class="bi bi-github me-2"></i>
-                Star on GitHub
-              </a>
+        <section class="cta-section py-5">
+          <div class="container">
+            <div class="cta-card bg-gradient rounded-4 shadow-lg p-5 text-center text-white position-relative overflow-hidden">
+              <!-- Background Pattern -->
+              <div class="position-absolute top-0 start-0 w-100 h-100 opacity-10">
+                <div class="d-flex flex-wrap">
+                  @for (i of [1,2,3,4,5,6,7,8,9,10,11,12]; track i) {
+                    <div class="col-3 p-3">
+                      <i class="bi bi-calendar3 fs-1"></i>
+                    </div>
+                  }
+                </div>
+              </div>
+              
+              <!-- Content -->
+              <div class="position-relative">
+                <div class="mb-5">
+                  <span class="badge bg-white text-primary rounded-pill px-4 py-2 mb-3 fw-semibold">Get Started Today</span>
+                  <h2 class="display-4 fw-bold mb-3">Ready to Build Better Date Pickers?</h2>
+                  <p class="lead mb-0 mx-auto" style="max-width: 600px;">Join thousands of developers who chose simplicity, performance, and flexibility over bloated alternatives.</p>
+                </div>
+                
+                <!-- Stats Row -->
+                <div class="row g-4 mb-5 justify-content-center">
+                  <div class="col-6 col-md-3">
+                    <div class="d-flex align-items-center justify-content-center gap-2">
+                      <i class="bi bi-download fs-4"></i>
+                      <div class="text-start">
+                        <div class="h4 mb-0 fw-bold">10K+</div>
+                        <small class="opacity-75">Downloads</small>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-6 col-md-3">
+                    <div class="d-flex align-items-center justify-content-center gap-2">
+                      <i class="bi bi-star-fill fs-4"></i>
+                      <div class="text-start">
+                        <div class="h4 mb-0 fw-bold">4.9/5</div>
+                        <small class="opacity-75">Rating</small>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-6 col-md-3">
+                    <div class="d-flex align-items-center justify-content-center gap-2">
+                      <i class="bi bi-lightning-charge-fill fs-4"></i>
+                      <div class="text-start">
+                        <div class="h4 mb-0 fw-bold">&lt;1min</div>
+                        <small class="opacity-75">Setup time</small>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-6 col-md-3">
+                    <div class="d-flex align-items-center justify-content-center gap-2">
+                      <i class="bi bi-box-seam fs-4"></i>
+                      <div class="text-start">
+                        <div class="h4 mb-0 fw-bold">60KB</div>
+                        <small class="opacity-75">Bundle size</small>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                <!-- CTA Buttons -->
+                <div class="d-flex gap-3 justify-content-center flex-wrap">
+                  <button class="btn btn-light btn-lg px-5 py-3 fw-bold shadow-sm" (click)="setActiveTab('examples')">
+                    <i class="bi bi-grid-3x3-gap me-2"></i>
+                    View Live Examples
+                  </button>
+                  <a href="https://github.com/oneluiz/ng-dual-datepicker" target="_blank" class="btn btn-outline-light btn-lg px-5 py-3 fw-bold">
+                    <i class="bi bi-github me-2"></i>
+                    Star on GitHub
+                  </a>
+                </div>
+              </div>
             </div>
           </div>
         </section>
