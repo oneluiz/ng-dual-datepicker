@@ -64,10 +64,76 @@
     <!-- Examples Tab -->
     @if (activeTab === 'examples') {
       <div class="tab-content fade-in">
-        <!-- NEW: Keyboard Navigation Banner -->
-        <div class="feature-banner keyboard-banner">
-          <div class="banner-badge">🆕 NEW IN v3.1.0</div>
-          <h2>⌨️ Full Keyboard Navigation</h2>
+        <!-- NEW v3.2.0 Banner -->
+        <div class="feature-banner new-release-banner">
+          <div class="banner-badge">🎉 NEW IN v3.2.0</div>
+          <h2>🚀 4 Powerful New Features!</h2>
+          <p class="banner-description">
+            Enterprise-ready features for better UX and professional applications
+          </p>
+          <div class="features-highlight">
+            <div class="feature-item">
+              <span class="feature-icon">🎨</span>
+              <div class="feature-content">
+                <h4>Hover Range Preview</h4>
+                <p>Visual feedback while selecting dates - see range before clicking</p>
+              </div>
+            </div>
+            <div class="feature-item">
+              <span class="feature-icon">🔒</span>
+              <div class="feature-content">
+                <h4>Apply/Confirm Button</h4>
+                <p>Explicit confirmation for expensive operations (dashboards, reports)</p>
+              </div>
+            </div>
+            <div class="feature-item">
+              <span class="feature-icon">🎨</span>
+              <div class="feature-content">
+                <h4>Display Format</h4>
+                <p>Customize date format with 8 tokens (DD/MM/YYYY, MM/DD/YYYY, etc.)</p>
+              </div>
+            </div>
+            <div class="feature-item">
+              <span class="feature-icon">🚫</span>
+              <div class="feature-content">
+                <h4>Disabled Dates</h4>
+                <p>Block specific dates or use function (weekends, holidays, blackouts)</p>
+              </div>
+            </div>
+          </div>
+          <div class="banner-footer">
+            <span class="badge-success">✓ Zero Breaking Changes</span>
+            <span class="badge-success">✓ 100% Compatible with v3.1.x</span>
+            <span class="badge-success">✓ Enterprise Ready</span>
+          </div>
+        </div>
+
+        <!-- Quick Navigation -->
+        <div class="quick-nav">
+          <h3>📑 Jump to Example</h3>
+          <div class="quick-nav-grid">
+            <button (click)="scrollToExample('example-1')" class="quick-nav-btn">1. Basic</button>
+            <button (click)="scrollToExample('example-2')" class="quick-nav-btn">2. Presets</button>
+            <button (click)="scrollToExample('example-3')" class="quick-nav-btn">3. GitHub Style</button>
+            <button (click)="scrollToExample('example-4')" class="quick-nav-btn">4. No Presets</button>
+            <button (click)="scrollToExample('example-5')" class="quick-nav-btn">5. Clear Button</button>
+            <button (click)="scrollToExample('example-6')" class="quick-nav-btn">6. Initial Dates</button>
+            <button (click)="scrollToExample('example-8')" class="quick-nav-btn">8. External Clear</button>
+            <button (click)="scrollToExample('example-9')" class="quick-nav-btn">9. Minimal UI</button>
+            <button (click)="scrollToExample('example-10')" class="quick-nav-btn">10. Date Adapter</button>
+            <button (click)="scrollToExample('example-11')" class="quick-nav-btn">11. CommonPresets</button>
+            <button (click)="scrollToExample('example-12')" class="quick-nav-btn">12. Multi-Range</button>
+            <button (click)="scrollToExample('example-13')" class="quick-nav-btn">13. Disabled Dates 🆕</button>
+            <button (click)="scrollToExample('example-14')" class="quick-nav-btn">14. Display Format 🆕</button>
+            <button (click)="scrollToExample('example-15')" class="quick-nav-btn">15. Apply Button 🆕</button>
+            <button (click)="scrollToExample('example-16')" class="quick-nav-btn">16. Hover Preview 🆕</button>
+          </div>
+        </div>
+
+        <!-- Keyboard Navigation Banner (v3.1.0) -->
+        <div class="feature-banner keyboard-banner" id="keyboard-nav">
+          <div class="banner-badge">⌨️ v3.1.0</div>
+          <h2>Full Keyboard Navigation</h2>
           <p class="banner-description">
             Navigate the datepicker entirely with your keyboard! Professional accessibility with WCAG 2.1 Level AA compliance.
           </p>
@@ -116,7 +182,7 @@
 
         <div class="example-grid">
           <!-- Example 1: Basic -->
-          <div class="example-card">
+          <div class="example-card" id="example-1">
             <h2>Basic Example</h2>
             <p class="example-description">
               Basic usage of the component with default configuration.
@@ -140,7 +206,7 @@
           </div>
 
           <!-- Example 2: Custom Presets -->
-          <div class="example-card">
+          <div class="example-card" id="example-2">
             <h2>Custom Presets</h2>
             <p class="example-description">
               Define your own presets for common date ranges.
@@ -165,7 +231,7 @@
           </div>
 
           <!-- Example 3: GitHub Style -->
-          <div class="example-card">
+          <div class="example-card" id="example-3">
             <h2>Custom Colors (GitHub Style)</h2>
             <p class="example-description">
               Customize input colors to match your design.
@@ -194,7 +260,7 @@
           </div>
 
           <!-- Example 4: Without Presets -->
-          <div class="example-card">
+          <div class="example-card" id="example-4">
             <h2>Without Presets</h2>
             <p class="example-description">
               Hide presets and show only the calendar.
@@ -219,7 +285,7 @@
           </div>
 
           <!-- Example 5: Clear Button -->
-          <div class="example-card">
+          <div class="example-card" id="example-5">
             <h2>Clear Button</h2>
             <p class="example-description">
               Enable the built-in "Clear" button by setting [showClearButton]="true". This button appears in the dropdown and allows users to reset the selection.
@@ -244,7 +310,7 @@
           </div>
 
           <!-- Example 6: With Initial Dates -->
-          <div class="example-card">
+          <div class="example-card" id="example-6">
             <h2>With Initial Dates</h2>
             <p class="example-description">
               Initialize the component with a predefined date range.
@@ -270,7 +336,7 @@
           </div>
 
           <!-- Example 8: External Clear Button -->
-          <div class="example-card">
+          <div class="example-card" id="example-8">
             <h2>External Clear Button</h2>
             <p class="example-description">
               Use a ViewChild reference to control the datepicker from outside. Perfect for custom layouts with external clear buttons.
@@ -300,7 +366,7 @@
           </div>
 
           <!-- Example 9: Minimal UI -->
-          <div class="example-card">
+          <div class="example-card" id="example-9">
             <h2>Minimal UI (Default)</h2>
             <p class="example-description">
               By default, the Clear button is hidden for a cleaner, minimalist interface. This is perfect for most use cases where you want an uncluttered UI.
@@ -324,7 +390,7 @@
           </div>
 
           <!-- Example 10: Date Adapter System -->
-          <div class="example-card featured-card">
+          <div class="example-card featured-card" id="example-10">
             <div class="badge-new">NEW v2.5.0</div>
             <h2>🔌 Date Adapter System</h2>
             <p class="example-description">
@@ -366,7 +432,7 @@
           </div>
 
           <!-- Example 11: CommonPresets -->
-          <div class="example-card featured-card">
+          <div class="example-card featured-card" id="example-11">
             <div class="badge-new">NEW v2.6.0</div>
             <h2>⚡ CommonPresets - The Game Changer</h2>
             <p class="example-description">
@@ -411,7 +477,7 @@
           </div>
 
           <!-- Example 12: Multi-Range Support -->
-          <div class="example-card featured-card game-changer-card">
+          <div class="example-card featured-card game-changer-card" id="example-12">
             <div class="badge-new">NEW v2.7.0 - GAME CHANGER!</div>
             <h2>🔥 Multi-Range Support - Material CAN'T Do This!</h2>
             <p class="example-description">
@@ -480,7 +546,7 @@
         </div>
 
         <!-- Example 13: Disabled Dates -->
-        <div class="demo-example">
+        <div class="demo-example" id="example-13">
           <div class="demo-box">
             <h2>🚫 Disabled Dates - Weekends + Holidays</h2>
             <p class="example-desc">
@@ -544,7 +610,7 @@
         </div>
 
         <!-- Example 14: Display Format -->
-        <div class="demo-example">
+        <div class="demo-example" id="example-14">
           <div class="demo-box">
             <h2>🎨 Display Format Customization</h2>
             <p class="example-desc">
@@ -661,7 +727,7 @@
         </div>
 
         <!-- Example 15: Apply/Confirm Button -->
-        <div class="demo-example">
+        <div class="demo-example" id="example-15">
           <div class="demo-box">
             <h2>✅ Apply/Confirm Button</h2>
             <p class="example-desc">
@@ -728,7 +794,7 @@
         </div>
 
         <!-- Example 16: Hover Range Preview -->
-        <div class="demo-example">
+        <div class="demo-example" id="example-16">
           <div class="demo-box">
             <h2>🎨 Hover Range Preview</h2>
             <p class="example-desc">
@@ -1694,10 +1760,10 @@ import &#123; getLastNDays &#125; from '&#64;oneluiz/dual-datepicker';
       Made with ❤️ by <a href="https://github.com/oneluiz" target="_blank">&#64;oneluiz</a>
     </p>
     <p>
-      v3.1.1 ⌨️ | 
+      <strong>v3.2.0</strong> 🎉 | 
       <a href="https://github.com/oneluiz/ng-dual-datepicker" target="_blank">GitHub</a> | 
       <a href="https://www.npmjs.com/package/@oneluiz/dual-datepicker" target="_blank">NPM</a> |
-      <a href="https://github.com/oneluiz/ng-dual-datepicker/releases/tag/v3.1.1" target="_blank">What's New</a>
+      <a href="https://github.com/oneluiz/ng-dual-datepicker/releases/tag/v3.2.0" target="_blank">What's New in v3.2.0</a>
     </p>
   </footer>
 </div>

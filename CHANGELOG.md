@@ -5,6 +5,130 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.2.0] - 2026-02-20
+
+### ✨ Features
+
+#### 🎨 Hover Range Preview
+
+**Visual feedback while selecting dates** - See a live preview of the date range before confirming selection:
+
+- **Automatic hover preview**: Light purple background (#e0e7ff) with dashed border (#6366f1)
+- **Instant visual feedback**: Range preview updates immediately as you hover over dates
+- **Subtle and professional**: 70% opacity with clear distinction from confirmed selection
+- **Zero configuration**: Always enabled, works seamlessly with all modes
+- **Universal compatibility**: Works with single range, multi-range, and requireApply modes
+
+**User Experience:**
+1. Select start date
+2. Hover over other dates → see preview range
+3. Click end date to confirm
+
+#### 🔒 Apply/Confirm Button
+
+**Explicit confirmation before emitting changes** - Perfect for dashboards and enterprise applications:
+
+- **New input**: `[requireApply]="true"` enables confirmation mode
+- **Pending state**: Selected dates shown as "pending" until confirmed
+- **Apply button**: Confirms selection and emits `dateRangeChange` event
+- **Cancel button**: Discards pending selection and reverts to previous dates
+- **Prevents unwanted API calls**: Events only emitted after explicit confirmation
+
+**Benefits:**
+- ✅ Reduce server load (single API call vs multiple)
+- ✅ Better UX for expensive operations (data loading, calculations)
+- ✅ Professional enterprise pattern
+- ✅ Works with all features (presets, formats, disabled dates)
+
+**Perfect for:**
+- 📊 Dashboards with data loading
+- 📈 Reports with expensive calculations
+- 🔍 Analytics with API calls
+- 💰 Financial systems
+
+#### 🎨 Display Format Customization
+
+**Flexible date formatting with token system** - Customize how dates appear in the input:
+
+- **New input**: `[displayFormat]="'DD/MM/YYYY'"` 
+- **8 format tokens**: YYYY, YY, MMMM, MMM, MM, M, DD, D
+- **Default**: `'D MMM'` (e.g., "15 Feb")
+- **Examples**:
+  - `'DD/MM/YYYY'` → "15/02/2026" (European)
+  - `'MM/DD/YYYY'` → "02/15/2026" (US)
+  - `'YYYY-MM-DD'` → "2026-02-15" (ISO)
+  - `'D MMMM YYYY'` → "15 February 2026" (Long)
+
+**Tokens:**
+- `YYYY` → Full year (2026)
+- `YY` → Short year (26)
+- `MMMM` → Full month name (February)
+- `MMM` → Short month name (Feb)
+- `MM` → Month with leading zero (02)
+- `M` → Month without zero (2)
+- `DD` → Day with leading zero (05)
+- `D` → Day without zero (5)
+
+#### 🚫 Disabled Dates
+
+**Block specific dates from selection** - Two powerful modes:
+
+**Array Mode** (specific dates):
+```typescript
+disabledDates: Date[] = [
+  new Date(2026, 0, 1),   // New Year
+  new Date(2026, 11, 25)  // Christmas
+];
+```
+
+**Function Mode** (dynamic rules):
+```typescript
+disabledDates = (date: Date): boolean => {
+  // Block weekends
+  const day = date.getDay();
+  return day === 0 || day === 6;
+};
+```
+
+**Visual styling:**
+- Strikethrough text decoration
+- Gray color (#9ca3af)
+- Light gray background (#f9fafb)
+- Cannot be hovered or selected
+- Clear visual distinction from available dates
+
+**Use cases:**
+- 🚫 Block weekends for business calendars
+- 📅 Block holidays for booking systems
+- 🔒 Block past dates for future-only selection
+- 🎯 Custom business rules (blackout dates, maintenance windows)
+
+### 📦 Demo & Documentation
+
+- **16 comprehensive examples** showcasing all features
+- **Interactive keyboard shortcuts guide** in demo
+- **Complete README** with 1,897 lines of documentation
+- **Visual examples** for each feature
+- **Code samples** for all use cases
+
+### 🎯 Bundle & Performance
+
+- **Package size**: 89.3 kB (481 kB unpacked)
+- **SCSS**: 8.89 kB (rich styling for premium UX)
+- **Zero dependencies**: Pure Angular implementation
+- **Tree-shakeable**: Import only what you need
+
+### ✨ What's New Since v3.1.1
+
+This release adds **4 major features** that significantly enhance UX and enterprise readiness:
+
+1. 🎨 **Hover Preview** - Visual feedback (automatic, always enabled)
+2. 🔒 **Apply Button** - Explicit confirmation for expensive operations
+3. 🎨 **Display Format** - Flexible date formatting (8 tokens)
+4. 🚫 **Disabled Dates** - Block specific dates (array + function modes)
+
+**Zero breaking changes** - 100% compatible with v3.1.x
+
 ## [3.1.1] - 2026-02-19
 
 ### 🐛 Bug Fixes

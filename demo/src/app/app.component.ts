@@ -494,4 +494,34 @@ onDateRangeChange(range: DateRange) {
       install: `npm install @oneluiz/dual-datepicker`
     };
   }
+
+  // Scroll to example
+  scrollToExample(exampleId: string) {
+    const element = document.getElementById(exampleId);
+    if (element) {
+      const headerOffset = 120; // Header + nav height
+      const elementPosition = element.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+      });
+    }
+  }
+
+  // Scroll to section
+  scrollToSection(sectionId: string) {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      const headerOffset = 120;
+      const elementPosition = element.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+      });
+    }
+  }
 }
