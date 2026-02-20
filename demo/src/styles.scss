@@ -74,16 +74,6 @@ body {
   }
 }
 
-// Smooth hover lift effect for cards (más sutil)
-.hover-lift {
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  
-  &:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1) !important;
-  }
-}
-
 // Enhanced code blocks
 code {
   white-space: pre-wrap;
@@ -2656,14 +2646,6 @@ html {
 .stats-section {
   background: transparent;
   
-  i {
-    transition: transform 0.2s ease;
-  }
-  
-  .col-sm-6:hover i {
-    transform: scale(1.1);
-  }
-  
   h3 {
     color: #212529;
     letter-spacing: -0.02em;
@@ -2677,29 +2659,8 @@ html {
 
 // Features Section
 .features-section {
-  .feature-icon-wrapper {
-    width: 4rem;
-    height: 4rem;
-    transition: transform 0.2s ease;
-  }
-  
-  .card:hover .feature-icon-wrapper {
-    transform: scale(1.1);
-  }
-  
   .card {
-    transition: all 0.15s ease;
-    border: 1px solid rgba(0, 0, 0, 0.05) !important;
-    
-    &:hover {
-      box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.1) !important;
-    }
-  }
-  
-  .badge {
-    font-size: 0.75rem;
-    font-weight: 600;
-    padding: 0.25rem 0.75rem;
+    border-color: #dee2e6;
   }
 }
 
@@ -2842,22 +2803,6 @@ html {
 
 // CTA Section
 .cta-section {
-  margin-top: 3rem;
-  margin-bottom: 4rem;
-  
-  .cta-card {
-    position: relative;
-  }
-  
-  .bg-gradient {
-    background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 50%, #6610f2 100%);
-  }
-  
-  .badge {
-    font-size: 0.875rem;
-    letter-spacing: 0.025em;
-  }
-  
   .display-4 {
     font-size: clamp(2.5rem, 5vw, 3.5rem);
     letter-spacing: -0.02em;
@@ -2866,7 +2811,6 @@ html {
   .lead {
     font-size: 1.125rem;
     line-height: 1.7;
-    opacity: 0.95;
   }
   
   .h4 {
@@ -2879,32 +2823,6 @@ html {
     font-weight: 500;
     text-transform: uppercase;
     letter-spacing: 0.05em;
-  }
-  
-  .btn {
-    border-radius: 0.5rem;
-    transition: all 0.15s ease;
-    border-width: 2px;
-    
-    &.btn-light {
-      &:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
-      }
-    }
-    
-    &.btn-outline-light {
-      &:hover {
-        transform: translateY(-2px);
-        background: rgba(255, 255, 255, 0.2);
-        border-color: white;
-      }
-    }
-  }
-  
-  i.bi-calendar3 {
-    opacity: 0.5;
-    transform: rotate(-15deg);
   }
 }
 
