@@ -85,7 +85,7 @@
             <div class="row justify-content-center">
               <div class="col-lg-8 col-xl-7 text-center">
                 <div class="hero-badge mb-3">
-                  <span class="badge bg-warning text-dark px-3 py-2 rounded-pill fw-semibold">Currently v3.2.0</span>
+                  <span class="badge bg-warning text-dark px-3 py-2 rounded-pill fw-semibold">Currently v3.3.0</span>
                 </div>
                 <div class="display-3 fw-bold mb-4 text-emphasis">
                   Build fast, beautiful date pickers<br>with ng-dual-datepicker
@@ -505,6 +505,11 @@
                   GitHub Style
                 </button>
               </li>
+              <li>
+                <button class="sidebar-link" (click)="scrollToExample('example-theming')">
+                  <span class="badge-new">v3.3.0</span> Theming System
+                </button>
+              </li>
             </ul>
           </div>
 
@@ -732,6 +737,57 @@
             }
             <div class="code-block">
               <pre>{{ codeExamples.colors }}</pre>
+            </div>
+          </div>
+
+          <!-- Example Theming: Theming System -->
+          <div class="example-card" id="example-theming">
+            <h2><span class="badge-new">v3.3.0</span> Theming System</h2>
+            <p class="example-description">
+              Apply built-in themes to match popular CSS frameworks. Choose from Bootstrap, Bulma, Foundation, Tailwind CSS, or create your own with CSS variables.
+            </p>
+            
+            <div class="theme-selector mb-3">
+              <label class="form-label fw-semibold">Select Theme:</label>
+              <div class="btn-group" role="group">
+                <input type="radio" class="btn-check" name="themingExample" id="theme-default" [value]="'default'" [(ngModel)]="selectedTheme" autocomplete="off" checked>
+                <label class="btn btn-outline-primary" for="theme-default">Default</label>
+                
+                <input type="radio" class="btn-check" name="themingExample" id="theme-bootstrap" [value]="'bootstrap'" [(ngModel)]="selectedTheme" autocomplete="off">
+                <label class="btn btn-outline-primary" for="theme-bootstrap">Bootstrap</label>
+                
+                <input type="radio" class="btn-check" name="themingExample" id="theme-bulma" [value]="'bulma'" [(ngModel)]="selectedTheme" autocomplete="off">
+                <label class="btn btn-outline-primary" for="theme-bulma">Bulma</label>
+                
+                <input type="radio" class="btn-check" name="themingExample" id="theme-foundation" [value]="'foundation'" [(ngModel)]="selectedTheme" autocomplete="off">
+                <label class="btn btn-outline-primary" for="theme-foundation">Foundation</label>
+                
+                <input type="radio" class="btn-check" name="themingExample" id="theme-tailwind" [value]="'tailwind'" [(ngModel)]="selectedTheme" autocomplete="off">
+                <label class="btn btn-outline-primary" for="theme-tailwind">Tailwind</label>
+              </div>
+            </div>
+
+            <div class="example-demo">
+              <ngx-dual-datepicker
+                [theme]="selectedTheme"
+                (dateRangeChange)="onDateRangeChange(20, $event)">
+              </ngx-dual-datepicker>
+            </div>
+            @if (example20Range) {
+              <div class="selected-range">
+                <strong>Selected Range:</strong>
+                <p>Start: {{ example20Range.startDate || '(empty)' }}</p>
+                <p>End: {{ example20Range.endDate || '(empty)' }}</p>
+                <p>Text: {{ example20Range.rangeText || '(empty)' }}</p>
+              </div>
+            }
+            <div class="code-block">
+              <pre>{{ codeExamples.theming }}</pre>
+            </div>
+            <div class="alert alert-info mt-3">
+              <i class="bi bi-info-circle"></i>
+              <strong>Note:</strong> To use themes, import the corresponding stylesheet in your styles.scss:
+              <code>@import '@oneluiz/dual-datepicker/themes/{{ selectedTheme }}';</code>
             </div>
           </div>
 
@@ -2483,7 +2539,7 @@ import &#123; getLastNDays &#125; from '&#64;oneluiz/dual-datepicker';
 
           <!-- Video Section -->
           <div class="blog-section video-section">
-            <h2>🎸 Experience the Power of v3.2.0</h2>
+            <h2>🎸 Experience the Power of v3.3.0</h2>
             <p class="section-intro">
               Like the legendary Spanish rock band <strong>Héroes del Silencio</strong>, this release brings power, 
               elegance, and timeless quality to your Angular applications. Watch this tribute while exploring 
@@ -2493,8 +2549,8 @@ import &#123; getLastNDays &#125; from '&#64;oneluiz/dual-datepicker';
               <iframe 
                 width="100%" 
                 height="500" 
-                src="https://www.youtube.com/embed/SqB4FSettTI" 
-                title="Héroes del Silencio - Maldito Duende" 
+                src="https://www.youtube.com/embed/IyCw0DabDsk" 
+                title="Héroes del Silencio - La Sirena varada" 
                 frameborder="0" 
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
                 referrerpolicy="strict-origin-when-cross-origin" 
@@ -2502,11 +2558,47 @@ import &#123; getLastNDays &#125; from '&#64;oneluiz/dual-datepicker';
               </iframe>
             </div>
             <p class="video-caption">
-              🎵 <em>"Maldito Duende"</em> - La magia de Héroes del Silencio acompaña este lanzamiento 🎵
+              🎵 <em>"La Sirena varada"</em> - La magia de Héroes del Silencio acompaña este lanzamiento 🎵
             </p>
           </div>
 
           <!-- Features Overview -->
+          <div class="blog-section">
+            <h2>🎭 What's New in v3.3.0</h2>
+            
+            <article class="blog-article">
+              <div class="article-icon">🎨</div>
+              <div class="article-content">
+                <h3>Theming System</h3>
+                <p class="article-meta">
+                  <span class="badge-feature">New Feature</span>
+                  <span class="badge-feature">Customization</span>
+                </p>
+                <p>
+                  Now you can easily apply popular CSS framework themes to the datepicker! Choose from <strong>6 built-in themes</strong>: 
+                  default, Bootstrap, Bulma, Foundation, Tailwind CSS, or custom. Perfect for matching your existing design system.
+                </p>
+                <div class="feature-highlights">
+                  <div class="highlight-item">✓ Bootstrap 5 compatible styling</div>
+                  <div class="highlight-item">✓ Bulma CSS compatible styling</div>
+                  <div class="highlight-item">✓ Foundation CSS compatible styling</div>
+                  <div class="highlight-item">✓ Tailwind CSS with @apply directives</div>
+                  <div class="highlight-item">✓ Custom theme with CSS variables for full control</div>
+                  <div class="highlight-item">✓ Backward compatible - default theme works without imports</div>
+                </div>
+                <div class="code-block">
+                  <pre>&lt;ngx-dual-datepicker theme="bootstrap"&gt;&lt;/ngx-dual-datepicker&gt;
+
+// In your styles.scss
+@import '@oneluiz/dual-datepicker/themes/bootstrap';</pre>
+                </div>
+                <p class="mt-3">
+                  <strong>📚 For detailed documentation:</strong> Check out <a href="https://github.com/oneluiz/ng-dual-datepicker/blob/main/THEMING.md" target="_blank">THEMING.md</a>
+                </p>
+              </div>
+            </article>
+          </div>
+
           <div class="blog-section">
             <h2>✨ What's New in v3.2.0</h2>
             

@@ -1,11 +1,12 @@
 import { Component, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { DualDatepickerComponent, DateRange, MultiDateRange, PresetConfig, CommonPresets } from '../../../src/public-api';
+import { FormsModule } from '@angular/forms';
+import { DualDatepickerComponent, DateRange, MultiDateRange, PresetConfig, CommonPresets, ThemeType } from '../../../src/public-api';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, DualDatepickerComponent],
+  imports: [CommonModule, FormsModule, DualDatepickerComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
@@ -174,7 +175,11 @@ export class AppComponent {
       case 16:
         this.example16Range = range;
         break;
-    }
+      case 20:
+        this.example20Range = range;
+        break;      case 20:
+        this.example20Range = range;
+        break;    }
   }
 
   onMultiDateRangeChange(multiRange: MultiDateRange) {
@@ -498,6 +503,56 @@ onDateRangeChange(range: DateRange) {
   this.selectedRange = range;
   console.log('Range selected:', range);
 }`,
+      theming: `// NEW v3.3.0: Theming System
+// Apply built-in themes to match popular CSS frameworks
+
+// Available themes:
+// - 'default' - Original styling (no import needed)
+// - 'bootstrap' - Bootstrap 5 compatible
+// - 'bulma' - Bulma CSS compatible
+// - 'foundation' - Foundation CSS compatible
+// - 'tailwind' - Tailwind CSS compatible
+// - 'custom' - CSS variables-based customization
+
+// 1. Select theme in component
+selectedTheme: ThemeType = 'bootstrap';
+
+<ngx-dual-datepicker 
+  [theme]="selectedTheme"
+  (dateRangeChange)="onDateRangeChange($event)">
+</ngx-dual-datepicker>
+
+// 2. Import corresponding stylesheet in styles.scss
+@import '@oneluiz/dual-datepicker/themes/bootstrap';
+
+// For Bulma:
+@import '@oneluiz/dual-datepicker/themes/bulma';
+
+// For Foundation:
+@import '@oneluiz/dual-datepicker/themes/foundation';
+
+// For Tailwind:
+@import '@oneluiz/dual-datepicker/themes/tailwind';
+
+// For Custom (with CSS variables):
+@import '@oneluiz/dual-datepicker/themes/custom';
+
+// Custom theme CSS variables:
+// --dp-primary-color, --dp-primary-hover
+// --dp-danger-color, --dp-text-color
+// --dp-text-muted, --dp-border-color
+// --dp-border-hover, --dp-bg-color
+// --dp-bg-hover, --dp-bg-disabled
+// --dp-border-radius, --dp-transition
+
+// Key benefits:
+// ✔ Match your existing CSS framework
+// ✔ Consistent styling across your app
+// ✔ Zero custom CSS needed
+// ✔ Backward compatible
+// ✔ Easy to switch themes
+
+// See THEMING.md for full documentation`,
       install: `npm install @oneluiz/dual-datepicker`
     };
   }
