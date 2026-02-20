@@ -73,6 +73,10 @@ export class AppComponent {
   
   // Example 16: Hover Range Preview (NEW v3.2.0)
   example16Range: DateRange | null = null;
+
+  // Example 20: Theming System (NEW v3.3.0)
+  example20Range: DateRange | null = null;
+  selectedTheme: ThemeType = 'default';
   
   // Costa Rica holidays 2026
   costaRicaHolidays2026: Date[] = [
@@ -177,9 +181,8 @@ export class AppComponent {
         break;
       case 20:
         this.example20Range = range;
-        break;      case 20:
-        this.example20Range = range;
-        break;    }
+        break;
+    }
   }
 
   onMultiDateRangeChange(multiRange: MultiDateRange) {
