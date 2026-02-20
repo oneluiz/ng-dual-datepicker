@@ -222,11 +222,18 @@ export class DualDatepickerComponent implements OnInit, OnChanges, ControlValueA
       if (inPrevMonth || inCurrMonth) {
         this.focusedDay.set({ date: this.startDate, monthIndex: inPrevMonth ? 0 : 1 });
       } else {
-        // startDate is not visible, focus on first day of current month
-        const currentMonthDays = this.currentMonthDays();
-        const firstDay = currentMonthDays.find(day => day.isCurrentMonth);
-        if (firstDay) {
-          this.focusedDay.set({ date: firstDay.date, monthIndex: 1 });
+        // startDate is not visible, focus on today if visible
+        const today = this.dateAdapter.format(this.dateAdapter.today(), 'yyyy-MM-dd');
+        const inCurrMonth = this.isDateInMonth(today, this.currentMonth());
+        
+        if (inCurrMonth) {
+          this.focusedDay.set({ date: today, monthIndex: 1 });
+        } else {
+          const currentMonthDays = this.currentMonthDays();
+          const firstDay = currentMonthDays.find(day => day.isCurrentMonth);
+          if (firstDay) {
+            this.focusedDay.set({ date: firstDay.date, monthIndex: 1 });
+          }
         }
       }
     } else if (this.endDate) {
@@ -236,19 +243,34 @@ export class DualDatepickerComponent implements OnInit, OnChanges, ControlValueA
       if (inPrevMonth || inCurrMonth) {
         this.focusedDay.set({ date: this.endDate, monthIndex: inPrevMonth ? 0 : 1 });
       } else {
-        // endDate is not visible, focus on first day of current month
+        // endDate is not visible, focus on today if visible
+        const today = this.dateAdapter.format(this.dateAdapter.today(), 'yyyy-MM-dd');
+        const inCurrMonth = this.isDateInMonth(today, this.currentMonth());
+        
+        if (inCurrMonth) {
+          this.focusedDay.set({ date: today, monthIndex: 1 });
+        } else {
+          const currentMonthDays = this.currentMonthDays();
+          const firstDay = currentMonthDays.find(day => day.isCurrentMonth);
+          if (firstDay) {
+            this.focusedDay.set({ date: firstDay.date, monthIndex: 1 });
+          }
+        }
+      }
+    } else {
+      // Focus on today if visible, otherwise first day of current month
+      const today = this.dateAdapter.format(this.dateAdapter.today(), 'yyyy-MM-dd');
+      const inCurrMonth = this.isDateInMonth(today, this.currentMonth());
+      
+      if (inCurrMonth) {
+        this.focusedDay.set({ date: today, monthIndex: 1 });
+      } else {
+        // Today is not in current month, focus on first day of current month
         const currentMonthDays = this.currentMonthDays();
         const firstDay = currentMonthDays.find(day => day.isCurrentMonth);
         if (firstDay) {
           this.focusedDay.set({ date: firstDay.date, monthIndex: 1 });
         }
-      }
-    } else {
-      // Focus first day of current month
-      const currentMonthDays = this.currentMonthDays();
-      const firstDay = currentMonthDays.find(day => day.isCurrentMonth);
-      if (firstDay) {
-        this.focusedDay.set({ date: firstDay.date, monthIndex: 1 });
       }
     }
   }
