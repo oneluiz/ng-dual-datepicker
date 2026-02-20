@@ -71,13 +71,15 @@
               [class.empty]="!dayObj.isCurrentMonth"
               [class.selected]="dayObj.isStart || dayObj.isEnd"
               [class.in-range]="dayObj.inRange && !dayObj.isStart && !dayObj.isEnd"
+              [class.disabled]="dayObj.isDisabled"
               [class.keyboard-focused]="enableKeyboardNavigation && hasKeyboardFocus(dayObj.date, 0)"
               [attr.tabindex]="enableKeyboardNavigation && dayObj.isCurrentMonth && hasKeyboardFocus(dayObj.date, 0) ? 0 : -1"
               [attr.aria-label]="formatDateDisplay(dayObj.date)"
               [attr.aria-selected]="dayObj.isStart || dayObj.isEnd"
               [attr.aria-current]="dayObj.isStart ? 'date' : null"
+              [attr.aria-disabled]="dayObj.isDisabled"
               (click)="selectDay(dayObj)"
-              [disabled]="!dayObj.isCurrentMonth">
+              [disabled]="!dayObj.isCurrentMonth || dayObj.isDisabled">
               {{ dayObj.day }}
             </button>
           }
@@ -112,13 +114,15 @@
               [class.empty]="!dayObj.isCurrentMonth"
               [class.selected]="dayObj.isStart || dayObj.isEnd"
               [class.in-range]="dayObj.inRange && !dayObj.isStart && !dayObj.isEnd"
+              [class.disabled]="dayObj.isDisabled"
               [class.keyboard-focused]="enableKeyboardNavigation && hasKeyboardFocus(dayObj.date, 1)"
               [attr.tabindex]="enableKeyboardNavigation && dayObj.isCurrentMonth && hasKeyboardFocus(dayObj.date, 1) ? 0 : -1"
               [attr.aria-label]="formatDateDisplay(dayObj.date)"
               [attr.aria-selected]="dayObj.isStart || dayObj.isEnd"
               [attr.aria-current]="dayObj.isStart ? 'date' : null"
+              [attr.aria-disabled]="dayObj.isDisabled"
               (click)="selectDay(dayObj)"
-              [disabled]="!dayObj.isCurrentMonth">
+              [disabled]="!dayObj.isCurrentMonth || dayObj.isDisabled">
               {{ dayObj.day }}
             </button>
           }

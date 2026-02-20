@@ -28,6 +28,7 @@ npm install @oneluiz/dual-datepicker
   - [Angular Signals](#with-angular-signals)
 - [Advanced Features](#-advanced-features)
   - [Multi-Range Selection](#multi-range-support)
+  - [Disabled Dates](#disabled-dates)
   - [Custom Presets](#custom-presets)
   - [Date Adapter System](#date-adapter-system)
   - [Keyboard Navigation](#keyboard-navigation)
@@ -53,6 +54,7 @@ npm install @oneluiz/dual-datepicker
 - ⚡ **Angular Signals** – Modern reactive state management
 - 🔄 **Reactive Forms** – Full ControlValueAccessor implementation
 - 🔥 **Multi-Range Support** – Select multiple date ranges (Material CAN'T do this!)
+- 🚫 **Disabled Dates** – Block weekends, holidays, or custom logic
 - 🎨 **Fully Customizable** – Every color, padding, border configurable
 - 📦 **Lightweight** – ~60 KB gzipped total bundle
 - 🚀 **Performance** – OnPush change detection + trackBy optimization
@@ -206,6 +208,90 @@ export class MultiRangeExample {
 - 🔧 Maintenance windows
 - 📊 Availability calendars
 - 👷 Shift scheduling
+
+### Disabled Dates
+
+**Block specific dates or apply custom logic to disable dates.** Perfect for booking systems, business day selection, and holiday management.
+
+#### Option 1: Disable Specific Dates (Array)
+
+```typescript
+import { Component } from '@angular/core';
+
+@Component({
+  template: `
+    <ngx-dual-datepicker
+      [disabledDates]="holidays"
+      (dateRangeChange)="onDateRangeChange($event)">
+    </ngx-dual-datepicker>
+  `
+})
+export class DisabledDatesExample {
+  holidays: Date[] = [
+    new Date(2026, 0, 1),   // New Year
+    new Date(2026, 11, 25), // Christmas
+  ];
+
+  onDateRangeChange(range: DateRange) {
+    console.log('Selected range:', range);
+  }
+}
+```
+
+#### Option 2: Disable with Function (Weekends + Holidays)
+
+```typescript
+import { Component } from '@angular/core';
+
+@Component({
+  template: `
+    <ngx-dual-datepicker
+      [disabledDates]="isDateDisabled"
+      (dateRangeChange)="onDateRangeChange($event)">
+    </ngx-dual-datepicker>
+  `
+})
+export class BusinessDaysExample {
+  holidays: Date[] = [
+    new Date(2026, 0, 1),   // New Year
+    new Date(2026, 11, 25), // Christmas
+  ];
+
+  // Disable weekends and holidays
+  isDateDisabled = (date: Date): boolean => {
+    const day = date.getDay();
+    
+    // Disable weekends (0 = Sunday, 6 = Saturday)
+    if (day === 0 || day === 6) {
+      return true;
+    }
+    
+    // Check if date is a holiday
+    return this.holidays.some(holiday => 
+      holiday.getFullYear() === date.getFullYear() &&
+      holiday.getMonth() === date.getMonth() &&
+      holiday.getDate() === date.getDate()
+    );
+  };
+
+  onDateRangeChange(range: DateRange) {
+    console.log('Selected range:', range);
+  }
+}
+```
+
+**Perfect Use Cases:**
+- 🏢 Business day selection (no weekends)
+- 📅 Booking systems (unavailable dates)
+- 🎉 Holiday management
+- 🚫 Blackout dates for reservations
+- 📆 Appointment scheduling
+
+**Features:**
+- ✅ Two modes: Array or Function
+- ✅ Visual styling (strikethrough, grayed out)
+- ✅ Cannot be selected via mouse or keyboard
+- ✅ Flexible custom logic support
 
 ### Custom Presets
 
@@ -413,6 +499,7 @@ spanishLocale: LocaleConfig = {
 | `closeOnPresetSelection` | `boolean` | `false` | Close picker when preset clicked |
 | `closeOnClickOutside` | `boolean` | `true` | Close picker when clicking outside |
 | `multiRange` | `boolean` | `false` | Enable multi-range selection mode |
+| `disabledDates` | `Date[] \| ((date: Date) => boolean)` | `undefined` | Array of dates or function to disable specific dates |
 | `enableKeyboardNavigation` | `boolean` | `true` | Enable keyboard navigation |
 | `inputBackgroundColor` | `string` | `'#fff'` | Input background color |
 | `inputTextColor` | `string` | `'#495057'` | Input text color |

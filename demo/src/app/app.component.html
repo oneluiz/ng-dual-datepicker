@@ -478,6 +478,70 @@
             </div>
           </div>
         </div>
+
+        <!-- Example 13: Disabled Dates -->
+        <div class="demo-example">
+          <div class="demo-box">
+            <h2>🚫 Disabled Dates - Weekends + Holidays</h2>
+            <p class="example-desc">
+              Block specific dates or use a function to disable weekends, holidays, or any custom logic. 
+              Perfect for booking systems and business day selection! 🎯
+            </p>
+            <ngx-dual-datepicker
+              [multiRange]="false"
+              [disabledDates]="isDateDisabled"
+              [presets]="customPresets"
+              (dateRangeChange)="onDateRangeChange(13, $event)">
+            </ngx-dual-datepicker>
+            @if (example13Range) {
+            <div class="output">
+              <strong>Selected:</strong> {{ example13Range.rangeText }}
+            </div>
+            }
+            <div class="adapter-info material-cant">
+              <h4>🎯 What's Disabled in this Example:</h4>
+              <ul>
+                <li>🚫 <strong>All Weekends</strong> - Saturdays and Sundays</li>
+                <li>🚫 <strong>Costa Rica Holidays 2026</strong>:
+                  <ul>
+                    <li>Jan 1 - Año Nuevo</li>
+                    <li>Apr 10, 11, 13 - Semana Santa + Juan Santamaría</li>
+                    <li>May 1 - Día del Trabajo</li>
+                    <li>Jul 25 - Anexión de Guanacaste</li>
+                    <li>Aug 2 - Virgen de Los Ángeles</li>
+                    <li>Aug 15 - Día de la Madre</li>
+                    <li>Sep 15 - Día de la Independencia</li>
+                    <li>Dec 25 - Navidad</li>
+                  </ul>
+                </li>
+              </ul>
+              <h4>💎 Two Ways to Use:</h4>
+              <ul>
+                <li>✅ <strong>Array Mode:</strong> Pass Date[] for specific dates</li>
+                <li>✅ <strong>Function Mode:</strong> Pass (date: Date) => boolean for custom logic</li>
+                <li>✅ Disabled dates have visual styling (strikethrough, gray)</li>
+                <li>✅ Cannot be selected via mouse or keyboard</li>
+                <li>✅ Perfect for business days, holidays, blockout dates</li>
+              </ul>
+              <div class="material-comparison">
+                <p class="comparison-title">📊 Feature Comparison</p>
+                <div class="comparison">
+                  <div class="our-feature">
+                    <span class="feature-name">ng-dual-datepicker</span>
+                    <span class="feature-value">✅ Flexible Disabled Dates</span>
+                  </div>
+                  <div class="their-feature">
+                    <span class="feature-name">Angular Material</span>
+                    <span class="feature-value">⚠️ Limited Support</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="code-block">
+              <pre>{{ codeExamples.disabledDates }}</pre>
+            </div>
+          </div>
+        </div>
       </div>
     }
 

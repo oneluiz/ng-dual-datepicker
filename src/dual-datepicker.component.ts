@@ -69,6 +69,7 @@ export class DualDatepickerComponent implements OnInit, OnChanges, ControlValueA
   @Input() inputBorderColorFocus: string = '#80bdff';
   @Input() inputPadding: string = '0.375rem 0.75rem';
   @Input() locale: LocaleConfig = {};
+  @Input() disabledDates: Date[] | ((date: Date) => boolean) | undefined;
 
   @Output() dateRangeChange = new EventEmitter<DateRange>();
   @Output() dateRangeSelected = new EventEmitter<DateRange>();
@@ -550,7 +551,8 @@ export class DualDatepickerComponent implements OnInit, OnChanges, ControlValueA
         isCurrentMonth: true,
         isStart: this.startDate === dateStr,
         isEnd: this.endDate === dateStr,
-        inRange: this.isInRange(dateStr)
+        inRange: this.isInRange(dateStr),
+        isDisabled: this.isDateDisabled(dayDate)
       });
     }
 
@@ -569,8 +571,26 @@ export class DualDatepickerComponent implements OnInit, OnChanges, ControlValueA
     }
   }
 
+  isDateDisabled(date: Date): boolean {
+    if (!this.disabledDates) return false;
+
+    if (typeof this.disabledDates === 'function') {
+      // If it's a function, call it with the date
+      return this.disabledDates(date);
+    } else if (Array.isArray(this.disabledDates)) {
+      // If it's an array, check if the date matches any disabled date
+      return this.disabledDates.some(disabledDate => {
+        return this.dateAdapter.getYear(date) === this.dateAdapter.getYear(disabledDate) &&
+               this.dateAdapter.getMonth(date) === this.dateAdapter.getMonth(disabledDate) &&
+               this.dateAdapter.getDate(date) === this.dateAdapter.getDate(disabledDate);
+      });
+    }
+    
+    return false;
+  }
+
   selectDay(dayObj: any): void {
-    if (!dayObj.isCurrentMonth || this.isDisabled()) return;
+    if (!dayObj.isCurrentMonth || this.isDisabled() || dayObj.isDisabled) return;
 
     if (this.multiRange) {
       // Multi-range mode: add ranges to array

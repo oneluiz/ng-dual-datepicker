@@ -54,6 +54,39 @@ export class AppComponent {
   // Example 12: Multi-Range Support (NEW v2.7.0 - DIFFERENTIATOR!)
   example12MultiRange: MultiDateRange | null = null;
 
+  // Example 13: Disabled Dates - Weekends + Holidays (NEW v3.2.0)
+  example13Range: DateRange | null = null;
+  
+  // Costa Rica holidays 2026
+  costaRicaHolidays2026: Date[] = [
+    new Date(2026, 0, 1),   // Año Nuevo
+    new Date(2026, 3, 10),  // Jueves Santo
+    new Date(2026, 3, 11),  // Viernes Santo
+    new Date(2026, 3, 13),  // Lunes de Pascua (Juan Santamaría Day)
+    new Date(2026, 4, 1),   // Día del Trabajo
+    new Date(2026, 6, 25),  // Anexión de Guanacaste
+    new Date(2026, 7, 2),   // Virgen de Los Ángeles
+    new Date(2026, 7, 15),  // Día de la Madre
+    new Date(2026, 8, 15),  // Día de la Independencia
+    new Date(2026, 11, 25), // Navidad
+  ];
+
+  // Function to disable weekends and holidays
+  isDateDisabled = (date: Date): boolean => {
+    const day = date.getDay();
+    // Disable weekends (0 = Sunday, 6 = Saturday)
+    if (day === 0 || day === 6) {
+      return true;
+    }
+    
+    // Check if date is a holiday
+    return this.costaRicaHolidays2026.some(holiday => 
+      holiday.getFullYear() === date.getFullYear() &&
+      holiday.getMonth() === date.getMonth() &&
+      holiday.getDate() === date.getDate()
+    );
+  };
+
   clearExternalButton() {
     this.datepicker8.clear();
   }
@@ -96,6 +129,9 @@ export class AppComponent {
         break;
       case 11:
         this.example11Range = range;
+        break;
+      case 13:
+        this.example13Range = range;
         break;
     }
   }
@@ -266,6 +302,42 @@ onMultiRangeChange(ranges: MultiDateRange) {
 <!-- ✔ Shift scheduling -->
 
 <!-- Material DOESN'T have this! -->`,
+      disabledDates: `// Option 1: Disable specific dates (array)
+holidays: Date[] = [
+  new Date(2026, 0, 1),   // New Year
+  new Date(2026, 11, 25), // Christmas
+];
+
+<ngx-dual-datepicker
+  [disabledDates]="holidays"
+  (dateRangeChange)="onDateRangeChange($event)">
+</ngx-dual-datepicker>
+
+// Option 2: Disable with function (weekends + holidays)
+isDateDisabled = (date: Date): boolean => {
+  const day = date.getDay();
+  // Disable weekends
+  if (day === 0 || day === 6) return true;
+  
+  // Check holidays
+  return this.holidays.some(holiday => 
+    holiday.getFullYear() === date.getFullYear() &&
+    holiday.getMonth() === date.getMonth() &&
+    holiday.getDate() === date.getDate()
+  );
+};
+
+<ngx-dual-datepicker
+  [disabledDates]="isDateDisabled"
+  (dateRangeChange)="onDateRangeChange($event)">
+</ngx-dual-datepicker>
+
+<!-- Perfect for: -->
+<!-- ✔ Booking systems (unavailable dates) -->
+<!-- ✔ Business day selection -->
+<!-- ✔ Holiday/weekend blocking -->
+<!-- ✔ Reservation systems -->
+<!-- ✔ Appointment scheduling -->`,
       install: `npm install @oneluiz/dual-datepicker`
     };
   }
