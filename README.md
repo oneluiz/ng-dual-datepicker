@@ -1998,6 +1998,12 @@ export class ExampleComponent {
 
 Recently shipped:
 
+**v3.4.0:**
+- ✅ **Time Picker** - Select precise datetime ranges with 12h/24h format
+- ✅ **Configurable Minute Steps** - Choose 1, 5, 15, or 30-minute intervals
+- ✅ **Default Times** - Set default start/end times
+- ✅ **Full Theme Support** - Works seamlessly with all built-in themes
+
 **v3.3.0:**
 - ✅ **Theming System** - Pre-built themes for Bootstrap, Bulma, Foundation, Tailwind CSS, and Custom
 - ✅ **CSS Variables Support** - 13 customizable variables for branding
@@ -2025,9 +2031,10 @@ Recently shipped:
 
 Planned features:
 
-- ⬜ **Time Picker** - Select date + time ranges
 - ⬜ **Mobile Optimizations** - Enhanced touch gestures and responsive layout
 - ⬜ **Range Shortcuts** - Quick selection buttons (Today, This Week, etc.)
+- ⬜ **Time Constraints** - Min/max time validation and business hours
+- ⬜ **Multi-range + Time Picker** - Combined support for multiple datetime ranges
 
 ## 📄 License
 
