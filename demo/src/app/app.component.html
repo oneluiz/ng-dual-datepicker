@@ -111,114 +111,174 @@
         </section>
 
         <!-- Stats Section -->
-        <section class="stats-section py-5 bg-light border-bottom">
+        <section class="stats-section py-5 border-bottom">
           <div class="container">
-            <div class="row text-center g-4">
-              <div class="col-6 col-lg-3">
-                <div class="stat-number display-4 fw-bold text-primary">~60 KB</div>
-                <div class="stat-label text-muted">Bundle Size</div>
+            <div class="row g-4 text-center">
+              <div class="col-sm-6 col-lg-3">
+                <div class="d-flex flex-column align-items-center">
+                  <div class="mb-3">
+                    <i class="bi bi-file-earmark-zip text-primary" style="font-size: 2.5rem;"></i>
+                  </div>
+                  <h3 class="h2 fw-bold mb-1">~60 KB</h3>
+                  <p class="text-muted mb-0">Bundle size (gzipped)</p>
+                </div>
               </div>
-              <div class="col-6 col-lg-3">
-                <div class="stat-number display-4 fw-bold text-primary">Zero</div>
-                <div class="stat-label text-muted">Dependencies</div>
+              <div class="col-sm-6 col-lg-3">
+                <div class="d-flex flex-column align-items-center">
+                  <div class="mb-3">
+                    <i class="bi bi-shield-check text-success" style="font-size: 2.5rem;"></i>
+                  </div>
+                  <h3 class="h2 fw-bold mb-1">Zero</h3>
+                  <p class="text-muted mb-0">Dependencies</p>
+                </div>
               </div>
-              <div class="col-6 col-lg-3">
-                <div class="stat-number display-4 fw-bold text-primary">16</div>
-                <div class="stat-label text-muted">Live Examples</div>
+              <div class="col-sm-6 col-lg-3">
+                <div class="d-flex flex-column align-items-center">
+                  <div class="mb-3">
+                    <i class="bi bi-grid-3x3 text-info" style="font-size: 2.5rem;"></i>
+                  </div>
+                  <h3 class="h2 fw-bold mb-1">16+</h3>
+                  <p class="text-muted mb-0">Live examples</p>
+                </div>
               </div>
-              <div class="col-6 col-lg-3">
-                <div class="stat-number display-4 fw-bold text-primary">WCAG 2.1</div>
-                <div class="stat-label text-muted">Accessibility</div>
+              <div class="col-sm-6 col-lg-3">
+                <div class="d-flex flex-column align-items-center">
+                  <div class="mb-3">
+                    <i class="bi bi-universal-access text-warning" style="font-size: 2.5rem;"></i>
+                  </div>
+                  <h3 class="h2 fw-bold mb-1">WCAG 2.1</h3>
+                  <p class="text-muted mb-0">Accessibility</p>
+                </div>
               </div>
             </div>
           </div>
         </section>
 
         <!-- Features Grid -->
-        <section class="features-section py-5">
+        <section class="features-section py-5 bg-light">
           <div class="container">
-            <h2 class="text-center fw-bold mb-3">Why Choose ng-dual-datepicker?</h2>
-            <p class="text-center text-muted mb-5">The lightweight, powerful alternative to Angular Material DateRangePicker</p>
+            <div class="row mb-5">
+              <div class="col-lg-8 mx-auto text-center">
+                <h2 class="display-5 fw-bold mb-3">Why choose ng-dual-datepicker?</h2>
+                <p class="lead text-muted">The lightweight, powerful alternative to Angular Material DateRangePicker with modern features and zero dependencies.</p>
+              </div>
+            </div>
             
             <div class="row g-4">
               <div class="col-md-6 col-lg-3">
-                <div class="card h-100 border-0 shadow-sm hover-lift">
-                  <div class="card-body text-center">
-                    <div class="feature-icon fs-1 mb-3">🪶</div>
-                    <h5 class="card-title fw-semibold">Zero Dependencies</h5>
-                    <p class="card-text text-muted">No external libraries required. Pure Angular implementation with no bloat.</p>
+                <div class="card h-100 border-0 bg-white shadow-sm hover-lift">
+                  <div class="card-body text-center p-4">
+                    <div class="mb-3">
+                      <div class="feature-icon-wrapper d-inline-flex align-items-center justify-content-center rounded-circle bg-primary bg-opacity-10 p-3">
+                        <span class="fs-2">🪶</span>
+                      </div>
+                    </div>
+                    <h5 class="card-title fw-bold mb-2">Zero Dependencies</h5>
+                    <p class="card-text text-muted small">No external libraries required. Pure Angular implementation with no bloat.</p>
                   </div>
                 </div>
               </div>
 
               <div class="col-md-6 col-lg-3">
-                <div class="card h-100 border-0 shadow-sm hover-lift">
-                  <div class="card-body text-center">
-                    <div class="feature-icon fs-1 mb-3">⚡</div>
-                    <h5 class="card-title fw-semibold">Angular Signals</h5>
-                    <p class="card-text text-muted">Built with modern Angular Signals for optimal reactivity and performance.</p>
+                <div class="card h-100 border-0 bg-white shadow-sm hover-lift">
+                  <div class="card-body text-center p-4">
+                    <div class="mb-3">
+                      <div class="feature-icon-wrapper d-inline-flex align-items-center justify-content-center rounded-circle bg-warning bg-opacity-10 p-3">
+                        <span class="fs-2">⚡</span>
+                      </div>
+                    </div>
+                    <h5 class="card-title fw-bold mb-2">Angular Signals</h5>
+                    <p class="card-text text-muted small">Built with modern Angular Signals for optimal reactivity and performance.</p>
                   </div>
                 </div>
               </div>
 
               <div class="col-md-6 col-lg-3">
-                <div class="card h-100 border-0 shadow-sm hover-lift">
-                  <div class="card-body text-center">
-                    <div class="feature-icon fs-1 mb-3">🎯</div>
-                    <h5 class="card-title fw-semibold">Standalone Component</h5>
-                    <p class="card-text text-muted">No NgModule imports needed. Works out of the box with Angular 17+.</p>
+                <div class="card h-100 border-0 bg-white shadow-sm hover-lift">
+                  <div class="card-body text-center p-4">
+                    <div class="mb-3">
+                      <div class="feature-icon-wrapper d-inline-flex align-items-center justify-content-center rounded-circle bg-success bg-opacity-10 p-3">
+                        <span class="fs-2">🎯</span>
+                      </div>
+                    </div>
+                    <h5 class="card-title fw-bold mb-2">Standalone Component</h5>
+                    <p class="card-text text-muted small">No NgModule imports needed. Works out of the box with Angular 17+.</p>
                   </div>
                 </div>
               </div>
 
               <div class="col-md-6 col-lg-3">
-                <div class="card h-100 border-0 shadow-sm hover-lift">
-                  <div class="card-body text-center">
-                    <div class="feature-icon fs-1 mb-3">🎨</div>
-                    <h5 class="card-title fw-semibold">Fully Customizable</h5>
-                    <p class="card-text text-muted">Every color, padding, and border is configurable via inputs.</p>
+                <div class="card h-100 border-0 bg-white shadow-sm hover-lift">
+                  <div class="card-body text-center p-4">
+                    <div class="mb-3">
+                      <div class="feature-icon-wrapper d-inline-flex align-items-center justify-content-center rounded-circle bg-info bg-opacity-10 p-3">
+                        <span class="fs-2">🎨</span>
+                      </div>
+                    </div>
+                    <h5 class="card-title fw-bold mb-2">Fully Customizable</h5>
+                    <p class="card-text text-muted small">Every color, padding, and border is configurable via inputs.</p>
                   </div>
                 </div>
               </div>
 
               <div class="col-md-6 col-lg-3">
-                <div class="card h-100 border-0 shadow-sm hover-lift">
-                  <div class="card-body text-center">
-                    <div class="feature-icon fs-1 mb-3">📦</div>
-                    <h5 class="card-title fw-semibold">Lightweight</h5>
-                    <p class="card-text text-muted">~60 KB gzipped total bundle. 5x smaller than Material alternatives.</p>
+                <div class="card h-100 border-0 bg-white shadow-sm hover-lift">
+                  <div class="card-body text-center p-4">
+                    <div class="mb-3">
+                      <div class="feature-icon-wrapper d-inline-flex align-items-center justify-content-center rounded-circle bg-primary bg-opacity-10 p-3">
+                        <span class="fs-2">📦</span>
+                      </div>
+                    </div>
+                    <h5 class="card-title fw-bold mb-2">Lightweight</h5>
+                    <p class="card-text text-muted small">~60 KB gzipped total bundle. 5x smaller than Material alternatives.</p>
                   </div>
                 </div>
               </div>
 
               <div class="col-md-6 col-lg-3">
-                <div class="card h-100 border-0 shadow-sm hover-lift">
-                  <div class="card-body text-center">
-                    <div class="feature-icon fs-1 mb-3">♿</div>
-                    <h5 class="card-title fw-semibold">Accessible</h5>
-                    <p class="card-text text-muted">WCAG 2.1 Level AA compliant with full keyboard navigation.</p>
+                <div class="card h-100 border-0 bg-white shadow-sm hover-lift">
+                  <div class="card-body text-center p-4">
+                    <div class="mb-3">
+                      <div class="feature-icon-wrapper d-inline-flex align-items-center justify-content-center rounded-circle bg-success bg-opacity-10 p-3">
+                        <span class="fs-2">♿</span>
+                      </div>
+                    </div>
+                    <h5 class="card-title fw-bold mb-2">Accessible</h5>
+                    <p class="card-text text-muted small">WCAG 2.1 Level AA compliant with full keyboard navigation.</p>
                   </div>
                 </div>
               </div>
 
               <div class="col-md-6 col-lg-3">
-                <div class="card h-100 border-primary shadow-sm hover-lift">
-                  <div class="card-body text-center">
-                    <div class="feature-icon fs-1 mb-3">🔥</div>
-                    <h5 class="card-title fw-semibold">Multi-Range Support</h5>
-                    <p class="card-text text-muted">Select UNLIMITED date ranges. Material CAN'T do this!</p>
-                    <span class="badge bg-primary mt-2">Exclusive Feature</span>
+                <div class="card h-100 border-0 bg-white shadow-sm hover-lift position-relative">
+                  <div class="position-absolute top-0 end-0 m-2">
+                    <span class="badge bg-primary rounded-pill">Exclusive</span>
+                  </div>
+                  <div class="card-body text-center p-4">
+                    <div class="mb-3">
+                      <div class="feature-icon-wrapper d-inline-flex align-items-center justify-content-center rounded-circle bg-danger bg-opacity-10 p-3">
+                        <span class="fs-2">🔥</span>
+                      </div>
+                    </div>
+                    <h5 class="card-title fw-bold mb-2">Multi-Range Support</h5>
+                    <p class="card-text text-muted small">Select UNLIMITED date ranges. Material CAN'T do this!</p>
                   </div>
                 </div>
               </div>
 
               <div class="col-md-6 col-lg-3">
-                <div class="card h-100 border-success shadow-sm hover-lift">
-                  <div class="card-body text-center">
-                    <div class="feature-icon fs-1 mb-3">⚙️</div>
-                    <h5 class="card-title fw-semibold">Flexible Presets</h5>
-                    <p class="card-text text-muted">Dynamic getValue() pattern. Create any custom date logic.</p>
-                    <span class="badge bg-success mt-2">Game Changer</span>
+                <div class="card h-100 border-0 bg-white shadow-sm hover-lift position-relative">
+                  <div class="position-absolute top-0 end-0 m-2">
+                    <span class="badge bg-success rounded-pill">Popular</span>
+                  </div>
+                  <div class="card-body text-center p-4">
+                    <div class="mb-3">
+                      <div class="feature-icon-wrapper d-inline-flex align-items-center justify-content-center rounded-circle bg-warning bg-opacity-10 p-3">
+                        <span class="fs-2">⚙️</span>
+                      </div>
+                    </div>
+                    <h5 class="card-title fw-bold mb-2">Flexible Presets</h5>
+                    <p class="card-text text-muted small">Dynamic getValue() pattern. Create any custom date logic.</p>
                   </div>
                 </div>
               </div>

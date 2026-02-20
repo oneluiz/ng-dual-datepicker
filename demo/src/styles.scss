@@ -2659,82 +2659,53 @@ html {
 
 // Stats Section
 .stats-section {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 3rem;
-  padding: 3rem 2rem !important;
-  background: #f8f9fa;
-  border-bottom: 1px solid #e9ecef;
-
-  .stat-item {
-    text-align: center;
-
-    .stat-number {
-      font-size: 2.5rem;
-      font-weight: 800;
-      color: #667eea;
-      line-height: 1;
-      margin-bottom: 0.5rem;
-    }
-
-    .stat-label {
-      font-size: 0.95rem;
-      color: #6c757d;
-      font-weight: 500;
-    }
+  background: transparent;
+  
+  i {
+    transition: transform 0.2s ease;
   }
-
-  .stat-divider {
-    width: 1px;
-    height: 60px;
-    background: #dee2e6;
+  
+  .col-sm-6:hover i {
+    transform: scale(1.1);
+  }
+  
+  h3 {
+    color: #212529;
+    letter-spacing: -0.02em;
+  }
+  
+  p {
+    font-size: 0.875rem;
+    margin-bottom: 0;
   }
 }
 
 // Features Section
 .features-section {
-  .section-title {
-    text-align: center;
-    font-size: 2.5rem;
-    font-weight: 700;
-    margin-bottom: 1rem;
-    color: #1a202c;
+  .feature-icon-wrapper {
+    width: 4rem;
+    height: 4rem;
+    transition: transform 0.2s ease;
   }
-
-  .section-subtitle {
-    text-align: center;
-    font-size: 1.125rem;
-    color: #718096;
-    margin-bottom: 3rem;
+  
+  .card:hover .feature-icon-wrapper {
+    transform: scale(1.1);
   }
-
-  .features-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 2rem;
-    max-width: 1200px;
-    margin: 0 auto;
+  
+  .card {
+    transition: all 0.15s ease;
+    border: 1px solid rgba(0, 0, 0, 0.05) !important;
+    
+    &:hover {
+      box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.1) !important;
+    }
   }
-
-  // ============================================
-  // OBSOLETE: .feature-card - Now using Bootstrap card classes
-  // ============================================
-  // .feature-card {
-  //   background: white;
-  //   border: 1px solid #e2e8f0;
-  //   border-radius: 12px;
-  //   padding: 2rem;
-  //   transition: all 0.3s;
-  //   position: relative;
-  //
-  //   &:hover {
-  //     transform: translateY(-4px);
-  //     box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
-  //     border-color: #667eea;
-  //   }
-  //   ...etc
-  // }
+  
+  .badge {
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.25rem 0.75rem;
+  }
 }
 
 // Comparison Section
