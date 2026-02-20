@@ -11,7 +11,7 @@ import { DualDatepickerComponent, DateRange, MultiDateRange, PresetConfig, Commo
 })
 export class AppComponent {
   // Active tab
-  activeTab: 'examples' | 'docs' | 'api' = 'examples';
+  activeTab: 'examples' | 'docs' | 'api' | 'blog' = 'examples';
 
   // Example 1: Basic
   example1Range: DateRange | null = null;
@@ -104,7 +104,7 @@ export class AppComponent {
     this.datepicker8.clear();
   }
 
-  setActiveTab(tab: 'examples' | 'docs' | 'api') {
+  setActiveTab(tab: 'examples' | 'docs' | 'api' | 'blog') {
     this.activeTab = tab;
   }
 

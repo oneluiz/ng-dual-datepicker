@@ -56,6 +56,16 @@
         </svg>
         API Reference
       </button>
+      <button 
+        class="nav-tab" 
+        [class.active]="activeTab === 'blog'"
+        (click)="setActiveTab('blog')">
+        <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+          <path d="M4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H4zm0 1h8a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1z"/>
+          <path d="M4 2.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.5.5h-7a.5.5 0 0 1-.5-.5v-2zm0 4a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm0 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm2-3a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm0 3a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm0 3a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5z"/>
+        </svg>
+        What's New
+      </button>
     </div>
   </nav>
 
@@ -64,50 +74,6 @@
     <!-- Examples Tab -->
     @if (activeTab === 'examples') {
       <div class="tab-content fade-in">
-        <!-- NEW v3.2.0 Banner -->
-        <div class="feature-banner new-release-banner">
-          <div class="banner-badge">🎉 NEW IN v3.2.0</div>
-          <h2>🚀 4 Powerful New Features!</h2>
-          <p class="banner-description">
-            Enterprise-ready features for better UX and professional applications
-          </p>
-          <div class="features-highlight">
-            <div class="feature-item">
-              <span class="feature-icon">🎨</span>
-              <div class="feature-content">
-                <h4>Hover Range Preview</h4>
-                <p>Visual feedback while selecting dates - see range before clicking</p>
-              </div>
-            </div>
-            <div class="feature-item">
-              <span class="feature-icon">🔒</span>
-              <div class="feature-content">
-                <h4>Apply/Confirm Button</h4>
-                <p>Explicit confirmation for expensive operations (dashboards, reports)</p>
-              </div>
-            </div>
-            <div class="feature-item">
-              <span class="feature-icon">🎨</span>
-              <div class="feature-content">
-                <h4>Display Format</h4>
-                <p>Customize date format with 8 tokens (DD/MM/YYYY, MM/DD/YYYY, etc.)</p>
-              </div>
-            </div>
-            <div class="feature-item">
-              <span class="feature-icon">🚫</span>
-              <div class="feature-content">
-                <h4>Disabled Dates</h4>
-                <p>Block specific dates or use function (weekends, holidays, blackouts)</p>
-              </div>
-            </div>
-          </div>
-          <div class="banner-footer">
-            <span class="badge-success">✓ Zero Breaking Changes</span>
-            <span class="badge-success">✓ 100% Compatible with v3.1.x</span>
-            <span class="badge-success">✓ Enterprise Ready</span>
-          </div>
-        </div>
-
         <!-- Quick Navigation -->
         <div class="quick-nav">
           <h3>📑 Jump to Example</h3>
@@ -1749,6 +1715,214 @@ import &#123; getLastNDays &#125; from '&#64;oneluiz/dual-datepicker';
               <li>⬜ <strong>Time picker</strong> - Select date + time ranges</li>
             </ul>
           </section>
+        </div>
+      </div>
+    }
+
+    <!-- Blog/What's New Tab -->
+    @if (activeTab === 'blog') {
+      <div class="tab-content fade-in">
+        <div class="blog-content">
+          <!-- Blog Header -->
+          <div class="blog-header">
+            <span class="blog-date">February 20, 2026</span>
+            <h1 class="blog-title">🎉 Announcing ng-dual-datepicker v3.2.0</h1>
+            <p class="blog-subtitle">4 powerful new features for enterprise-ready applications</p>
+          </div>
+
+          <!-- Video Section -->
+          <div class="blog-section video-section">
+            <h2>🎸 Experience the Power of v3.2.0</h2>
+            <p class="section-intro">
+              Like the legendary Spanish rock band <strong>Héroes del Silencio</strong>, this release brings power, 
+              elegance, and timeless quality to your Angular applications. Watch this tribute while exploring 
+              the new features:
+            </p>
+            <div class="video-container">
+              <iframe 
+                width="100%" 
+                height="500" 
+                src="https://www.youtube.com/embed/j-dU43y0B6U?si=n4cX8YQvrzeww1NBP" 
+                title="Héroes del Silencio - Entre Dos Tierras" 
+                frameborder="0" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                referrerpolicy="strict-origin-when-cross-origin" 
+                allowfullscreen>
+              </iframe>
+            </div>
+            <p class="video-caption">
+              🎵 <em>"Entre Dos Tierras"</em> - Un clásico que nunca envejece, al igual que este datepicker 🎵
+            </p>
+          </div>
+
+          <!-- Features Overview -->
+          <div class="blog-section">
+            <h2>✨ What's New in v3.2.0</h2>
+            
+            <article class="blog-article">
+              <div class="article-icon">🎨</div>
+              <div class="article-content">
+                <h3>Hover Range Preview</h3>
+                <p class="article-meta">
+                  <span class="badge-feature">UX Enhancement</span>
+                  <span class="badge-feature">Always Enabled</span>
+                </p>
+                <p>
+                  See a beautiful visual preview of your date range <strong>before clicking to confirm</strong>. 
+                  As you hover over dates after selecting the start date, a subtle purple dashed border shows 
+                  the potential range—providing instant feedback and confidence in your selection.
+                </p>
+                <div class="feature-highlights">
+                  <div class="highlight-item">✓ Light purple background with dashed border</div>
+                  <div class="highlight-item">✓ 70% opacity for subtle, non-intrusive preview</div>
+                  <div class="highlight-item">✓ Works seamlessly with all modes (single, multi, requireApply)</div>
+                  <div class="highlight-item">✓ Zero configuration - automatic enhancement</div>
+                </div>
+              </div>
+            </article>
+
+            <article class="blog-article">
+              <div class="article-icon">🔒</div>
+              <div class="article-content">
+                <h3>Apply/Confirm Button</h3>
+                <p class="article-meta">
+                  <span class="badge-feature">Enterprise Ready</span>
+                  <span class="badge-feature">Performance</span>
+                </p>
+                <p>
+                  Perfect for dashboards and enterprise applications where <strong>recalculating data is expensive</strong>. 
+                  Enable <code>[requireApply]="true"</code> to require explicit confirmation before emitting date changes. 
+                  This prevents unnecessary API calls while users are still selecting dates.
+                </p>
+                <div class="feature-highlights">
+                  <div class="highlight-item">✓ Pending state with visual feedback</div>
+                  <div class="highlight-item">✓ Apply button to confirm selection</div>
+                  <div class="highlight-item">✓ Cancel button to discard changes</div>
+                  <div class="highlight-item">✓ Single API call vs multiple calls</div>
+                </div>
+                <div class="use-case-box">
+                  <strong>Perfect for:</strong> Financial dashboards, BI reports, analytics platforms, 
+                  and any application with expensive data operations.
+                </div>
+              </div>
+            </article>
+
+            <article class="blog-article">
+              <div class="article-icon">🎨</div>
+              <div class="article-content">
+                <h3>Display Format Customization</h3>
+                <p class="article-meta">
+                  <span class="badge-feature">i18n Ready</span>
+                  <span class="badge-feature">8 Tokens</span>
+                </p>
+                <p>
+                  Customize how dates appear in the input field with a flexible token system. 
+                  Use <code>[displayFormat]="'DD/MM/YYYY'"</code> for European format, 
+                  <code>'MM/DD/YYYY'</code> for US format, or create your own custom format.
+                </p>
+                <div class="token-grid">
+                  <div class="token-item"><code>YYYY</code> → 2026</div>
+                  <div class="token-item"><code>YY</code> → 26</div>
+                  <div class="token-item"><code>MMMM</code> → February</div>
+                  <div class="token-item"><code>MMM</code> → Feb</div>
+                  <div class="token-item"><code>MM</code> → 02</div>
+                  <div class="token-item"><code>M</code> → 2</div>
+                  <div class="token-item"><code>DD</code> → 05</div>
+                  <div class="token-item"><code>D</code> → 5</div>
+                </div>
+              </div>
+            </article>
+
+            <article class="blog-article">
+              <div class="article-icon">🚫</div>
+              <div class="article-content">
+                <h3>Disabled Dates</h3>
+                <p class="article-meta">
+                  <span class="badge-feature">Flexible</span>
+                  <span class="badge-feature">Two Modes</span>
+                </p>
+                <p>
+                  Block specific dates from selection using either an <strong>array of dates</strong> or 
+                  a <strong>custom function</strong>. Perfect for blocking weekends, holidays, or implementing 
+                  complex business rules.
+                </p>
+                <div class="code-example">
+                  <div class="code-label">Array Mode - Block specific dates:</div>
+                  <pre><code>disabledDates: Date[] = [new Date(2026, 0, 1), new Date(2026, 11, 25)];</code></pre>
+                </div>
+                <div class="code-example">
+                  <div class="code-label">Function Mode - Block weekends:</div>
+                  <pre><code>disabledDates = (date: Date) =&gt; &#123;
+  const day = date.getDay();
+  return day === 0 || day === 6; // Block Sat/Sun
+&#125;;</code></pre>
+                </div>
+              </div>
+            </article>
+          </div>
+
+          <!-- Migration & Compatibility -->
+          <div class="blog-section compatibility-section">
+            <h2>🔄 Migration & Compatibility</h2>
+            <div class="info-box success-box">
+              <div class="info-icon">✅</div>
+              <div class="info-content">
+                <h4>Zero Breaking Changes</h4>
+                <p>
+                  v3.2.0 is <strong>100% compatible with v3.1.x</strong>. All new features are additive and 
+                  opt-in. Simply update your package and start using the new features when ready.
+                </p>
+              </div>
+            </div>
+            <div class="upgrade-command">
+              <strong>Upgrade now:</strong>
+              <code>npm install &#64;oneluiz/dual-datepicker&#64;3.2.0</code>
+            </div>
+          </div>
+
+          <!-- Performance & Bundle Size -->
+          <div class="blog-section">
+            <h2>📦 Performance & Bundle Size</h2>
+            <div class="stats-grid">
+              <div class="stat-card">
+                <div class="stat-value">89.3 kB</div>
+                <div class="stat-label">Package Size</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-value">481 kB</div>
+                <div class="stat-label">Unpacked</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-value">8.89 kB</div>
+                <div class="stat-label">SCSS Styles</div>
+              </div>
+              <div class="stat-card highlight-stat">
+                <div class="stat-value">0</div>
+                <div class="stat-label">Dependencies</div>
+              </div>
+            </div>
+            <p class="stats-note">
+              All features built with pure Angular and TypeScript. No external dependencies required.
+            </p>
+          </div>
+
+          <!-- Community & Credits -->
+          <div class="blog-section credits-section">
+            <h2>🙏 Credits</h2>
+            <p>
+              Special thanks to all contributors and users who provided feedback and feature requests. 
+              This release is dedicated to the fans of <strong>Héroes del Silencio</strong> 🎸 - 
+              una banda que marcó toda una generación.
+            </p>
+            <div class="cta-box">
+              <h3>Try it now!</h3>
+              <p>Explore all 16 interactive examples in the <strong>Examples</strong> tab.</p>
+              <div class="cta-buttons">
+                <button class="cta-btn primary" (click)="setActiveTab('examples')">View Examples</button>
+                <button class="cta-btn secondary" (click)="setActiveTab('docs')">Read Documentation</button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     }

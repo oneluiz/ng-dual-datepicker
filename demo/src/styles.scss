@@ -1590,3 +1590,464 @@ html {
   scroll-margin-top: 120px; // Header + nav height
 }
 
+// Blog/What's New Tab Styles
+.blog-content {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+.blog-header {
+  text-align: center;
+  margin-bottom: 3rem;
+  padding: 2rem 1rem;
+  background: linear-gradient(135deg, rgba(108, 99, 255, 0.1) 0%, rgba(138, 43, 226, 0.1) 100%);
+  border-radius: 15px;
+  border: 1px solid rgba(108, 99, 255, 0.2);
+}
+
+.blog-date {
+  display: inline-block;
+  background: rgba(108, 99, 255, 0.15);
+  color: #6c63ff;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.blog-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin: 1rem 0;
+  background: linear-gradient(135deg, #6c63ff 0%, #8a2be2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.blog-subtitle {
+  font-size: 1.2rem;
+  color: #666;
+  margin: 0;
+}
+
+.blog-section {
+  margin: 3rem 0;
+}
+
+.blog-section h2 {
+  font-size: 1.8rem;
+  color: #333;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #6c63ff;
+}
+
+// Video Section
+.video-section {
+  background: linear-gradient(135deg, rgba(138, 43, 226, 0.05) 0%, rgba(108, 99, 255, 0.05) 100%);
+  padding: 2rem;
+  border-radius: 15px;
+  border: 1px solid rgba(108, 99, 255, 0.2);
+}
+
+.section-intro {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: #555;
+  margin-bottom: 1.5rem;
+}
+
+.video-container {
+  position: relative;
+  width: 100%;
+  padding-bottom: 56.25%; // 16:9 aspect ratio
+  height: 0;
+  overflow: hidden;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  margin: 1.5rem 0;
+
+  iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+  }
+}
+
+.video-caption {
+  text-align: center;
+  font-style: italic;
+  color: #666;
+  margin-top: 1rem;
+  font-size: 1rem;
+}
+
+// Blog Article
+.blog-article {
+  display: flex;
+  gap: 1.5rem;
+  margin: 2rem 0;
+  padding: 2rem;
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+
+  &:hover {
+    box-shadow: 0 5px 20px rgba(108, 99, 255, 0.15);
+    transform: translateY(-2px);
+  }
+}
+
+.article-icon {
+  font-size: 2.5rem;
+  min-width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #6c63ff 0%, #8a2be2 100%);
+  border-radius: 15px;
+  flex-shrink: 0;
+}
+
+.article-content {
+  flex: 1;
+
+  h3 {
+    font-size: 1.5rem;
+    color: #333;
+    margin: 0 0 0.5rem 0;
+  }
+
+  p {
+    color: #555;
+    line-height: 1.7;
+    margin: 0.5rem 0;
+  }
+
+  code {
+    background: rgba(108, 99, 255, 0.1);
+    color: #6c63ff;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9em;
+  }
+}
+
+.article-meta {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
+.badge-feature {
+  background: rgba(108, 99, 255, 0.15);
+  color: #6c63ff;
+  padding: 0.3rem 0.8rem;
+  border-radius: 15px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+// Feature Highlights
+.feature-highlights {
+  margin-top: 1rem;
+  padding-left: 1rem;
+}
+
+.highlight-item {
+  display: flex;
+  align-items: center;
+  color: #555;
+  margin: 0.5rem 0;
+  font-size: 0.95rem;
+
+  &::before {
+    content: '';
+    width: 4px;
+    height: 4px;
+    background: #6c63ff;
+    border-radius: 50%;
+    margin-right: 0.5rem;
+  }
+}
+
+// Use Case Box
+.use-case-box {
+  margin-top: 1rem;
+  padding: 1rem;
+  background: rgba(108, 99, 255, 0.05);
+  border-left: 3px solid #6c63ff;
+  border-radius: 5px;
+  font-size: 0.95rem;
+  color: #555;
+
+  strong {
+    color: #6c63ff;
+  }
+}
+
+// Token Grid
+.token-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.token-item {
+  padding: 0.8rem;
+  background: rgba(108, 99, 255, 0.05);
+  border: 1px solid rgba(108, 99, 255, 0.2);
+  border-radius: 8px;
+  text-align: center;
+  font-family: 'Courier New', monospace;
+  color: #6c63ff;
+  font-weight: 600;
+}
+
+// Code Examples
+.code-example {
+  margin: 1rem 0;
+}
+
+.code-label {
+  font-size: 0.9rem;
+  color: #666;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.code-example pre {
+  background: #2d2d2d;
+  color: #f8f8f2;
+  padding: 1rem;
+  border-radius: 8px;
+  overflow-x: auto;
+  margin: 0.5rem 0;
+
+  code {
+    font-family: 'Courier New', monospace;
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+}
+
+// Compatibility Section
+.compatibility-section {
+  background: rgba(108, 99, 255, 0.03);
+  padding: 2rem;
+  border-radius: 15px;
+  border: 1px solid rgba(108, 99, 255, 0.2);
+}
+
+.info-box {
+  display: flex;
+  gap: 1rem;
+  padding: 1.5rem;
+  border-radius: 10px;
+  margin: 1rem 0;
+}
+
+.success-box {
+  background: rgba(76, 175, 80, 0.1);
+  border: 1px solid rgba(76, 175, 80, 0.3);
+}
+
+.info-icon {
+  font-size: 2rem;
+  flex-shrink: 0;
+}
+
+.info-content {
+  flex: 1;
+
+  h4 {
+    margin: 0 0 0.5rem 0;
+    color: #4caf50;
+    font-size: 1.2rem;
+  }
+
+  p {
+    margin: 0;
+    color: #555;
+    line-height: 1.6;
+  }
+}
+
+.upgrade-command {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  background: #2d2d2d;
+  border-radius: 8px;
+  color: white;
+  font-family: 'Courier New', monospace;
+
+  code {
+    color: #4caf50;
+    font-weight: 600;
+  }
+}
+
+// Stats Grid
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1.5rem;
+  margin: 1.5rem 0;
+}
+
+.stat-card {
+  text-align: center;
+  padding: 1.5rem;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+  }
+}
+
+.highlight-stat {
+  background: linear-gradient(135deg, #6c63ff 0%, #8a2be2 100%);
+  color: white;
+
+  .stat-value,
+  .stat-label {
+    color: white;
+  }
+}
+
+.stat-value {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #6c63ff;
+  margin-bottom: 0.5rem;
+}
+
+.stat-label {
+  font-size: 0.9rem;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.stats-note {
+  text-align: center;
+  color: #666;
+  font-style: italic;
+  margin-top: 1rem;
+}
+
+// Credits Section
+.credits-section {
+  text-align: center;
+  background: linear-gradient(135deg, rgba(108, 99, 255, 0.05) 0%, rgba(138, 43, 226, 0.05) 100%);
+  padding: 2rem;
+  border-radius: 15px;
+  border: 1px solid rgba(108, 99, 255, 0.2);
+}
+
+.cta-box {
+  margin-top: 2rem;
+  padding: 2rem;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+
+  h3 {
+    font-size: 1.5rem;
+    color: #333;
+    margin: 0 0 0.5rem 0;
+  }
+
+  p {
+    color: #666;
+    margin: 0 0 1.5rem 0;
+  }
+}
+
+.cta-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.cta-btn {
+  padding: 0.8rem 2rem;
+  border: none;
+  border-radius: 25px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &.primary {
+    background: linear-gradient(135deg, #6c63ff 0%, #8a2be2 100%);
+    color: white;
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(108, 99, 255, 0.4);
+    }
+  }
+
+  &.secondary {
+    background: white;
+    color: #6c63ff;
+    border: 2px solid #6c63ff;
+
+    &:hover {
+      background: #6c63ff;
+      color: white;
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(108, 99, 255, 0.3);
+    }
+  }
+}
+
+// Responsive adjustments for blog
+@media (max-width: 768px) {
+  .blog-title {
+    font-size: 1.8rem;
+  }
+
+  .blog-article {
+    flex-direction: column;
+    padding: 1.5rem;
+  }
+
+  .article-icon {
+    align-self: center;
+  }
+
+  .token-grid {
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .cta-buttons {
+    flex-direction: column;
+    
+    .cta-btn {
+      width: 100%;
+    }
+  }
+}
+
