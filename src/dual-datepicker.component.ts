@@ -70,6 +70,7 @@ export class DualDatepickerComponent implements OnInit, OnChanges, ControlValueA
   @Input() inputPadding: string = '0.375rem 0.75rem';
   @Input() locale: LocaleConfig = {};
   @Input() disabledDates: Date[] | ((date: Date) => boolean) | undefined;
+  @Input() displayFormat: string = 'D MMM'; // Format for displaying dates in input
 
   @Output() dateRangeChange = new EventEmitter<DateRange>();
   @Output() dateRangeSelected = new EventEmitter<DateRange>();
@@ -478,8 +479,32 @@ export class DualDatepickerComponent implements OnInit, OnChanges, ControlValueA
     if (!dateStr) return '';
     const date = this.dateAdapter.parse(dateStr);
     if (!date) return '';
-    const monthNames = this.locale.monthNamesShort || this.defaultMonthNamesShort;
-    return `${this.dateAdapter.getDate(date)} ${monthNames[this.dateAdapter.getMonth(date)]}`;
+    
+    const year = this.dateAdapter.getYear(date);
+    const month = this.dateAdapter.getMonth(date);
+    const day = this.dateAdapter.getDate(date);
+    
+    const monthNames = this.locale.monthNames || this.defaultMonthNames;
+    const monthNamesShort = this.locale.monthNamesShort || this.defaultMonthNamesShort;
+    
+    // Replace format tokens with values
+    let formatted = this.displayFormat;
+    
+    // Year tokens
+    formatted = formatted.replace(/YYYY/g, String(year));
+    formatted = formatted.replace(/YY/g, String(year).slice(-2));
+    
+    // Month tokens (order matters: MMMM before MMM before MM before M)
+    formatted = formatted.replace(/MMMM/g, monthNames[month]);
+    formatted = formatted.replace(/MMM/g, monthNamesShort[month]);
+    formatted = formatted.replace(/MM/g, String(month + 1).padStart(2, '0'));
+    formatted = formatted.replace(/M/g, String(month + 1));
+    
+    // Day tokens (order matters: DD before D)
+    formatted = formatted.replace(/DD/g, String(day).padStart(2, '0'));
+    formatted = formatted.replace(/D/g, String(day));
+    
+    return formatted;
   }
 
   updateDateRangeText(): void {

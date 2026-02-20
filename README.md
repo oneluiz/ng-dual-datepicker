@@ -29,6 +29,7 @@ npm install @oneluiz/dual-datepicker
 - [Advanced Features](#-advanced-features)
   - [Multi-Range Selection](#multi-range-support)
   - [Disabled Dates](#disabled-dates)
+  - [Display Format](#display-format)
   - [Custom Presets](#custom-presets)
   - [Date Adapter System](#date-adapter-system)
   - [Keyboard Navigation](#keyboard-navigation)
@@ -55,6 +56,7 @@ npm install @oneluiz/dual-datepicker
 - 🔄 **Reactive Forms** – Full ControlValueAccessor implementation
 - 🔥 **Multi-Range Support** – Select multiple date ranges (Material CAN'T do this!)
 - 🚫 **Disabled Dates** – Block weekends, holidays, or custom logic
+- 🎨 **Display Format** – Customize date display (DD/MM/YYYY, MM/DD/YYYY, etc.)
 - 🎨 **Fully Customizable** – Every color, padding, border configurable
 - 📦 **Lightweight** – ~60 KB gzipped total bundle
 - 🚀 **Performance** – OnPush change detection + trackBy optimization
@@ -293,6 +295,94 @@ export class BusinessDaysExample {
 - ✅ Cannot be selected via mouse or keyboard
 - ✅ Flexible custom logic support
 
+### Display Format
+
+**Customize how dates appear in the input field.** Use flexible format tokens to match regional preferences and localization needs.
+
+#### Basic Usage
+
+```typescript
+import { Component } from '@angular/core';
+
+@Component({
+  template: `
+    <!-- Default: "D MMM" (1 Jan, 15 Feb) -->
+    <ngx-dual-datepicker
+      displayFormat="D MMM"
+      (dateRangeChange)="onDateRangeChange($event)">
+    </ngx-dual-datepicker>
+
+    <!-- European: "DD/MM/YYYY" (01/01/2026, 15/02/2026) -->
+    <ngx-dual-datepicker
+      displayFormat="DD/MM/YYYY"
+      (dateRangeChange)="onDateRangeChange($event)">
+    </ngx-dual-datepicker>
+
+    <!-- US: "MM/DD/YYYY" (01/01/2026, 02/15/2026) -->
+    <ngx-dual-datepicker
+      displayFormat="MM/DD/YYYY"
+      (dateRangeChange)="onDateRangeChange($event)">
+    </ngx-dual-datepicker>
+
+    <!-- ISO: "YYYY-MM-DD" (2026-01-01, 2026-02-15) -->
+    <ngx-dual-datepicker
+      displayFormat="YYYY-MM-DD"
+      (dateRangeChange)="onDateRangeChange($event)">
+    </ngx-dual-datepicker>
+
+    <!-- Long: "MMM DD, YYYY" (Jan 01, 2026) -->
+    <ngx-dual-datepicker
+      displayFormat="MMM DD, YYYY"
+      (dateRangeChange)="onDateRangeChange($event)">
+    </ngx-dual-datepicker>
+  `
+})
+export class DisplayFormatExample {
+  onDateRangeChange(range: DateRange) {
+    console.log('Selected range:', range);
+  }
+}
+```
+
+#### Available Format Tokens
+
+| Token | Output | Description |
+|-------|--------|-------------|
+| `YYYY` | 2026 | Full year (4 digits) |
+| `YY` | 26 | 2-digit year |
+| `MMMM` | January | Full month name |
+| `MMM` | Jan | Short month name (3 letters) |
+| `MM` | 01-12 | 2-digit month (zero-padded) |
+| `M` | 1-12 | Month number (no padding) |
+| `DD` | 01-31 | 2-digit day (zero-padded) |
+| `D` | 1-31 | Day number (no padding) |
+
+#### Custom Format Examples
+
+```typescript
+// Mix and match tokens with any separators
+displayFormat="D/M/YY"          // 1/2/26
+displayFormat="DD-MM-YYYY"      // 01-02-2026
+displayFormat="MMMM D, YYYY"    // January 1, 2026
+displayFormat="D. MMMM YYYY"    // 1. January 2026
+displayFormat="YY.MM.DD"        // 26.01.01
+```
+
+**Perfect Use Cases:**
+- 🌍 Localization (match regional formats)
+- 🇪🇺 European format (DD/MM/YYYY)
+- 🇺🇸 US format (MM/DD/YYYY)
+- 💻 ISO format (YYYY-MM-DD for APIs)
+- 📱 Mobile-friendly short formats
+- 📄 Long formats for reports
+
+**Features:**
+- ✅ Flexible token system
+- ✅ Any separator (/, -, space, comma, dot)
+- ✅ Mix and match freely
+- ✅ Works with locale month names
+- ✅ No external dependencies
+
 ### Custom Presets
 
 **Power feature for dashboards, reporting, ERP, and BI systems!**
@@ -500,6 +590,7 @@ spanishLocale: LocaleConfig = {
 | `closeOnClickOutside` | `boolean` | `true` | Close picker when clicking outside |
 | `multiRange` | `boolean` | `false` | Enable multi-range selection mode |
 | `disabledDates` | `Date[] \| ((date: Date) => boolean)` | `undefined` | Array of dates or function to disable specific dates |
+| `displayFormat` | `string` | `'D MMM'` | Format for displaying dates in input (tokens: YYYY, YY, MMMM, MMM, MM, M, DD, D) |
 | `enableKeyboardNavigation` | `boolean` | `true` | Enable keyboard navigation |
 | `inputBackgroundColor` | `string` | `'#fff'` | Input background color |
 | `inputTextColor` | `string` | `'#495057'` | Input text color |

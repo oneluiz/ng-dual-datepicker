@@ -57,6 +57,13 @@ export class AppComponent {
   // Example 13: Disabled Dates - Weekends + Holidays (NEW v3.2.0)
   example13Range: DateRange | null = null;
   
+  // Example 14: Display Format (NEW v3.2.0)
+  example14Range: DateRange | null = null;
+  example14aRange: DateRange | null = null;
+  example14bRange: DateRange | null = null;
+  example14cRange: DateRange | null = null;
+  example14dRange: DateRange | null = null;
+  
   // Costa Rica holidays 2026
   costaRicaHolidays2026: Date[] = [
     new Date(2026, 0, 1),   // Año Nuevo
@@ -132,6 +139,21 @@ export class AppComponent {
         break;
       case 13:
         this.example13Range = range;
+        break;
+      case 14:
+        this.example14Range = range;
+        break;
+      case 141:
+        this.example14aRange = range;
+        break;
+      case 142:
+        this.example14bRange = range;
+        break;
+      case 143:
+        this.example14cRange = range;
+        break;
+      case 144:
+        this.example14dRange = range;
         break;
     }
   }
@@ -338,6 +360,50 @@ isDateDisabled = (date: Date): boolean => {
 <!-- ✔ Holiday/weekend blocking -->
 <!-- ✔ Reservation systems -->
 <!-- ✔ Appointment scheduling -->`,
+      displayFormat: `// Customize how dates appear in the input field
+
+// Default format: "D MMM" (1 Jan, 15 Feb)
+<ngx-dual-datepicker
+  displayFormat="D MMM"
+  (dateRangeChange)="onDateRangeChange($event)">
+</ngx-dual-datepicker>
+
+// European format: "DD/MM/YYYY" (01/01/2026, 15/02/2026)
+<ngx-dual-datepicker
+  displayFormat="DD/MM/YYYY"
+  (dateRangeChange)="onDateRangeChange($event)">
+</ngx-dual-datepicker>
+
+// US format: "MM/DD/YYYY" (01/01/2026, 02/15/2026)
+<ngx-dual-datepicker
+  displayFormat="MM/DD/YYYY"
+  (dateRangeChange)="onDateRangeChange($event)">
+</ngx-dual-datepicker>
+
+// ISO format: "YYYY-MM-DD" (2026-01-01, 2026-02-15)
+<ngx-dual-datepicker
+  displayFormat="YYYY-MM-DD"
+  (dateRangeChange)="onDateRangeChange($event)">
+</ngx-dual-datepicker>
+
+// Long format: "MMM DD, YYYY" (Jan 01, 2026, Feb 15, 2026)
+<ngx-dual-datepicker
+  displayFormat="MMM DD, YYYY"
+  (dateRangeChange)="onDateRangeChange($event)">
+</ngx-dual-datepicker>
+
+// Available tokens:
+// YYYY - Full year (2026)
+// YY   - 2-digit year (26)
+// MMMM - Full month name (January)
+// MMM  - Short month name (Jan)
+// MM   - 2-digit month (01-12)
+// M    - Month (1-12)
+// DD   - 2-digit day (01-31)
+// D    - Day (1-31)
+
+// Mix and match tokens with any separators:
+// "D/M/YY", "DD-MM-YYYY", "MMMM D, YYYY", etc.`,
       install: `npm install @oneluiz/dual-datepicker`
     };
   }

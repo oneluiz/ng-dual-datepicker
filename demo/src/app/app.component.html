@@ -542,6 +542,123 @@
             </div>
           </div>
         </div>
+
+        <!-- Example 14: Display Format -->
+        <div class="demo-example">
+          <div class="demo-box">
+            <h2>🎨 Display Format Customization</h2>
+            <p class="example-desc">
+              Customize how dates appear in the input field with flexible format tokens. 
+              Perfect for localization and regional date preferences! 🌍
+            </p>
+            
+            <div style="display: grid; gap: 20px;">
+              <!-- Default format -->
+              <div>
+                <h4 style="margin: 0 0 8px 0; color: #374151;">Default: "D MMM"</h4>
+                <ngx-dual-datepicker
+                  [presets]="customPresets"
+                  displayFormat="D MMM"
+                  (dateRangeChange)="onDateRangeChange(14, $event)">
+                </ngx-dual-datepicker>
+                @if (example14Range) {
+                  <div class="output">{{ example14Range.rangeText }}</div>
+                }
+              </div>
+
+              <!-- European format -->
+              <div>
+                <h4 style="margin: 0 0 8px 0; color: #374151;">European: "DD/MM/YYYY"</h4>
+                <ngx-dual-datepicker
+                  [presets]="customPresets"
+                  displayFormat="DD/MM/YYYY"
+                  (dateRangeChange)="onDateRangeChange(141, $event)">
+                </ngx-dual-datepicker>
+                @if (example14aRange) {
+                  <div class="output">{{ example14aRange.rangeText }}</div>
+                }
+              </div>
+
+              <!-- US format -->
+              <div>
+                <h4 style="margin: 0 0 8px 0; color: #374151;">US: "MM/DD/YYYY"</h4>
+                <ngx-dual-datepicker
+                  [presets]="customPresets"
+                  displayFormat="MM/DD/YYYY"
+                  (dateRangeChange)="onDateRangeChange(142, $event)">
+                </ngx-dual-datepicker>
+                @if (example14bRange) {
+                  <div class="output">{{ example14bRange.rangeText }}</div>
+                }
+              </div>
+
+              <!-- ISO format -->
+              <div>
+                <h4 style="margin: 0 0 8px 0; color: #374151;">ISO: "YYYY-MM-DD"</h4>
+                <ngx-dual-datepicker
+                  [presets]="customPresets"
+                  displayFormat="YYYY-MM-DD"
+                  (dateRangeChange)="onDateRangeChange(143, $event)">
+                </ngx-dual-datepicker>
+                @if (example14cRange) {
+                  <div class="output">{{ example14cRange.rangeText }}</div>
+                }
+              </div>
+
+              <!-- Long format -->
+              <div>
+                <h4 style="margin: 0 0 8px 0; color: #374151;">Long: "MMM DD, YYYY"</h4>
+                <ngx-dual-datepicker
+                  [presets]="customPresets"
+                  displayFormat="MMM DD, YYYY"
+                  (dateRangeChange)="onDateRangeChange(144, $event)">
+                </ngx-dual-datepicker>
+                @if (example14dRange) {
+                  <div class="output">{{ example14dRange.rangeText }}</div>
+                }
+              </div>
+            </div>
+
+            <div class="adapter-info material-cant">
+              <h4>🎯 Available Format Tokens:</h4>
+              <ul>
+                <li><strong>YYYY</strong> - Full year (2026)</li>
+                <li><strong>YY</strong> - 2-digit year (26)</li>
+                <li><strong>MMMM</strong> - Full month name (January)</li>
+                <li><strong>MMM</strong> - Short month name (Jan)</li>
+                <li><strong>MM</strong> - 2-digit month (01-12)</li>
+                <li><strong>M</strong> - Month (1-12)</li>
+                <li><strong>DD</strong> - 2-digit day (01-31)</li>
+                <li><strong>D</strong> - Day (1-31)</li>
+              </ul>
+              <h4>💎 Perfect Use Cases:</h4>
+              <ul>
+                <li>✅ <strong>Localization</strong> - Match regional date formats</li>
+                <li>✅ <strong>European Format</strong> - DD/MM/YYYY (most of EU, LATAM)</li>
+                <li>✅ <strong>US Format</strong> - MM/DD/YYYY</li>
+                <li>✅ <strong>ISO Format</strong> - YYYY-MM-DD (tech-friendly)</li>
+                <li>✅ <strong>Custom Separators</strong> - Use /, -, dots, spaces, commas</li>
+                <li>✅ <strong>Mix Tokens</strong> - Create any format combination</li>
+              </ul>
+              <div class="material-comparison">
+                <p class="comparison-title">📊 Feature Comparison</p>
+                <div class="comparison">
+                  <div class="our-feature">
+                    <span class="feature-name">ng-dual-datepicker</span>
+                    <span class="feature-value">✅ Flexible Format</span>
+                  </div>
+                  <div class="their-feature">
+                    <span class="feature-name">Angular Material</span>
+                    <span class="feature-value">⚠️ DateAdapter Required</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="code-block">
+              <pre>{{ codeExamples.displayFormat }}</pre>
+            </div>
+          </div>
+        </div>
       </div>
     }
 
