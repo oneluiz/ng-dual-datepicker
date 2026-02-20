@@ -31,6 +31,7 @@ npm install @oneluiz/dual-datepicker
   - [Disabled Dates](#disabled-dates)
   - [Display Format](#display-format)
   - [Apply/Confirm Button](#applyconfirm-button)
+  - [Hover Range Preview](#hover-range-preview)
   - [Custom Presets](#custom-presets)
   - [Date Adapter System](#date-adapter-system)
   - [Keyboard Navigation](#keyboard-navigation)
@@ -466,6 +467,63 @@ export class DashboardExample {
 | API calls | Multiple (start + end) | Single (only Apply) |
 | User control | Automatic | Explicit confirmation |
 | Best for | Simple forms | Dashboards, reports |
+
+### Hover Range Preview
+
+**Automatic visual feedback while selecting dates.** Provides instant visual preview of the date range when hovering over dates before clicking to confirm.
+
+#### How It Works
+
+```typescript
+import { Component } from '@angular/core';
+import { DateRange } from '@oneluiz/dual-datepicker';
+
+@Component({
+  template: `
+    <ngx-dual-datepicker
+      (dateRangeChange)="onDateRangeChange($event)">
+    </ngx-dual-datepicker>
+  `
+})
+export class SimpleExample {
+  selectedRange: DateRange | null = null;
+
+  onDateRangeChange(range: DateRange) {
+    this.selectedRange = range;
+    console.log('Range selected:', range);
+  }
+}
+```
+
+#### User Flow
+
+1. **Select start date** - User clicks on any date
+2. **Hover over dates** - Move mouse over other dates
+3. **Visual preview** - See potential range highlighted instantly
+4. **Select end date** - Click to confirm the range
+
+#### Visual Styling
+
+- **Light purple background** (#e0e7ff) for preview range
+- **Purple dashed border** (#6366f1) around preview dates
+- **70% opacity** - subtle, non-intrusive preview
+- **Clear distinction** from confirmed selected range
+
+**Key Benefits:**
+- ✅ Better UX - visual preview before confirming selection
+- ✅ Instant feedback - see range immediately on mouse hover
+- ✅ Intuitive interaction - natural mouse behavior
+- ✅ Zero configuration - automatic, always enabled
+- ✅ Professional feel - premium date picker experience
+
+**Works With All Modes:**
+- ✅ Single range mode
+- ✅ Multi-range mode  
+- ✅ requireApply mode
+- ✅ All presets, formats, and disabled dates
+
+**No Configuration Needed:**  
+Hover preview is automatically enabled and works seamlessly with all other features. Just use the datepicker normally!
 
 ### Custom Presets
 

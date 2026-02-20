@@ -726,6 +726,70 @@
             </div>
           </div>
         </div>
+
+        <!-- Example 16: Hover Range Preview -->
+        <div class="demo-example">
+          <div class="demo-box">
+            <h2>🎨 Hover Range Preview</h2>
+            <p class="example-desc">
+              Hover over dates to see a visual preview of the range before clicking! Provides instant 
+              visual feedback while selecting the end date. Automatic visual enhancement - no configuration needed! 🖱️
+            </p>
+            <ngx-dual-datepicker
+              (dateRangeChange)="onDateRangeChange(16, $event)">
+            </ngx-dual-datepicker>
+            @if (example16Range) {
+            <div class="output">
+              <strong>Selected:</strong> {{ example16Range.rangeText }}
+              <br>
+              <small style="color: #6b7280; margin-top: 4px; display: block;">
+                ℹ️ Hover over dates after selecting start date to see preview
+              </small>
+            </div>
+            }
+            <div class="adapter-info material-cant">
+              <h4>🎯 How It Works:</h4>
+              <ol style="margin: 0; padding-left: 20px;">
+                <li><strong>Select start date</strong> - Click on any date</li>
+                <li><strong>Hover preview</strong> - Move mouse over dates to see range</li>
+                <li><strong>Visual feedback</strong> - Dashed border and light purple background</li>
+                <li><strong>Select end date</strong> - Click to confirm selection</li>
+                <li><strong>Automatic</strong> - Works with all modes (single, multi, requireApply)</li>
+              </ol>
+              <h4>💎 Key Benefits:</h4>
+              <ul>
+                <li>✅ <strong>Better UX</strong> - Visual preview before confirming</li>
+                <li>✅ <strong>Instant feedback</strong> - See range immediately on hover</li>
+                <li>✅ <strong>Intuitive</strong> - Natural mouse interaction</li>
+                <li>✅ <strong>Zero configuration</strong> - Always enabled, works everywhere</li>
+                <li>✅ <strong>Professional feel</strong> - Premium date picker experience</li>
+              </ul>
+              <h4>🎨 Visual Styling:</h4>
+              <ul>
+                <li>💜 <strong>Light purple bg</strong> - (#e0e7ff) for preview range</li>
+                <li>🖼️ <strong>Dashed border</strong> - Purple dashed outline (#6366f1)</li>
+                <li>👁️ <strong>70% opacity</strong> - Subtle, non-intrusive preview</li>
+                <li>🌈 <strong>Different from selected</strong> - Clear visual distinction</li>
+              </ul>
+              <div class="material-comparison">
+                <p class="comparison-title">📊 Feature Comparison</p>
+                <div class="comparison">
+                  <div class="our-feature">
+                    <span class="feature-name">ng-dual-datepicker</span>
+                    <span class="feature-value">✅ Hover Preview</span>
+                  </div>
+                  <div class="their-feature">
+                    <span class="feature-name">Angular Material</span>
+                    <span class="feature-value">❌ Not Available</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="code-block">
+              <pre>{{ codeExamples.hoverPreview }}</pre>
+            </div>
+          </div>
+        </div>
       </div>
     }
 

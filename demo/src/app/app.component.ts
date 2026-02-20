@@ -67,6 +67,9 @@ export class AppComponent {
   // Example 15: Apply/Confirm Button (NEW v3.2.0)
   example15Range: DateRange | null = null;
   
+  // Example 16: Hover Range Preview (NEW v3.2.0)
+  example16Range: DateRange | null = null;
+  
   // Costa Rica holidays 2026
   costaRicaHolidays2026: Date[] = [
     new Date(2026, 0, 1),   // Año Nuevo
@@ -160,6 +163,9 @@ export class AppComponent {
         break;
       case 15:
         this.example15Range = range;
+        break;
+      case 16:
+        this.example16Range = range;
         break;
     }
   }
@@ -446,6 +452,44 @@ onDateRangeChange(range: DateRange) {
   this.selectedRange = range;
   // This only fires AFTER user clicks Apply
   this.loadExpensiveData(range.startDate, range.endDate);
+}`,
+      hoverPreview: `// Hover Range Preview - automatic visual feedback
+// See preview of date range before clicking (always enabled)
+
+<ngx-dual-datepicker
+  (dateRangeChange)="onDateRangeChange($event)">
+</ngx-dual-datepicker>
+
+// How it works:
+// 1. User clicks start date
+// 2. User hovers over dates → preview shown
+// 3. Light purple background + dashed border
+// 4. User clicks end date → confirmed
+
+// Key benefits:
+// ✔ Better UX - visual preview before confirming
+// ✔ Instant feedback - see range on hover
+// ✔ Intuitive - natural mouse interaction
+// ✔ Zero configuration - always enabled
+// ✔ Professional feel - premium experience
+
+// Visual styling:
+// → Light purple background (#e0e7ff)
+// → Purple dashed border (#6366f1)
+// → 70% opacity (subtle preview)
+// → Clear distinction from selected range
+
+// Works with all modes:
+// ✔ Single range mode
+// ✔ Multi-range mode
+// ✔ requireApply mode
+// ✔ With presets, formats, disabled dates
+
+selectedRange: DateRange | null = null;
+
+onDateRangeChange(range: DateRange) {
+  this.selectedRange = range;
+  console.log('Range selected:', range);
 }`,
       install: `npm install @oneluiz/dual-datepicker`
     };

@@ -96,6 +96,9 @@ export class DualDatepickerComponent implements OnInit, OnChanges, ControlValueA
   pendingEndDate: string = '';
   hasPendingChanges = signal(false);
   
+  // Hover range preview
+  hoverDate = signal<string | null>(null);
+  
   // Multi-range support
   selectedRanges = signal<DateRange[]>([]);
   currentRangeIndex = signal<number>(-1);
@@ -583,6 +586,9 @@ export class DualDatepickerComponent implements OnInit, OnChanges, ControlValueA
       const inPendingRange = this.requireApply && this.pendingStartDate && this.pendingEndDate &&
                              dateStr >= this.pendingStartDate && dateStr <= this.pendingEndDate;
       
+      // Check if date is in hover preview range
+      const inHoverRange = this.isInHoverRange(dateStr);
+      
       monthDays.push({
         day: day,
         date: dateStr,
@@ -590,6 +596,7 @@ export class DualDatepickerComponent implements OnInit, OnChanges, ControlValueA
         isStart: this.startDate === dateStr || isPendingStart,
         isEnd: this.endDate === dateStr || isPendingEnd,
         inRange: this.isInRange(dateStr) || inPendingRange,
+        inHoverRange: inHoverRange,
         isDisabled: this.isDateDisabled(dayDate)
       });
     }
@@ -625,6 +632,50 @@ export class DualDatepickerComponent implements OnInit, OnChanges, ControlValueA
     }
     
     return false;
+  }
+
+  isInHoverRange(dateStr: string): boolean {
+    const hover = this.hoverDate();
+    if (!hover) return false;
+
+    // In multiRange mode, only show hover preview when selecting end date
+    if (this.multiRange) {
+      if (this.selectingStartDate()) return false;
+      if (!this.startDate) return false;
+      const minDate = this.startDate < hover ? this.startDate : hover;
+      const maxDate = this.startDate > hover ? this.startDate : hover;
+      return dateStr >= minDate && dateStr <= maxDate;
+    } else {
+      // In single range mode with requireApply
+      if (this.requireApply) {
+        if (this.selectingStartDate()) return false;
+        if (!this.pendingStartDate) return false;
+        const minDate = this.pendingStartDate < hover ? this.pendingStartDate : hover;
+        const maxDate = this.pendingStartDate > hover ? this.pendingStartDate : hover;
+        return dateStr >= minDate && dateStr <= maxDate;
+      } else {
+        // In single range mode without requireApply
+        if (this.selectingStartDate()) return false;
+        if (!this.startDate) return false;
+        const minDate = this.startDate < hover ? this.startDate : hover;
+        const maxDate = this.startDate > hover ? this.startDate : hover;
+        return dateStr >= minDate && dateStr <= maxDate;
+      }
+    }
+  }
+
+  onDayHover(dayObj: any): void {
+    if (!dayObj.isCurrentMonth || this.isDisabled() || dayObj.isDisabled) {
+      this.hoverDate.set(null);
+      return;
+    }
+    this.hoverDate.set(dayObj.date);
+    this.generateCalendars();
+  }
+
+  clearDayHover(): void {
+    this.hoverDate.set(null);
+    this.generateCalendars();
   }
 
   selectDay(dayObj: any): void {

@@ -250,6 +250,21 @@
     border-radius: 0;
   }
 
+  &.in-hover-range {
+    background-color: #e0e7ff;
+    border-radius: 0;
+    opacity: 0.7;
+    position: relative;
+    
+    &::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border: 1px dashed #6366f1;
+      pointer-events: none;
+    }
+  }
+
   &:disabled {
     cursor: not-allowed;
     opacity: 0.3;
