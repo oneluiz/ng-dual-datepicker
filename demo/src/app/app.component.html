@@ -85,23 +85,23 @@
             <div class="row justify-content-center">
               <div class="col-lg-8 col-xl-7 text-center">
                 <div class="hero-badge mb-3">
-                  <span class="badge bg-warning text-dark px-3 py-2 rounded-pill fw-semibold">Currently v4.0.0</span>
+                  <span class="badge bg-primary text-white px-3 py-2 rounded-pill fw-semibold">v{{ version }}</span>
                 </div>
                 <div class="display-3 fw-bold mb-4 text-emphasis">
-                  Build fast, beautiful date pickers<br>with ng-dual-datepicker
+                  Angular Date Range Picker<br>Built for Modern Apps
                 </div>
                 <p class="lead mb-4 text-body-secondary">
-                  Powerful, extensible, and feature-packed date range picker built with Angular. Zero dependencies, modern API, and fully customizable—bringing flexibility and ease to your projects with the power of Angular Signals.
+                  Lightweight, powerful, and fully customizable dual-calendar date range picker for Angular 17+. Zero dependencies, Signals-powered, with plugin-based architecture.
                 </p>
                 <div class="d-flex gap-3 justify-content-center mb-4 flex-wrap">
                   <button class="btn btn-primary btn-lg px-4" (click)="setActiveTab('examples')">
-                    Get started
+                    View Examples
                   </button>
                   <button class="btn btn-outline-secondary btn-lg px-4" (click)="setActiveTab('docs')">
-                    Download
+                    Read Docs
                   </button>
                 </div>
-                <p class="text-muted small mb-3">Currently v4.0.0 · <a href="https://github.com/oneluiz/ng-dual-datepicker" class="link-secondary">Download</a> · <a href="https://github.com/oneluiz/ng-dual-datepicker/releases" class="link-secondary">Release notes</a></p>
+                <p class="text-muted small mb-3">v{{ version }} · <a href="https://www.npmjs.com/package/@oneluiz/dual-datepicker" target="_blank" class="link-secondary">NPM Package</a> · <a href="https://github.com/oneluiz/ng-dual-datepicker/releases" target="_blank" class="link-secondary">Changelog</a></p>
                 <div class="hero-install d-flex align-items-center gap-2">
                   <code class="user-select-all flex-grow-1">npm install &#64;oneluiz/dual-datepicker</code>
                   <button class="btn btn-sm btn-outline-secondary" (click)="copyToClipboard('npm install @oneluiz/dual-datepicker')" title="Copy to clipboard">
@@ -123,7 +123,7 @@
                     <i class="bi bi-file-earmark-zip text-primary" style="font-size: 2.5rem;"></i>
                   </div>
                   <h3 class="h2 fw-bold mb-1">~60 KB</h3>
-                  <p class="text-muted mb-0">Bundle size (gzipped)</p>
+                  <p class="text-muted mb-0">Minified + Gzipped</p>
                 </div>
               </div>
               <div class="col-sm-6 col-lg-3">
@@ -138,19 +138,19 @@
               <div class="col-sm-6 col-lg-3">
                 <div class="d-flex flex-column align-items-center">
                   <div class="mb-3">
-                    <i class="bi bi-grid-3x3 text-info" style="font-size: 2.5rem;"></i>
+                    <i class="bi bi-check2-circle text-info" style="font-size: 2.5rem;"></i>
                   </div>
-                  <h3 class="h2 fw-bold mb-1">16+</h3>
-                  <p class="text-muted mb-0">Live examples</p>
+                  <h3 class="h2 fw-bold mb-1">208</h3>
+                  <p class="text-muted mb-0">Passing tests</p>
                 </div>
               </div>
               <div class="col-sm-6 col-lg-3">
                 <div class="d-flex flex-column align-items-center">
                   <div class="mb-3">
-                    <i class="bi bi-universal-access text-warning" style="font-size: 2.5rem;"></i>
+                    <i class="bi bi-box-seam text-warning" style="font-size: 2.5rem;"></i>
                   </div>
-                  <h3 class="h2 fw-bold mb-1">WCAG 2.1</h3>
-                  <p class="text-muted mb-0">Accessibility</p>
+                  <h3 class="h2 fw-bold mb-1">11</h3>
+                  <p class="text-muted mb-0">Public API exports</p>
                 </div>
               </div>
             </div>
@@ -1044,15 +1044,14 @@
             </div>
           </div>
 
-          <!-- Example 11: CommonPresets -->
+          <!-- Example 11: Built-in Presets -->
           <div class="example-card featured-card" id="example-11">
-            <h2>⚡ CommonPresets - The Game Changer</h2>
+            <h2>⚡ Built-in Preset System <span class="badge-new">v3.6.0</span></h2>
             <p class="example-description">
-              <strong>THIS is what makes us different!</strong> Pre-built preset collections for common business use cases. Perfect for <strong>ERP</strong>, <strong>BI</strong>, <strong>dashboards</strong>, and <strong>reporting systems</strong>. Angular Material doesn't have this! 🚀
+              <strong>Plugin-based preset architecture!</strong> Use built-in presets like Today, Last 7 Days, This Month, etc. Configure via dependency injection for clean, maintainable code. Angular Material doesn't have this flexibility! 🚀
             </p>
             <div class="example-demo">
               <ngx-dual-datepicker
-                [presets]="financialPresets"
                 (dateRangeChange)="onDateRangeChange(11, $event)">
               </ngx-dual-datepicker>
             </div>
@@ -1065,26 +1064,26 @@
               </div>
             }
             <div class="adapter-info">
-              <h4>📊 Available Preset Collections:</h4>
+              <h4>📦 Available Built-in Presets:</h4>
               <ul>
-                <li>💼 <strong>CommonPresets.financial</strong> - Month/Quarter/Year to date, Last month/quarter/year</li>
-                <li>📈 <strong>CommonPresets.dashboard</strong> - Today, Yesterday, Last 7/30 days, This/Last month</li>
-                <li>📋 <strong>CommonPresets.reporting</strong> - This/Last week, month, quarter</li>
-                <li>📊 <strong>CommonPresets.analytics</strong> - Last 7/14/30/60/90/180/365 days</li>
-                <li>✨ <strong>CommonPresets.simple</strong> - Basic common ranges</li>
+                <li>📅 <strong>TODAY_PRESET, YESTERDAY_PRESET</strong> - Single day selections</li>
+                <li>📊 <strong>LAST_7_DAYS_PRESET, LAST_30_DAYS_PRESET</strong> - Common ranges</li>
+                <li>📆 <strong>THIS_WEEK_PRESET, LAST_WEEK_PRESET</strong> - Week selections</li>
+                <li>📋 <strong>THIS_MONTH_PRESET, LAST_MONTH_PRESET</strong> - Month ranges</li>
+                <li>📈 <strong>THIS_YEAR_PRESET, LAST_YEAR_PRESET</strong> - Year ranges</li>
               </ul>
               <h4>🎯 Why This Is Powerful:</h4>
               <ul>
-                <li>✅ Perfect for reporting dashboards</li>
-                <li>✅ Perfect for POS systems</li>
-                <li>✅ Perfect for BI applications</li>
-                <li>✅ Perfect for ERP systems (like FCS)</li>
-                <li>✅ Custom logic support - "This month", "Quarter to date", etc.</li>
+                <li>✅ Plugin-based architecture (extensible)</li>
+                <li>✅ Dependency injection configuration</li>
+                <li>✅ Perfect for dashboards & reporting</li>
+                <li>✅ Type-safe preset plugins</li>
+                <li>✅ Create custom preset plugins easily</li>
                 <li>✅ Material doesn't have this flexibility!</li>
               </ul>
             </div>
             <div class="code-block">
-              <pre>{{ codeExamples.commonPresets }}</pre>
+              <pre>{{ codeExamples.builtInPresets }}</pre>
             </div>
           </div>
 
@@ -2688,8 +2687,13 @@ const isDisabled = validator.isDateDisabled('2026-01-15', disabledDatesArray);</
             <h6 class="section-title">Latest</h6>
             <ul class="section-links">
               <li>
-                <button class="sidebar-link" (click)="scrollToSection('v3-5-0')">
+                <button class="sidebar-link" (click)="scrollToSection('v4-0-0')">
                   <span class="badge-new">NEW</span>
+                  v{{ version }}
+                </button>
+              </li>
+              <li>
+                <button class="sidebar-link" (click)="scrollToSection('v3-5-0')">
                   v3.5.0
                 </button>
               </li>
@@ -2743,11 +2747,11 @@ const isDisabled = validator.isDateDisabled('2026-01-15', disabledDatesArray);</
       <div class="docs-main">
       <div class="tab-content fade-in">
         <div class="blog-content">
-          <!-- Blog Header v3.5.0 -->
-          <div class="blog-header" id="v3-5-0">
-            <span class="blog-date">February 25, 2026</span>
-            <h1 class="blog-title">🏗️ Announcing ng-dual-datepicker v3.5.0</h1>
-            <p class="blog-subtitle">Headless Architecture - Build your own UI with powerful date logic primitives</p>
+          <!-- Blog Header v4.0.0 -->
+          <div class="blog-header" id="v4-0-0">
+            <span class="blog-date">February 21, 2026</span>
+            <h1 class="blog-title">🚀 Announcing ng-dual-datepicker v{{ version }}</h1>
+            <p class="blog-subtitle">Public API Formalization - Stable, documented, and production-ready API contract</p>
             <div class="blog-author">
               <span class="author-label">Published by</span>
               <span class="author-name">Luis Cortes</span>
@@ -2763,8 +2767,7 @@ const isDisabled = validator.isDateDisabled('2026-01-15', disabledDatesArray);</
 
           <!-- What's New Section v4.0.0 -->
           <div class="blog-section">
-            <h2>🚀 What's New in v4.0.0 - Public API Formalization</h2>
-            <p class="text-danger fw-bold">⚠️ MAJOR RELEASE - Breaking Changes</p>
+            <h2>⚠️ MAJOR RELEASE - Breaking Changes</h2>
             <p>Version 4.0.0 represents a major milestone that formalizes the <strong>public API contract</strong> and hides internal implementation details. This release improves tree-shaking, reduces bundle size by ~50%, and establishes a stable, documented API for long-term use.</p>
             
             <div class="alert alert-warning">
@@ -2842,31 +2845,21 @@ import {{'{'}}{{'}'}}
 // ❌ Avoid internal imports
 // import {{'{'}}{{'}'}} CalendarGridFactory {{'}'}} from '&#64;oneluiz/dual-datepicker/core/internal';</pre>
 
-            <h3>3. Replace Deprecated Utilities</h3>
-            <p>If using <code>preset-utils</code> (removed), migrate to preset plugins:</p>
-            <pre class="code-example">// ❌ Before (v3.x - deprecated)
-import {{'{'}}{{'}'}} PresetUtils {{'}'}} from '&#64;oneluiz/dual-datepicker/preset-utils';
-
-// ✅ After (v4.0 - use plugins)
-import {{'{'}}{{'}'}} RangePresetPlugin, PresetRegistry {{'}'}} from '&#64;oneluiz/dual-datepicker';
-
-const myPreset: RangePresetPlugin = {{'{'}}{{'}'}}
-  key: 'MY_CUSTOM',
-  resolve: (clock, adapter) => ({{'{'}}{{'}'}}
-    start: adapter.normalize(new Date()),
-    end: adapter.addDays(adapter.normalize(new Date()), 7)
-  {{'}'}})
-{{'}'}};</pre>
-
-            <h3>4. Verify Build</h3>
-            <p>After updating, rebuild your application to catch any remaining issues:</p>
-            <pre class="code-example"># Clean build
+            <h3>3. Verify Build</h3>
+            <p>After updating, rebuild your application:</p>
+            <pre class="code-example"># Clean install
 rm -rf node_modules package-lock.json
 npm install
-ng build --configuration production
 
-# Check bundle size (should be smaller!)
-ls -lh dist/*/main.*.js</pre>
+# Production build
+ng build --configuration production</pre>
+          </div>
+
+          <!-- Blog Header v3.5.0 -->
+          <div class="blog-header" id="v3-5-0">
+            <span class="blog-date">December 2025</span>
+            <h1 class="blog-title">🏗️ ng-dual-datepicker v3.5.0</h1>
+            <p class="blog-subtitle">Headless Architecture - Build your own UI with powerful date logic primitives</p>
           </div>
 
           <!-- What's New Section v3.5.0 (Previous) -->

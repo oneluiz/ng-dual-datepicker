@@ -2,6 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { DualDatepickerComponent, DateRange, MultiDateRange, PresetConfig, ThemeType } from '../../../src/public-api';
+import packageInfo from '../../../package.json';
 
 @Component({
   selector: 'app-root',
@@ -11,6 +12,9 @@ import { DualDatepickerComponent, DateRange, MultiDateRange, PresetConfig, Theme
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
+  // Library version (auto-synced from package.json)
+  readonly version = packageInfo.version;
+  
   // Active tab
   activeTab: 'home' | 'examples' | 'docs' | 'api' | 'blog' = 'home';
   
@@ -198,7 +202,7 @@ export class AppComponent {
   (dateRangeChange)="onDateRangeChange($event)">
 </ngx-dual-datepicker>
 
-<!-- NEW v3.1.0: Full keyboard navigation included! -->
+<!-- Full keyboard navigation included -->
 <!-- Arrow keys, Enter/Space, Escape, Home/End, PageUp/Down -->`,
       presets: `<ngx-dual-datepicker
   [presets]="customPresets"
@@ -206,14 +210,19 @@ export class AppComponent {
 </ngx-dual-datepicker>
 
 // In your component:
-import { CommonPresets } from '@oneluiz/dual-datepicker';
-
-customPresets = CommonPresets.simple;
-// Or create custom:
 customPresets: PresetConfig[] = [
   { label: 'Last 7 days', getValue: () => getLastNDays(7) },
-  { label: 'Last 30 days', getValue: () => getLastNDays(30) }
-];`,
+  { label: 'Last 30 days', getValue: () => getLastNDays(30) },
+  { label: 'This Month', getValue: () => getThisMonth() }
+];
+
+// Or use built-in presets via AppConfig:
+import { provideCustomPresets, LAST_7_DAYS_PRESET, LAST_30_DAYS_PRESET } from '@oneluiz/dual-datepicker';
+
+// In your app.config.ts or component providers:
+providers: [
+  provideCustomPresets([LAST_7_DAYS_PRESET, LAST_30_DAYS_PRESET])
+]`,
       colors: `<ngx-dual-datepicker
   inputBackgroundColor="#0d1117"
   inputTextColor="#c9d1d9"
@@ -303,30 +312,37 @@ import { DATE_ADAPTER } from '@oneluiz/dual-datepicker';
 
 // 3. Use component normally
 <ngx-dual-datepicker></ngx-dual-datepicker>`,
-      commonPresets: `import { CommonPresets } from '@oneluiz/dual-datepicker';
+      builtInPresets: `// NEW v3.6.0: Plugin-based preset system
 
-// Financial/ERP presets
-financialPresets = CommonPresets.financial;
-// → Month to date, Quarter to date, Year to date, 
-//   Last month, Last quarter, Last year
+// Option 1: Use built-in presets via providers
+import { provideCustomPresets, LAST_7_DAYS_PRESET, LAST_30_DAYS_PRESET, THIS_MONTH_PRESET } from '@oneluiz/dual-datepicker';
 
-// Dashboard presets  
-dashboardPresets = CommonPresets.dashboard;
-// → Today, Yesterday, Last 7 days, Last 30 days,
-//   This month, Last month
+// In your app.config.ts:
+export const appConfig: ApplicationConfig = {
+  providers: [
+    provideCustomPresets([
+      LAST_7_DAYS_PRESET,
+      LAST_30_DAYS_PRESET,
+      THIS_MONTH_PRESET
+    ])
+  ]
+};
 
-// Reporting presets
-reportingPresets = CommonPresets.reporting;
-// → Today, This week, Last week, This month,
-//   Last month, This quarter, Last quarter
+// Option 2: Provide preset packages
+import { providePresetPackage, BUILT_IN_PRESETS } from '@oneluiz/dual-datepicker';
 
-// Analytics/BI presets
-analyticsPresets = CommonPresets.analytics;
-// → Last 7/14/30/60/90/180/365 days
+providers: [providePresetPackage(BUILT_IN_PRESETS)]
 
-// Use in template
+// Available built-in presets:
+// TODAY_PRESET, YESTERDAY_PRESET
+// LAST_7_DAYS_PRESET, LAST_30_DAYS_PRESET
+// THIS_WEEK_PRESET, LAST_WEEK_PRESET
+// THIS_MONTH_PRESET, LAST_MONTH_PRESET
+// THIS_YEAR_PRESET, LAST_YEAR_PRESET
+
+// Then use in template:
 <ngx-dual-datepicker
-  [presets]="financialPresets"
+  [showPresets]="true"
   (dateRangeChange)="onDateRangeChange($event)">
 </ngx-dual-datepicker>`,
       multiRange: `import { MultiDateRange } from '@oneluiz/dual-datepicker';
