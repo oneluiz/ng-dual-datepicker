@@ -85,7 +85,7 @@
             <div class="row justify-content-center">
               <div class="col-lg-8 col-xl-7 text-center">
                 <div class="hero-badge mb-3">
-                  <span class="badge bg-warning text-dark px-3 py-2 rounded-pill fw-semibold">Currently v3.4.0</span>
+                  <span class="badge bg-warning text-dark px-3 py-2 rounded-pill fw-semibold">Currently v3.5.0</span>
                 </div>
                 <div class="display-3 fw-bold mb-4 text-emphasis">
                   Build fast, beautiful date pickers<br>with ng-dual-datepicker
@@ -101,7 +101,7 @@
                     Download
                   </button>
                 </div>
-                <p class="text-muted small mb-3">Currently v3.4.0 · <a href="https://github.com/oneluiz/ng-dual-datepicker" class="link-secondary">Download</a> · <a href="https://github.com/oneluiz/ng-dual-datepicker/releases" class="link-secondary">Release notes</a></p>
+                <p class="text-muted small mb-3">Currently v3.5.0 · <a href="https://github.com/oneluiz/ng-dual-datepicker" class="link-secondary">Download</a> · <a href="https://github.com/oneluiz/ng-dual-datepicker/releases" class="link-secondary">Release notes</a></p>
                 <div class="hero-install d-flex align-items-center gap-2">
                   <code class="user-select-all flex-grow-1">npm install &#64;oneluiz/dual-datepicker</code>
                   <button class="btn btn-sm btn-outline-secondary" (click)="copyToClipboard('npm install @oneluiz/dual-datepicker')" title="Copy to clipboard">
@@ -577,7 +577,7 @@
           </div>
 
           <div class="sidebar-section">
-            <h6 class="section-title">v3.2.0, v3.3.0 & v3.4.0 Features</h6>
+            <h6 class="section-title">v3.2.0, v3.3.0, v3.4.0 & v3.5.0 Features</h6>
             <ul class="section-links">
               <li>
                 <button class="sidebar-link" (click)="scrollToExample('example-13')">
@@ -601,6 +601,12 @@
                 <button class="sidebar-link" (click)="scrollToExample('example-16')">
                   🎨 Hover Preview
                   <span class="badge-new">NEW</span>
+                </button>
+              </li>
+              <li>
+                <button class="sidebar-link" (click)="scrollToExample('example-headless')">
+                  🏗️ Headless Architecture
+                  <span class="badge-new">v3.5.0</span>
                 </button>
               </li>
             </ul>
@@ -2553,6 +2559,7 @@ import &#123; getLastNDays &#125; from '&#64;oneluiz/dual-datepicker';
               <li>✅ <strong>Full accessibility audit</strong> - v3.1.0 WCAG 2.1 Level AA compliance ♿</li>
               <li>✅ <strong>Theming system</strong> - v3.3.0 Pre-built theme presets (Bootstrap, Bulma, Foundation, Tailwind, Custom) 🎨</li>
               <li>✅ <strong>Time picker</strong> - v3.4.0 Select date + time ranges with 12h/24h format 🕐</li>
+              <li>✅ <strong>Headless architecture</strong> - v3.5.0 Use date logic independently from UI 🏗️</li>
               <li>⬜ <strong>Mobile optimizations</strong> - Enhanced touch gestures</li>
               <li>⬜ <strong>Time constraints</strong> - Min/max time validation</li>
             </ul>
@@ -2571,8 +2578,13 @@ import &#123; getLastNDays &#125; from '&#64;oneluiz/dual-datepicker';
             <h6 class="section-title">Latest</h6>
             <ul class="section-links">
               <li>
-                <button class="sidebar-link" (click)="scrollToSection('v3-4-0')">
+                <button class="sidebar-link" (click)="scrollToSection('v3-5-0')">
                   <span class="badge-new">NEW</span>
+                  v3.5.0
+                </button>
+              </li>
+              <li>
+                <button class="sidebar-link" (click)="scrollToSection('v3-4-0')">
                   v3.4.0
                 </button>
               </li>
@@ -2621,6 +2633,245 @@ import &#123; getLastNDays &#125; from '&#64;oneluiz/dual-datepicker';
       <div class="docs-main">
       <div class="tab-content fade-in">
         <div class="blog-content">
+          <!-- Blog Header v3.5.0 -->
+          <div class="blog-header" id="v3-5-0">
+            <span class="blog-date">February 25, 2026</span>
+            <h1 class="blog-title">🏗️ Announcing ng-dual-datepicker v3.5.0</h1>
+            <p class="blog-subtitle">Headless Architecture - Build your own UI with powerful date logic primitives</p>
+            <div class="blog-author">
+              <span class="author-label">Published by</span>
+              <span class="author-name">Luis Cortes</span>
+              <span class="author-separator">•</span>
+              <a href="https://github.com/oneluiz" target="_blank" class="author-github">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path>
+                </svg>
+                &#64;oneluiz
+              </a>
+            </div>
+          </div>
+
+          <!-- What's New Section -->
+          <div class="blog-section">
+            <h2>🎯 What's New in v3.5.0</h2>
+            <p>Version 3.5.0 introduces a revolutionary <strong>headless architecture</strong> that separates the date range logic from the UI. This architectural enhancement allows you to:</p>
+            <ul class="feature-list">
+              <li>Use the date logic in any context - components, services, standalone functions</li>
+              <li>Build 100% custom UIs while leveraging battle-tested date range logic</li>
+              <li>Create specialized date pickers for unique use cases</li>
+              <li>Test your date logic independently from UI</li>
+              <li>Compose multiple date range stores for complex workflows</li>
+            </ul>
+            
+            <div class="features-grid">
+              <div class="feature-card">
+                <h3>🏗️ DualDateRangeStore</h3>
+                <p>Signal-based state container managing all date range logic. Inject it anywhere to access powerful date selection, validation, and preset management.</p>
+              </div>
+              <div class="feature-card">
+                <h3>🎯 PresetEngine</h3>
+                <p>Intelligent preset system with auto-updating relative dates. "Last 7 Days" always gives you the last 7 days, even when the store is reused across sessions.</p>
+              </div>
+              <div class="feature-card">
+                <h3>✅ RangeValidator</h3>
+                <p>Comprehensive validation utilities for date ranges. Handles min/max dates, disabled dates, and ensures logical date ordering.</p>
+              </div>
+              <div class="feature-card">
+                <h3>🔄 100% Compatible</h3>
+                <p>The existing DualDatepickerComponent now uses the headless store internally. All your code continues to work without changes.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Architecture Diagram -->
+          <div class="blog-section">
+            <h2>🏛️ Architecture Overview</h2>
+            <pre class="code-example">┌─────────────────────────────────────────────────────────┐
+│                  Your Application                       │
+│                                                         │
+│  ┌────────────────┐         ┌──────────────────────┐  │
+│  │  Component A   │         │   Component B        │  │
+│  │  (uses store)  │         │   (uses component)   │  │
+│  └────────────────┘         └──────────────────────┘  │
+│         │                            │                 │
+│         │                            │                 │
+│         v                            v                 │
+│  ┌────────────────────────────────────────────────┐   │
+│  │       DualDateRangeStore (Headless)            │   │
+│  │  • Signal-based state management               │   │
+│  │  • setStart/setEnd date selection              │   │
+│  │  • applyPending/cancelPending workflow         │   │
+│  │  • PresetEngine integration                    │   │
+│  │  • RangeValidator validation                   │   │
+│  └────────────────────────────────────────────────┘   │
+│                      ▲                                 │
+│                      │                                 │
+│                      │ uses internally                 │
+│  ┌──────────────────────────────────────────────────┐ │
+│  │   DualDatepickerComponent (UI Layer)             │ │
+│  │   • Calendar rendering                           │ │
+│  │   • Time picker UI                               │ │
+│  │   • Preset buttons                               │ │
+│  │   • All visual aspects                           │ │
+│  └──────────────────────────────────────────────────┘ │
+└─────────────────────────────────────────────────────────┘</pre>
+          </div>
+
+          <!-- Code Example: Headless Usage -->
+          <div class="blog-section">
+            <h2>💻 Headless Example - Custom UI</h2>
+            <p>Build your own date picker UI using the headless store:</p>
+            <pre class="code-example">import {{ '{' }} Component, inject {{ '}' }} from '&#64;angular/core';
+import {{ '{' }} DualDateRangeStore {{ '}' }} from '&#64;oneluiz/dual-datepicker';
+
+&#64;Component({{ '{' }}
+  selector: 'app-custom-date-picker',
+  standalone: true,
+  providers: [DualDateRangeStore],
+  template: `
+    &lt;div class="my-custom-ui"&gt;
+      &lt;!-- Your completely custom UI --&gt;
+      &lt;input 
+        [value]="store.range().startDate || ''" 
+        (change)="store.setStart($any($event.target).value)"
+        placeholder="Start Date"&gt;
+      
+      &lt;input 
+        [value]="store.range().endDate || ''" 
+        (change)="store.setEnd($any($event.target).value)"
+        placeholder="End Date"&gt;
+
+      &lt;button (click)="store.applyPreset('last7days')"&gt;
+        Last 7 Days
+      &lt;/button&gt;
+
+      &lt;button 
+        [disabled]="!store.hasChanges()" 
+        (click)="handleApply()"&gt;
+        Apply
+      &lt;/button&gt;
+    &lt;/div&gt;
+
+    &lt;p&gt;Current: {{ '{{' }} store.range().startDate {{ '}}' }} - {{ '{{' }} store.range().endDate {{ '}}' }}&lt;/p&gt;
+  `
+{{ '}' }})
+export class CustomDatePickerComponent {{ '{' }}
+  store = inject(DualDateRangeStore);
+
+  constructor() {{ '{' }}
+    // Configure the store
+    this.store.configure({{ '{' }}
+      requireApply: true,
+      minDate: '2020-01-01',
+      maxDate: '2030-12-31'
+    {{ '}' }});
+  {{ '}' }}
+
+  handleApply() {{ '{' }}
+    this.store.applyPending();
+    const range = this.store.range();
+    console.log('Applied range:', range);
+    // Send to backend, update charts, etc.
+  {{ '}' }}
+{{ '}' }}
+</pre>
+          </div>
+
+          <!-- Advanced Example: Service Integration -->
+          <div class="blog-section">
+            <h2>🚀 Advanced - Service Integration</h2>
+            <p>Use the store in an Angular service for application-wide date range management:</p>
+            <pre class="code-example">import {{ '{' }} Injectable, inject {{ '}' }} from '&#64;angular/core';
+import {{ '{' }} DualDateRangeStore, PresetEngine {{ '}' }} from '&#64;oneluiz/dual-datepicker';
+
+&#64;Injectable({{ '{' }} providedIn: 'root' {{ '}' }})
+export class ReportingService {{ '{' }}
+  private rangeStore = inject(DualDateRangeStore);
+  private presets = inject(PresetEngine);
+
+  constructor() {{ '{' }}
+    // Initialize with common presets
+    this.rangeStore.configure({{ '{' }}
+      presets: this.presets.getCommonPresets(),
+      requireApply: true
+    {{ '}' }});
+    
+    // Default to "Last 30 Days"
+    this.rangeStore.applyPreset('last30days');
+  {{ '}' }}
+
+  // Expose read-only signals
+  readonly currentRange = this.rangeStore.range;
+  readonly isValid = this.rangeStore.isValidRange;
+
+  // Public methods
+  updateRange(start: string, end: string) {{ '{' }}
+    this.rangeStore.setStart(start);
+    this.rangeStore.setEnd(end);
+    this.rangeStore.applyPending();
+  {{ '}' }}
+
+  applyQuickPreset(presetId: string) {{ '{' }}
+    this.rangeStore.applyPreset(presetId);
+  {{ '}' }}
+{{ '}' }}
+
+// Use in any component:
+&#64;Component({{ '{' }}
+  template: `
+    &lt;div&gt;Report Period: {{ '{{' }} reportSvc.currentRange().rangeText {{ '}}' }}&lt;/div&gt;
+    &lt;button (click)="reportSvc.applyQuickPreset('thisMonth')"&gt;This Month&lt;/button&gt;
+  `
+{{ '}' }})
+export class DashboardComponent {{ '{' }}
+  reportSvc = inject(ReportingService);
+{{ '}' }}
+</pre>
+          </div>
+
+          <!-- Use Cases -->
+          <div class="blog-section">
+            <h2>🎯 Perfect For</h2>
+            <ul class="feature-list">
+              <li><strong>Custom UIs</strong> - Build date pickers that match your exact design system</li>
+              <li><strong>Business logic separation</strong> - Keep date logic independent from presentation</li>
+              <li><strong>Testing</strong> - Test date range logic without rendering components</li>
+              <li><strong>Micro frontends</strong> - Share date state across module boundaries</li>
+              <li><strong>Mobile apps</strong> - Build native mobile date pickers with Ionic/NativeScript</li>
+              <li><strong>Complex workflows</strong> - Compose multiple stores for multi-step processes</li>
+            </ul>
+          </div>
+
+          <!-- Key Features -->
+          <div class="blog-section">
+            <h2>✨ Key Features</h2>
+            <ul class="feature-list">
+              <li>✅ Powered by Angular Signals - reactive and performant</li>
+              <li>✅ Type-safe API with full TypeScript support</li>
+              <li>✅ Zero dependencies (except Angular)</li>
+              <li>✅ Tree-shakeable - only bundle what you use</li>
+              <li>✅ Comprehensive documentation with examples</li>
+              <li>✅ 100% tested and production-ready</li>
+              <li>✅ Fully backward compatible with existing code</li>
+            </ul>
+          </div>
+
+          <!-- Getting Started -->
+          <div class="blog-section">
+            <h2>🚀 Getting Started</h2>
+            <p>Check out the comprehensive documentation:</p>
+            <ul class="feature-list">
+              <li><a href="https://github.com/oneluiz/ng-dual-datepicker/blob/main/HEADLESS.md" target="_blank"><strong>HEADLESS.md</strong></a> - Complete headless architecture guide</li>
+              <li><a href="https://github.com/oneluiz/ng-dual-datepicker/blob/main/MIGRATION.md" target="_blank"><strong>MIGRATION.md</strong></a> - Migration guide from v3.4.0</li>
+              <li><a href="https://github.com/oneluiz/ng-dual-datepicker/blob/main/HEADLESS_EXAMPLES.ts" target="_blank"><strong>HEADLESS_EXAMPLES.ts</strong></a> - 10+ working examples</li>
+            </ul>
+            <div class="install-section">
+              <pre class="code-example">npm install &#64;oneluiz/dual-datepicker&#64;3.5.0</pre>
+            </div>
+          </div>
+
+          <hr class="section-divider">
+
           <!-- Blog Header v3.4.0 -->
           <div class="blog-header" id="v3-4-0">
             <span class="blog-date">February 20, 2026</span>
@@ -3172,10 +3423,10 @@ export class AppointmentComponent {{ '{' }}
       Made with ❤️ by <a href="https://github.com/oneluiz" target="_blank">&#64;oneluiz</a>
     </p>
     <p>
-      <strong>v3.4.0</strong> 🎉 | 
+      <strong>v3.5.0</strong> 🎉 | 
       <a href="https://github.com/oneluiz/ng-dual-datepicker" target="_blank">GitHub</a> | 
       <a href="https://www.npmjs.com/package/@oneluiz/dual-datepicker" target="_blank">NPM</a> |
-      <a href="https://github.com/oneluiz/ng-dual-datepicker/releases/tag/v3.4.0" target="_blank">What's New in v3.4.0</a>
+      <a href="https://github.com/oneluiz/ng-dual-datepicker/releases/tag/v3.5.0" target="_blank">What's New in v3.5.0</a>
     </p>
   </footer>
 </div>
