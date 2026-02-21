@@ -1533,6 +1533,11 @@
                   Multi-Range Support
                 </button>
               </li>
+              <li>
+                <button class="sidebar-link" (click)="scrollToSection('headless')">
+                  <span class="badge-new">v3.5.0</span> Headless Architecture
+                </button>
+              </li>
             </ul>
           </div>
 
@@ -2471,6 +2476,147 @@ import &#123; getLastNDays &#125; from '&#64;oneluiz/dual-datepicker';
   months: ['January', 'February', 'March', ...],
   days: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
 &#125;</pre>
+            </div>
+          </section>
+
+          <section class="doc-section" id="headless">
+            <h2>🏗️ Headless Architecture <span class="badge-new">v3.5.0</span></h2>
+            <p class="section-intro">
+              Version 3.5.0 introduces a <strong>headless architecture</strong> that separates date range logic from UI. 
+              Build custom date pickers while leveraging battle-tested date logic, or use the core primitives in services, utilities, and business logic.
+            </p>
+
+            <h3>Core Components</h3>
+            
+            <div class="api-card">
+              <h4>📦 DualDateRangeStore</h4>
+              <p>Injectable service with Angular Signals for reactive state management.</p>
+              <div class="code-block">
+                <pre>import &#123; DualDateRangeStore &#125; from '&#64;oneluiz/dual-datepicker';
+
+&#64;Component(&#123;
+  standalone: true,
+  providers: [DualDateRangeStore]  // Provide at component level
+&#125;)
+export class CustomDatePicker &#123;
+  store = inject(DualDateRangeStore);
+  
+  // Read reactive state
+  currentRange = this.store.range;        // Signal&lt;DateRange&gt;
+  isValid = this.store.isValidRange;      // Signal&lt;boolean&gt;
+  hasChanges = this.store.hasChanges;     // Signal&lt;boolean&gt;
+  
+  // Modify state
+  selectDate(date: string) &#123;
+    this.store.setStart(date);
+    this.store.setEnd(date);
+    this.store.applyPending();
+  &#125;
+&#125;</pre>
+              </div>
+              <p><strong>Key Methods:</strong></p>
+              <ul>
+                <li><code>setStart(date: string)</code> - Set start date</li>
+                <li><code>setEnd(date: string)</code> - Set end date</li>
+                <li><code>setRange(start: string, end: string)</code> - Set both dates</li>
+                <li><code>applyPending()</code> - Confirm pending changes</li>
+                <li><code>cancelPending()</code> - Revert to last applied range</li>
+                <li><code>clear()</code> - Clear all dates</li>
+                <li><code>applyPreset(presetId: string)</code> - Apply a preset</li>
+                <li><code>configure(options)</code> - Update configuration</li>
+              </ul>
+            </div>
+
+            <div class="api-card">
+              <h4>⚙️ PresetEngine</h4>
+              <p>Intelligent preset system with 15+ built-in presets and auto-updating relative dates.</p>
+              <div class="code-block">
+                <pre>import &#123; PresetEngine &#125; from '&#64;oneluiz/dual-datepicker';
+
+const engine = inject(PresetEngine);
+
+// Get common presets (Last 7/30/90 days, This week/month/year, etc)
+const presets = engine.getCommonPresets();
+
+// Get specific preset
+const lastWeek = engine.getPreset('lastWeek');
+// Returns: &#123; startDate: '2026-02-14', endDate: '2026-02-20' &#125;
+
+// Create custom preset
+const customPreset = &#123;
+  label: 'Q1 2026',
+  getValue: () => (&#123;
+    startDate: '2026-01-01',
+    endDate: '2026-03-31'
+  &#125;)
+&#125;;</pre>
+              </div>
+              <p><strong>Built-in Presets:</strong></p>
+              <ul>
+                <li><code>today</code>, <code>yesterday</code>, <code>thisWeek</code>, <code>lastWeek</code></li>
+                <li><code>thisMonth</code>, <code>lastMonth</code>, <code>thisYear</code>, <code>lastYear</code></li>
+                <li><code>last7days</code>, <code>last30days</code>, <code>last90days</code></li>
+                <li><code>next7days</code>, <code>next30days</code>, <code>next90days</code></li>
+              </ul>
+            </div>
+
+            <div class="api-card">
+              <h4>✅ RangeValidator</h4>
+              <p>Pure validation functions with zero dependencies - perfect for forms and business logic.</p>
+              <div class="code-block">
+                <pre>import &#123; RangeValidator &#125; from '&#64;oneluiz/dual-datepicker';
+
+const validator = inject(RangeValidator);
+
+// Validate date range
+const isValid = validator.isValidRange('2026-01-01', '2026-01-15');
+// Returns: true
+
+// Check if date is within range
+const inRange = validator.isDateInRange('2026-01-10', '2026-01-01', '2026-01-31');
+// Returns: true
+
+// Validate against min/max dates
+const isAllowed = validator.isDateAllowed('2026-01-15', &#123;
+  minDate: '2026-01-01',
+  maxDate: '2026-12-31',
+  disabledDates: ['2026-01-10', '2026-01-20']
+&#125;);
+// Returns: true
+
+// Check if date is disabled
+const isDisabled = validator.isDateDisabled('2026-01-15', disabledDatesArray);</pre>
+              </div>
+              <p><strong>Use Cases:</strong></p>
+              <ul>
+                <li>Form validation before API calls</li>
+                <li>Business rule enforcement</li>
+                <li>Custom date picker implementations</li>
+                <li>Date range calculations in services</li>
+              </ul>
+            </div>
+
+            <h3>Benefits</h3>
+            <ul class="feature-list">
+              <li>🔄 <strong>Reusable Logic</strong> - Use date logic in any context: components, services, utilities</li>
+              <li>🎨 <strong>Custom UIs</strong> - Build your own date picker UI with your design system</li>
+              <li>🧪 <strong>Testable</strong> - Test date logic independently from UI components</li>
+              <li>📱 <strong>Framework Agnostic</strong> - Core logic works in any Angular context</li>
+              <li>⚡ <strong>Reactive</strong> - Built with Angular Signals for optimal performance</li>
+              <li>✅ <strong>Type-Safe</strong> - Full TypeScript support with comprehensive types</li>
+            </ul>
+
+            <h3>Documentation</h3>
+            <ul class="feature-list">
+              <li>📖 <a href="https://github.com/oneluiz/ng-dual-datepicker/blob/main/HEADLESS.md" target="_blank"><strong>HEADLESS.md</strong></a> - Complete architecture guide with diagrams</li>
+              <li>🔄 <a href="https://github.com/oneluiz/ng-dual-datepicker/blob/main/MIGRATION.md" target="_blank"><strong>MIGRATION.md</strong></a> - Migration guide from v3.4.0</li>
+              <li>💻 <a href="https://github.com/oneluiz/ng-dual-datepicker/blob/main/HEADLESS_EXAMPLES.ts" target="_blank"><strong>HEADLESS_EXAMPLES.ts</strong></a> - 10+ working code examples</li>
+            </ul>
+
+            <div class="alert alert-info mt-4">
+              <i class="bi bi-info-circle"></i>
+              <strong>Backward Compatible:</strong> The existing <code>DualDatepickerComponent</code> now uses the headless store internally. 
+              All your existing code continues to work without any changes.
             </div>
           </section>
 
