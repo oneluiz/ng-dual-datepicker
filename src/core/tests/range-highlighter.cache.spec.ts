@@ -433,4 +433,276 @@ describe('RangeHighlighterCache', () => {
       assert.equal(cache.size(), 1, 'Should only have 1 cached entry');
     });
   });
+
+  /**
+   * ANTI-RECOMPUTE GUARD (v3.9.3)
+   * 
+   * Tests that document and freeze the anti-recompute behavior:
+   * - Same parameters = same object reference (===)
+   * - No redundant decorate() calls
+   * - Cache key includes all relevant parameters
+   * 
+   * Critical for:
+   * - Preventing unnecessary re-renders in Angular
+   * - Performance in long-running sessions
+   * - Minimizing CPU usage in BI dashboards
+   */
+  describe('Anti-Recompute Guard (v3.9.3)', () => {
+    it('GOLDEN: same parameters always return same instance (===)', () => {
+      cache.clear();
+      
+      const grid = factory.createGrid(makeDate(1), 0);
+      const params = {
+        start: makeDate(10),
+        end: makeDate(20),
+        minDate: makeDate(1),
+        maxDate: makeDate(28),
+        hoverDate: '2026-02-15'
+      };
+
+      const first = cache.get(grid, params);
+      const second = cache.get(grid, params);
+      const third = cache.get(grid, params);
+
+      // FROZEN BEHAVIOR: Same params = same reference
+      assert.ok(first === second, 'Second call must be identical (===)');
+      assert.ok(second === third, 'Third call must be identical (===)');
+      
+      // Only 1 entry should exist (no duplicates)
+      assert.equal(cache.size(), 1);
+    });
+
+    it('GOLDEN: changing start date triggers new computation', () => {
+      cache.clear();
+      
+      const grid = factory.createGrid(makeDate(1), 0);
+      
+      const first = cache.get(grid, {
+        start: makeDate(10),
+        end: makeDate(20)
+      });
+
+      const second = cache.get(grid, {
+        start: makeDate(11), // Changed
+        end: makeDate(20)
+      });
+
+      // Different start = different instance
+      assert.ok(first !== second, 'Changed start must create new instance');
+      assert.equal(cache.size(), 2, 'Should have 2 entries');
+    });
+
+    it('GOLDEN: changing end date triggers new computation', () => {
+      cache.clear();
+      
+      const grid = factory.createGrid(makeDate(1), 0);
+      
+      const first = cache.get(grid, {
+        start: makeDate(10),
+        end: makeDate(20)
+      });
+
+      const second = cache.get(grid, {
+        start: makeDate(10),
+        end: makeDate(21) // Changed
+      });
+
+      // Different end = different instance
+      assert.ok(first !== second, 'Changed end must create new instance');
+      assert.equal(cache.size(), 2);
+    });
+
+    it('GOLDEN: changing hover triggers new computation', () => {
+      cache.clear();
+      
+      const grid = factory.createGrid(makeDate(1), 0);
+      
+      const first = cache.get(grid, {
+        start: makeDate(10),
+        end: makeDate(20),
+        hoverDate: '2026-02-15'
+      });
+
+      const second = cache.get(grid, {
+        start: makeDate(10),
+        end: makeDate(20),
+        hoverDate: '2026-02-16' // Changed
+      });
+
+      // Different hover = different instance
+      assert.ok(first !== second, 'Changed hover must create new instance');
+      assert.equal(cache.size(), 2);
+    });
+
+    it('GOLDEN: changing minDate or maxDate triggers new computation', () => {
+      cache.clear();
+      
+      const grid = factory.createGrid(makeDate(1), 0);
+      
+      const first = cache.get(grid, {
+        start: makeDate(10),
+        end: makeDate(20),
+        minDate: makeDate(1),
+        maxDate: makeDate(28)
+      });
+
+      const second = cache.get(grid, {
+        start: makeDate(10),
+        end: makeDate(20),
+        minDate: makeDate(2), // Changed
+        maxDate: makeDate(28)
+      });
+
+      const third = cache.get(grid, {
+        start: makeDate(10),
+        end: makeDate(20),
+        minDate: makeDate(1),
+        maxDate: makeDate(27) // Changed
+      });
+
+      // Different bounds = different instances
+      assert.ok(first !== second, 'Changed minDate must create new instance');
+      assert.ok(first !== third, 'Changed maxDate must create new instance');
+      assert.equal(cache.size(), 3);
+    });
+
+    it('GOLDEN: null/undefined parameters are handled correctly', () => {
+      cache.clear();
+      
+      const grid = factory.createGrid(makeDate(1), 0);
+      
+      // Params with nulls
+      const first = cache.get(grid, {
+        start: makeDate(10),
+        end: makeDate(20),
+        minDate: undefined,
+        maxDate: undefined,
+        hoverDate: undefined
+      });
+
+      // Same nulls = cache hit
+      const second = cache.get(grid, {
+        start: makeDate(10),
+        end: makeDate(20),
+        minDate: undefined,
+        maxDate: undefined,
+        hoverDate: undefined
+      });
+
+      assert.ok(first === second, 'Same nulls should cache hit');
+      assert.equal(cache.size(), 1);
+
+      // Adding a non-null = different instance
+      const third = cache.get(grid, {
+        start: makeDate(10),
+        end: makeDate(20),
+        minDate: makeDate(1), // Now defined
+        maxDate: undefined,
+        hoverDate: undefined
+      });
+
+      assert.ok(first !== third, 'Adding minDate must create new instance');
+      assert.equal(cache.size(), 2);
+    });
+
+    it('GOLDEN: disabled dates array changes trigger new computation', () => {
+      cache.clear();
+      
+      const grid = factory.createGrid(makeDate(1), 0);
+      
+      const first = cache.get(grid, {
+        start: makeDate(10),
+        end: makeDate(20),
+        disabledDates: [makeDate(12), makeDate(15)]
+      });
+
+      const second = cache.get(grid, {
+        start: makeDate(10),
+        end: makeDate(20),
+        disabledDates: [makeDate(12), makeDate(16)] // Different
+      });
+
+      // Different disabled dates = different instance
+      assert.ok(first !== second, 'Changed disabled dates must create new instance');
+      assert.equal(cache.size(), 2);
+    });
+
+    it('GOLDEN: function predicates bypass cache (recompute every time)', () => {
+      cache.clear();
+      
+      const grid = factory.createGrid(makeDate(1), 0);
+      const predicate = (date: Date) => date.getDate() % 2 === 0;
+      
+      const first = cache.get(grid, {
+        start: makeDate(10),
+        end: makeDate(20),
+        disabledDates: predicate
+      });
+
+      const second = cache.get(grid, {
+        start: makeDate(10),
+        end: makeDate(20),
+        disabledDates: predicate // Same function
+      });
+
+      // Function predicates are NOT cached (can't serialize reliably)
+      // So we expect different instances
+      assert.ok(first !== second, 'Function predicates must bypass cache');
+      
+      // Size should be 0 (functions not cached)
+      assert.equal(cache.size(), 0, 'Function predicates should not be stored');
+    });
+
+    it('GOLDEN: prevents recompute storm (100 identical calls = 1 computation)', () => {
+      cache.clear();
+      
+      const grid = factory.createGrid(makeDate(1), 0);
+      const params = {
+        start: makeDate(10),
+        end: makeDate(20),
+        minDate: makeDate(1),
+        maxDate: makeDate(28),
+        hoverDate: '2026-02-15'
+      };
+
+      // First call
+      const first = cache.get(grid, params);
+
+      // Simulate rapid re-renders (100 times)
+      for (let i = 0; i < 100; i++) {
+        const result = cache.get(grid, params);
+        
+        // Each call must return the SAME instance
+        assert.ok(result === first, `Call ${i + 1} must be identical reference`);
+      }
+
+      // Only 1 entry created (no redundant computations)
+      assert.equal(cache.size(), 1, 'Should only have 1 cache entry');
+    });
+
+    it('GOLDEN: cache key is deterministic (property order does not matter)', () => {
+      cache.clear();
+      
+      const grid = factory.createGrid(makeDate(1), 0);
+
+      // Same data, different property order
+      const first = cache.get(grid, {
+        start: makeDate(10),
+        end: makeDate(20),
+        minDate: makeDate(1),
+        maxDate: makeDate(28)
+      });
+
+      const second = cache.get(grid, {
+        maxDate: makeDate(28), // Different order
+        minDate: makeDate(1),
+        end: makeDate(20),
+        start: makeDate(10)
+      });
+
+      // Should be same instance (deterministic key generation)
+      assert.ok(first === second, 'Property order must not affect caching');
+      assert.equal(cache.size(), 1);
+    });
+  });
 });
