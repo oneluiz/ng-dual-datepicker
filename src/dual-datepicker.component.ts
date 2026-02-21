@@ -6,6 +6,7 @@ import { NativeDateAdapter } from './native-date-adapter';
 import { DualDateRangeStore } from './core/dual-date-range.store';
 import { PresetRegistry } from './core/preset-registry';
 import { BUILT_IN_PRESETS } from './core/built-in-presets';
+import { CalendarGridCache, CalendarGrid, CalendarCell } from './core/calendar-grid';
 
 export interface DateRange {
   startDate: string;
@@ -123,6 +124,9 @@ export class DualDatepickerComponent implements OnInit, OnChanges, ControlValueA
 
   // Date adapter injection
   private dateAdapter = inject<DateAdapter>(DATE_ADAPTER);
+  
+  // Calendar grid cache (v3.7.0+) - memoizes month grid generation
+  private gridCache = inject(CalendarGridCache);
   
   // Headless store for date range state (v3.5.0+)
   protected readonly rangeStore = inject(DualDateRangeStore);
@@ -683,49 +687,52 @@ export class DualDatepickerComponent implements OnInit, OnChanges, ControlValueA
     this.currentMonthDays.set(this.generateMonthCalendar(this.currentMonth()));
   }
 
+  /**
+   * Generate calendar grid with decorations (v3.7.0+)
+   * 
+   * Uses CalendarGridCache for base grid structure (memoized),
+   * then decorates with dynamic properties (selected, disabled, hover, etc.)
+   * 
+   * Performance: Grid structure reused across renders, only decorations recomputed
+   */
   generateMonthCalendar(date: Date): any[] {
-    const year = this.dateAdapter.getYear(date);
-    const month = this.dateAdapter.getMonth(date);
-    const firstDay = this.dateAdapter.createDate(year, month, 1);
-    const lastDay = this.dateAdapter.createDate(year, month + 1, 0);
-    const daysInMonth = this.dateAdapter.getDate(lastDay);
-    const firstDayOfWeek = this.dateAdapter.getDay(firstDay);
-
-    const monthDays = [];
-
-    for (let i = 0; i < firstDayOfWeek; i++) {
-      monthDays.push({ day: null, isCurrentMonth: false });
-    }
-
-    for (let day = 1; day <= daysInMonth; day++) {
-      const dayDate = this.dateAdapter.createDate(year, month, day);
-      const dateStr = this.formatDate(dayDate);
+    // Get base grid from cache (weekStart = 0 for Sunday, no locale for now)
+    const grid: CalendarGrid = this.gridCache.get(date, 0);
+    
+    // Get pending dates from store (for requireApply mode)
+    const pendingStart = this.rangeStore.startDate();
+    const pendingEnd = this.rangeStore.endDate();
+    const pendingStartStr = pendingStart ? this.formatDate(pendingStart) : '';
+    const pendingEndStr = pendingEnd ? this.formatDate(pendingEnd) : '';
+    
+    // Decorate cells with dynamic properties
+    const monthDays = grid.cells.map((cell: CalendarCell) => {
+      if (!cell.inCurrentMonth) {
+        // Padding cell (previous/next month)
+        return { day: null, isCurrentMonth: false };
+      }
       
-       // Get pending dates from store (for requireApply mode)
-      const pendingStart = this.rangeStore.startDate(); // In pending mode, store holds pending values
-      const pendingEnd = this.rangeStore.endDate();
-      const pendingStartStr = pendingStart ? this.formatDate(pendingStart) : '';
-      const pendingEndStr = pendingEnd ? this.formatDate(pendingEnd) : '';
+      // Current month cell - apply decorations
+      const dateStr = cell.iso;
       
       const isPendingStart = this.requireApply && pendingStartStr === dateStr;
       const isPendingEnd = this.requireApply && pendingEndStr === dateStr;
       const inPendingRange = this.requireApply && pendingStartStr && pendingEndStr &&
                              dateStr >= pendingStartStr && dateStr <= pendingEndStr;
       
-      // Check if date is in hover preview range
       const inHoverRange = this.isInHoverRange(dateStr);
       
-      monthDays.push({
-        day: day,
+      return {
+        day: cell.day,
         date: dateStr,
         isCurrentMonth: true,
         isStart: this.startDate === dateStr || isPendingStart,
         isEnd: this.endDate === dateStr || isPendingEnd,
         inRange: this.isInRange(dateStr) || inPendingRange,
         inHoverRange: inHoverRange,
-        isDisabled: this.isDateDisabled(dayDate)
-      });
-    }
+        isDisabled: this.isDateDisabled(cell.date)
+      };
+    });
 
     return monthDays;
   }
