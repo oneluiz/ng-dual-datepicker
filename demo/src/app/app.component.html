@@ -1758,21 +1758,22 @@ export class AppComponent &#123;
 &#125;</pre>
             </div>
 
-            <h3>2. Use with Custom Presets</h3>
+            <h3>2. Use with Custom Presets (NEW v3.5.0)</h3>
             <div class="code-block">
-              <pre>import &#123; CommonPresets &#125; from '&#64;oneluiz/dual-datepicker';
+              <pre>import &#123; CommonPresets, PresetEngine &#125; from '&#64;oneluiz/dual-datepicker';
 
-// Use pre-built presets
+// Option 1: Use pre-built preset collections
 presets = CommonPresets.dashboard;
 
-// Or create custom presets
-import &#123; PresetConfig, getLastNDays, getToday &#125; from '&#64;oneluiz/dual-datepicker';
+// Option 2: Use PresetEngine for dynamic presets (Recommended ⭐)
+engine = inject(PresetEngine);
+presets = this.engine.getCommonPresets();
 
-customPresets: PresetConfig[] = [
-  &#123; label: 'Today', getValue: getToday &#125;,
-  &#123; label: 'Last week', getValue: () => getLastNDays(7) &#125;,
-  &#123; label: 'Last month', getValue: () => getLastNDays(30) &#125;,
-  &#123; label: 'Last 3 months', getValue: () => getLastNDays(90) &#125;
+// Option 3: Get specific presets programmatically
+customPresets = [
+  &#123; label: 'Today', getValue: () => this.engine.getPreset('today') &#125;,
+  &#123; label: 'Last 7 Days', getValue: () => this.engine.getPreset('last7days') &#125;,
+  &#123; label: 'This Month', getValue: () => this.engine.getPreset('thisMonth') &#125;
 ];</pre>
             </div>
           </section>
@@ -1939,80 +1940,60 @@ presets = CommonPresets.financial;
               </div>
             </div>
 
-            <h3>🎯 Mix & Match Utilities</h3>
-            <p>Import individual utility functions and create your own combinations:</p>
+            <h3>⚙️ Using PresetEngine (v3.5.0 - Recommended)</h3>
+            <p>Use the new <strong>PresetEngine</strong> service for dynamic, injectable preset management:</p>
             <div class="code-block">
-              <pre>import &#123; 
-  getToday, 
-  getThisMonth, 
-  getLastMonth, 
-  getQuarterToDate,
-  getYearToDate,
-  getLastNDays,
-  PresetConfig 
-&#125; from '&#64;oneluiz/dual-datepicker';
+              <pre>import &#123; PresetEngine, PresetConfig &#125; from '&#64;oneluiz/dual-datepicker';
 
-customPresets: PresetConfig[] = [
-  &#123; label: 'Today', getValue: getToday &#125;,
-  &#123; label: 'This Month', getValue: getThisMonth &#125;,
-  &#123; label: 'Last Month', getValue: getLastMonth &#125;,
-  &#123; label: 'Quarter to Date', getValue: getQuarterToDate &#125;,
-  &#123; label: 'Year to Date', getValue: getYearToDate &#125;,
-  &#123; label: 'Last 90 Days', getValue: () => getLastNDays(90) &#125;,
-  &#123; 
-    label: 'Custom Logic', 
-    getValue: () => &#123;
-      // Your business logic here
-      return &#123; start: '2026-01-01', end: '2026-12-31' &#125;;
-    &#125;
-  &#125;
-];</pre>
+&#64;Component(&#123; /* ... */ &#125;)
+export class MyComponent &#123;
+  private presetEngine = inject(PresetEngine);
+
+  // Option 1: Get all common presets
+  presets = this.presetEngine.getCommonPresets();
+  
+  // Option 2: Get specific preset by ID
+  lastWeekPreset = this.presetEngine.getPreset('lastWeek');
+  // Returns: &#123; startDate: '2026-02-14', endDate: '2026-02-20' &#125;
+  
+  // Option 3: Build custom preset list
+  customPresets: PresetConfig[] = [
+    &#123; label: 'Today', getValue: () => this.presetEngine.getPreset('today') &#125;,
+    &#123; label: 'This Month', getValue: () => this.presetEngine.getPreset('thisMonth') &#125;,
+    &#123; label: 'Q1 2026', getValue: () => (&#123; startDate: '2026-01-01', endDate: '2026-03-31' &#125;) &#125;
+  ];
+&#125;</pre>
             </div>
 
-            <div class="why-powerful">
-              <h3>💪 Why This Is Powerful</h3>
-              <div class="use-case-grid">
-                <div class="use-case-item">
-                  <span class="use-case-icon">🏢</span>
-                  <strong>ERP Systems</strong>
-                  <p>Quarter to date, Year to date, Fiscal periods</p>
-                </div>
-                <div class="use-case-item">
-                  <span class="use-case-icon">📊</span>
-                  <strong>BI Dashboards</strong>
-                  <p>Consistent date ranges for analytics</p>
-                </div>
-                <div class="use-case-item">
-                  <span class="use-case-icon">💰</span>
-                  <strong>POS Systems</strong>
-                  <p>This week, Last week, Today, Yesterday</p>
-                </div>
-                <div class="use-case-item">
-                  <span class="use-case-icon">📋</span>
-                  <strong>Reporting</strong>
-                  <p>This/Last month, quarter, year</p>
-                </div>
-                <div class="use-case-item">
-                  <span class="use-case-icon">🎯</span>
-                  <strong>Custom Logic</strong>
-                  <p>Any date calculation your business needs</p>
-                </div>
-                <div class="use-case-item">
-                  <span class="use-case-icon">🔥</span>
-                  <strong>Material Can't Do This!</strong>
-                  <p>Our unique competitive advantage</p>
-                </div>
-              </div>
+            <div class="alert alert-info mt-3">
+              <i class="bi bi-lightbulb"></i>
+              <strong>Why PresetEngine?</strong>
+              <ul class="mb-0 mt-2">
+                <li>✅ <strong>Injectable</strong> - Use in services, components, anywhere</li>
+                <li>✅ <strong>Auto-updating</strong> - Relative dates always current</li>
+                <li>✅ <strong>Type-safe</strong> - Full TypeScript support</li>
+                <li>✅ <strong>Testable</strong> - Easy to mock and test</li>
+              </ul>
             </div>
 
             <div class="backward-compat">
-              <h3>🔄 Fully Backward Compatible</h3>
-              <p><strong>v3.0.0 Note:</strong> The <code>daysAgo</code> pattern has been removed. Use <code>getValue()</code> instead:</p>
+              <h3>⚠️ Legacy Utilities (Deprecated)</h3>
+              <p>Individual preset functions are still exported but deprecated. Use <code>PresetEngine</code> instead:</p>
               <div class="code-block">
-                <pre>// v3.0.0+ Correct pattern
-import &#123; getLastNDays &#125; from '&#64;oneluiz/dual-datepicker';
+                <pre>// ❌ OLD (Deprecated - still works but not recommended)
+import &#123; getToday, getLastNDays &#125; from '&#64;oneluiz/dual-datepicker';
+presets = [
+  &#123; label: 'Today', getValue: getToday &#125;,
+  &#123; label: 'Last 7 days', getValue: () => getLastNDays(7) &#125;
+];
 
-&#123; label: 'Last 30 days', getValue: () => getLastNDays(30) &#125;</pre>
+// ✅ NEW (Recommended)
+import &#123; PresetEngine &#125; from '&#64;oneluiz/dual-datepicker';
+engine = inject(PresetEngine);
+presets = [
+  &#123; label: 'Today', getValue: () => this.engine.getPreset('today') &#125;,
+  &#123; label: 'Last 7 days', getValue: () => this.engine.getPreset('last7days') &#125;
+];</pre>
               </div>
             </div>
           </section>
@@ -2441,11 +2422,18 @@ export class BookingComponent &#123;
   getValue: () => PresetRange;  // Function that returns a PresetRange
 &#125;
 
-// Example:
-import &#123; getLastNDays &#125; from '&#64;oneluiz/dual-datepicker';
+// Example (v3.5.0+):
+import &#123; PresetEngine, inject &#125; from '&#64;oneluiz/dual-datepicker';
 
-&#123; label: 'Last 7 days', getValue: () => getLastNDays(7) &#125;
-&#123; label: 'This Month', getValue: () => getThisMonth() &#125;</pre>
+&#64;Component(&#123; /* ... */ &#125;)
+export class MyComponent &#123;
+  engine = inject(PresetEngine);
+  
+  presets: PresetConfig[] = [
+    &#123; label: 'Last 7 days', getValue: () => this.engine.getPreset('last7days') &#125;,
+    &#123; label: 'This Month', getValue: () => this.engine.getPreset('thisMonth') &#125;
+  ];
+&#125;</pre>
             </div>
 
             <h3>MultiDateRange <span class="badge-new">v2.7.0</span></h3>
