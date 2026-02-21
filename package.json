@@ -38,7 +38,11 @@
     "postbuild": "mkdir -p dist/themes && cp -r dist/src/themes/* dist/themes/",
     "publish:pkg": "cd dist && npm publish --access public",
     "demo:serve": "ng serve demo",
-    "demo:build": "ng build demo --base-href=/ng-dual-datepicker/ && cd docs && mv browser/* . 2>/dev/null || true && rm -rf browser 2>/dev/null || true && touch .nojekyll && cd .."
+    "demo:build": "ng build demo --base-href=/ng-dual-datepicker/ && cd docs && mv browser/* . 2>/dev/null || true && rm -rf browser 2>/dev/null || true && touch .nojekyll && cd ..",
+    "test": "npm run test:compile && npm run test:run",
+    "test:compile": "tsc -p tsconfig.test.json",
+    "test:run": "node --test $(find dist-test -name '*.spec.js')",
+    "test:watch": "node --test --watch dist-test/**/*.spec.js"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^18.2.14",
