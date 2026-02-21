@@ -1005,7 +1005,6 @@
 
           <!-- Example 10: Date Adapter System -->
           <div class="example-card featured-card" id="example-10">
-            <div class="badge-new">NEW v2.5.0</div>
             <h2>🔌 Date Adapter System</h2>
             <p class="example-description">
               <strong>Flexible date library support!</strong> Use DayJS, date-fns, Luxon, or any custom date library. This example uses the default <code>NativeDateAdapter</code>, but you can easily swap it for your preferred library.
@@ -1047,7 +1046,6 @@
 
           <!-- Example 11: CommonPresets -->
           <div class="example-card featured-card" id="example-11">
-            <div class="badge-new">NEW v2.6.0</div>
             <h2>⚡ CommonPresets - The Game Changer</h2>
             <p class="example-description">
               <strong>THIS is what makes us different!</strong> Pre-built preset collections for common business use cases. Perfect for <strong>ERP</strong>, <strong>BI</strong>, <strong>dashboards</strong>, and <strong>reporting systems</strong>. Angular Material doesn't have this! 🚀
@@ -1092,7 +1090,6 @@
 
           <!-- Example 12: Multi-Range Support -->
           <div class="example-card featured-card game-changer-card" id="example-12">
-            <div class="badge-new">NEW v2.7.0 - GAME CHANGER!</div>
             <h2>🔥 Multi-Range Support - Material CAN'T Do This!</h2>
             <p class="example-description">
               <strong>This is our ULTIMATE differentiator!</strong> Select <strong>multiple date ranges</strong> in one picker. Perfect for <strong>hotel booking</strong>, <strong>event blackout periods</strong>, <strong>maintenance windows</strong>, and <strong>shift scheduling</strong>. 
@@ -1144,7 +1141,7 @@
           </div>
         </div>
 
-        <!-- V3.2.0 Features Section with Tabs -->
+        <!-- Advanced Features Section with Tabs -->
         <div class="v320-features-section">
           <div class="v320-tabs">
             <button 
@@ -1835,58 +1832,52 @@ export class MyComponent &#123;
           </section>
 
           <section class="doc-section featured-section" id="preset-system">
-            <div class="section-badge">NEW v2.6.0</div>
-            <h2>⚡ Flexible Preset System - GAME CHANGER</h2>
+            <div class="section-badge">⭐ GAME CHANGER</div>
+            <h2>⚡ Intelligent Preset System</h2>
             <p class="section-intro">
               <strong>This is our REAL differentiator vs Angular Material!</strong> 
-              We offer an incredibly flexible preset system perfect for dashboards, reporting, POS, BI apps, and ERP systems.
+              Powerful preset system with auto-updating dates and 15+ built-in presets. Perfect for dashboards, reporting, POS, BI apps, and ERP systems.
             </p>
 
-            <h3>🔥 The Power Pattern: getValue()</h3>
-            <p>Define <strong>any custom date logic</strong> you need. Material doesn't have this!</p>
+            <h3>🚀 PresetEngine (v3.5.0 - Recommended)</h3>
+            <p>Injectable service with intelligent preset management and auto-updating relative dates:</p>
             <div class="code-block">
-              <pre>import &#123; PresetConfig &#125; from '&#64;oneluiz/dual-datepicker';
+              <pre>import &#123; PresetEngine, PresetConfig &#125; from '&#64;oneluiz/dual-datepicker';
 
-presets: PresetConfig[] = [
-  &#123; 
-    label: 'Today', 
-    getValue: () => &#123;
-      const today = new Date();
-      return &#123;
-        start: formatDate(today),
-        end: formatDate(today)
-      &#125;;
-    &#125;
-  &#125;,
-  &#123; 
-    label: 'This Month', 
-    getValue: () => &#123;
-      const today = new Date();
-      const start = new Date(today.getFullYear(), today.getMonth(), 1);
-      const end = new Date(today.getFullYear(), today.getMonth() + 1, 0);
-      return &#123;
-        start: formatDate(start),
-        end: formatDate(end)
-      &#125;;
-    &#125;
-  &#125;,
-  &#123; 
-    label: 'Quarter to Date', 
-    getValue: () => &#123;
-      const today = new Date();
-      const currentMonth = today.getMonth();
-      const quarterStartMonth = Math.floor(currentMonth / 3) * 3;
-      const start = new Date(today.getFullYear(), quarterStartMonth, 1);
-      return &#123;
-        start: formatDate(start),
-        end: formatDate(today)
-      &#125;;
-    &#125;
-  &#125;
-];</pre>
+&#64;Component(&#123; /* ... */ &#125;)
+export class MyComponent &#123;
+  engine = inject(PresetEngine);
+
+  // ⚡ Option 1: Get all common presets (15+ presets)
+  presets = this.engine.getCommonPresets();
+  
+  // 🎯 Option 2: Get specific preset by ID
+  lastWeekRange = this.engine.getPreset('lastWeek');
+  // Returns: &#123; startDate: '2026-02-14', endDate: '2026-02-20' &#125;
+  
+  // 🎨 Option 3: Build custom preset list
+  customPresets: PresetConfig[] = [
+    &#123; label: 'Last Week', getValue: () => this.engine.getPreset('lastWeek') &#125;,
+    &#123; label: 'Last Month', getValue: () => this.engine.getPreset('lastMonth') &#125;,
+    &#123; label: 'Last Quarter', getValue: () => this.engine.getPreset('lastQuarter') &#125;,
+    &#123; label: 'Q1 2026', getValue: () => (&#123; startDate: '2026-01-01', endDate: '2026-03-31' &#125;) &#125;
+  ];
+&#125;</pre>
             </div>
 
-            <h3>🚀 Even Better: CommonPresets</h3>
+            <div class="alert alert-info mt-3">
+              <i class="bi bi-lightbulb"></i>
+              <strong>Why PresetEngine?</strong>
+              <ul class="mb-0 mt-2">
+                <li>✅ <strong>Injectable</strong> - Use in services, components, anywhere</li>
+                <li>✅ <strong>Auto-updating</strong> - Relative dates always current (no manual Date() logic)</li>
+                <li>✅ <strong>15+ Built-in Presets</strong> - today, yesterday, last7days, thisMonth, lastQuarter, etc.</li>
+                <li>✅ <strong>Type-safe</strong> - Full TypeScript support</li>
+                <li>✅ <strong>Testable</strong> - Easy to mock and test</li>
+              </ul>
+            </div>
+
+            <h3>📦 CommonPresets (Quick Setup)</h3>
             <p>Pre-built preset collections ready to use. Just import and go!</p>
             <div class="preset-collections">
               <div class="preset-card">
@@ -1940,66 +1931,34 @@ presets = CommonPresets.financial;
               </div>
             </div>
 
-            <h3>⚙️ Using PresetEngine (v3.5.0 - Recommended)</h3>
-            <p>Use the new <strong>PresetEngine</strong> service for dynamic, injectable preset management:</p>
+            <h3>💡 Usage in Template</h3>
             <div class="code-block">
-              <pre>import &#123; PresetEngine, PresetConfig &#125; from '&#64;oneluiz/dual-datepicker';
-
-&#64;Component(&#123; /* ... */ &#125;)
-export class MyComponent &#123;
-  private presetEngine = inject(PresetEngine);
-
-  // Option 1: Get all common presets
-  presets = this.presetEngine.getCommonPresets();
-  
-  // Option 2: Get specific preset by ID
-  lastWeekPreset = this.presetEngine.getPreset('lastWeek');
-  // Returns: &#123; startDate: '2026-02-14', endDate: '2026-02-20' &#125;
-  
-  // Option 3: Build custom preset list
-  customPresets: PresetConfig[] = [
-    &#123; label: 'Today', getValue: () => this.presetEngine.getPreset('today') &#125;,
-    &#123; label: 'This Month', getValue: () => this.presetEngine.getPreset('thisMonth') &#125;,
-    &#123; label: 'Q1 2026', getValue: () => (&#123; startDate: '2026-01-01', endDate: '2026-03-31' &#125;) &#125;
-  ];
-&#125;</pre>
+              <pre>&lt;ngx-dual-datepicker
+  [customPresets]="presets"
+  (dateRangeChange)="onRangeChange($event)"&gt;
+&lt;/ngx-dual-datepicker&gt;</pre>
             </div>
 
-            <div class="alert alert-info mt-3">
-              <i class="bi bi-lightbulb"></i>
-              <strong>Why PresetEngine?</strong>
-              <ul class="mb-0 mt-2">
-                <li>✅ <strong>Injectable</strong> - Use in services, components, anywhere</li>
-                <li>✅ <strong>Auto-updating</strong> - Relative dates always current</li>
-                <li>✅ <strong>Type-safe</strong> - Full TypeScript support</li>
-                <li>✅ <strong>Testable</strong> - Easy to mock and test</li>
-              </ul>
-            </div>
-
-            <div class="backward-compat">
-              <h3>⚠️ Legacy Utilities (Deprecated)</h3>
-              <p>Individual preset functions are still exported but deprecated. Use <code>PresetEngine</code> instead:</p>
+            <div class="backward-compat mt-4">
+              <h3>⚠️ Legacy Pattern (Not Recommended)</h3>
+              <p>Manual date logic is still supported but <strong>not recommended</strong>. Use <code>PresetEngine</code> instead:</p>
               <div class="code-block">
-                <pre>// ❌ OLD (Deprecated - still works but not recommended)
+                <pre>// ❌ OLD (Manual date logic - verbose, error-prone)
 import &#123; getToday, getLastNDays &#125; from '&#64;oneluiz/dual-datepicker';
 presets = [
   &#123; label: 'Today', getValue: getToday &#125;,
   &#123; label: 'Last 7 days', getValue: () => getLastNDays(7) &#125;
 ];
 
-// ✅ NEW (Recommended)
+// ✅ NEW (v3.5.0 - Clean, type-safe, auto-updating)
 import &#123; PresetEngine &#125; from '&#64;oneluiz/dual-datepicker';
 engine = inject(PresetEngine);
-presets = [
-  &#123; label: 'Today', getValue: () => this.engine.getPreset('today') &#125;,
-  &#123; label: 'Last 7 days', getValue: () => this.engine.getPreset('last7days') &#125;
-];</pre>
+presets = this.engine.getCommonPresets();</pre>
               </div>
             </div>
           </section>
 
           <section class="doc-section featured-section game-changer-section" id="multi-range">
-            <div class="section-badge">NEW v2.7.0 - ULTIMATE!</div>
             <h2>🔥 Multi-Range Support - Material CAN'T Do This!</h2>
             <p class="section-intro">
               <strong class="highlight-red">This is our STRONGEST differentiator!</strong> 
@@ -2104,7 +2063,7 @@ onMultiRangeChange(data: MultiDateRange) &#123;
               <h3>📊 vs Angular Material</h3>
               <div class="comparison">
                 <div class="our-feature">
-                  <span class="feature-name">ng-dual-datepicker v2.7.0</span>
+                  <span class="feature-name">ng-dual-datepicker</span>
                   <span class="feature-value">✅ UNLIMITED Multi-Range Support</span>
                   <span class="feature-desc">Select as many date ranges as needed</span>
                 </div>
@@ -2271,7 +2230,7 @@ export class BookingComponent &#123;
                     <td><code>multiRange</code></td>
                     <td><code>boolean</code></td>
                     <td><code>false</code></td>
-                    <td><span class="badge-new">v2.7.0</span> Enable multi-range selection mode. Select unlimited date ranges!</td>
+                    <td>Enable multi-range selection mode. Select unlimited date ranges!</td>
                   </tr>
                   <tr>
                     <td><code>closeOnSelection</code></td>
@@ -2369,12 +2328,12 @@ export class BookingComponent &#123;
                   <tr>
                     <td><code>multiDateRangeChange</code></td>
                     <td><code>EventEmitter&lt;MultiDateRange&gt;</code></td>
-                    <td><span class="badge-new">v2.7.0</span> Emitted when ranges change in multi-range mode</td>
+                    <td>Emitted when ranges change in multi-range mode</td>
                   </tr>
                   <tr>
                     <td><code>multiDateRangeSelected</code></td>
                     <td><code>EventEmitter&lt;MultiDateRange&gt;</code></td>
-                    <td><span class="badge-new">v2.7.0</span> Emitted when Done button is clicked in multi-range mode</td>
+                    <td>Emitted when Done button is clicked in multi-range mode</td>
                   </tr>
                 </tbody>
               </table>
