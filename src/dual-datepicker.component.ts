@@ -1,9 +1,11 @@
-import { Component, Input, Output, EventEmitter, OnInit, OnChanges, SimpleChanges, HostListener, ElementRef, forwardRef, signal, computed, effect, inject } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, OnChanges, SimpleChanges, HostListener, ElementRef, forwardRef, signal, computed, effect, inject, APP_INITIALIZER } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { DateAdapter, DATE_ADAPTER } from './date-adapter';
 import { NativeDateAdapter } from './native-date-adapter';
 import { DualDateRangeStore } from './core/dual-date-range.store';
+import { PresetRegistry } from './core/preset-registry';
+import { BUILT_IN_PRESETS } from './core/built-in-presets';
 
 export interface DateRange {
   startDate: string;
@@ -52,6 +54,17 @@ export type ThemeType = 'default' | 'bootstrap' | 'bulma' | 'foundation' | 'tail
     {
       provide: DATE_ADAPTER,
       useClass: NativeDateAdapter
+    },
+    {
+      provide: APP_INITIALIZER,
+      multi: true,
+      useFactory: (registry: PresetRegistry) => {
+        return () => {
+          // Auto-register built-in presets
+          BUILT_IN_PRESETS.forEach(preset => registry.register(preset));
+        };
+      },
+      deps: [PresetRegistry]
     }
   ]
 })

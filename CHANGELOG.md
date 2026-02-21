@@ -5,6 +5,292 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.6.0] - 2026-02-21
+
+### 🔌 Enterprise Feature: Plugin-Driven Preset Architecture
+
+**New**: Extensible date range presets following **Open/Closed Principle** - add custom presets without modifying core library code.
+
+#### The Problem
+
+Before this update:
+- ❌ All 18 presets hardcoded in `PresetEngine` (~230 lines)
+- ❌ No way to add fiscal year, hotel, or logistics presets without forking
+- ❌ Violated Open/Closed Principle (must modify core to extend)
+- ❌ Can't distribute industry-specific presets as external packages
+- ❌ Testing friction (hard to mock/override presets)
+
+**Enterprise blocker**: Companies with fiscal years, hotels with check-in cycles, logistics with shipping weeks had to fork the library or maintain hacky workarounds.
+
+#### The Solution: Plugin Architecture
+
+New **RangePresetPlugin** interface enabling extensibility:
+
+```typescript
+interface RangePresetPlugin {
+  key: string; // 'THIS_FISCAL_QUARTER', 'CHECK_IN_WEEK', etc.
+  resolve(clock: DateClock, adapter: DateAdapter): DateRange;
+}
+```
+
+#### New Components
+
+1. **RangePresetPlugin Interface** (`range-preset.plugin.ts` ~200 lines):
+   - Contract for all date range presets
+   - SSR-safe via DateClock injection
+   - Timezone-safe via DateAdapter injection
+   - Pure function design (no side effects)
+
+2. **PresetRegistry Service** (`preset-registry.ts` ~250 lines):
+   - `@Injectable({ providedIn: 'root' })` singleton
+   - API: `register()`, `registerAll()`, `get()`, `has()`, `getAll()`, `getAllKeys()`, `count()`, `unregister()`, `clear()`
+   - Thread-safe `Map<string, RangePresetPlugin>`
+   - Validates plugins before registration
+   - Supports override (useful for testing)
+
+3. **Built-in Presets as Plugins** (`built-in-presets.ts` ~320 lines):
+   - All 18 presets converted to plugin format:
+     * Daily: TODAY, YESTERDAY
+     * Weekly: LAST_7_DAYS, LAST_14_DAYS, THIS_WEEK, LAST_WEEK
+     * Monthly: LAST_30_DAYS, LAST_60_DAYS, LAST_90_DAYS, THIS_MONTH, LAST_MONTH, MONTH_TO_DATE
+     * Quarterly: THIS_QUARTER, LAST_QUARTER, QUARTER_TO_DATE
+     * Yearly: THIS_YEAR, LAST_YEAR, YEAR_TO_DATE
+   - `BUILT_IN_PRESETS` array for bulk registration
+
+4. **Provider Functions** (`preset-providers.ts` ~280 lines):
+   - `provideBuiltInPresets()` - Auto-register built-ins
+   - `provideCustomPresets(presets[])` - App-level custom presets
+   - `providePresetPackage(name, presets[])` - External npm packages
+   - All use `APP_INITIALIZER` for registration timing
+
+#### What Changed
+
+**✅ PresetEngine Refactored** (~230 lines deleted):
+- REMOVED: Internal `Map<string, RangePreset>` and `registerBuiltInPresets()` method
+- ADDED: Injects `PresetRegistry` service
+- `resolve()` now delegates to `registry.get(key).resolve(clock, adapter)`
+- `register()` converts legacy `RangePreset` to plugin format
+- 100% backward compatible API maintained
+
+**✅ Export Updates**:
+- `src/core/index.ts` now exports:
+  * `range-preset.plugin`
+  * `preset-registry`
+  * `built-in-presets`
+  * `preset-providers`
+
+**✅ Component Auto-Registration**:
+- `DualDateRangeComponent` now includes `APP_INITIALIZER` provider
+- Built-in presets register automatically (zero config)
+
+#### Usage Examples
+
+##### Built-in Presets (Zero Config)
+
+```typescript
+// ✅ Works automatically, no setup needed
+export class DashboardComponent {
+  private rangeStore = inject(DualDateRangeStore);
+  
+  ngOnInit() {
+    this.rangeStore.applyPreset('LAST_30_DAYS');
+    // { start: "2026-01-22", end: "2026-02-21" }
+  }
+}
+```
+
+##### Custom Fiscal Year Presets
+
+```typescript
+// Define plugin
+const THIS_FISCAL_QUARTER: RangePresetPlugin = {
+  key: 'THIS_FISCAL_QUARTER',
+  resolve: (clock, adapter) => {
+    const now = clock.now();
+    const month = adapter.getMonth(now); // 0-11
+    // Fiscal year starts April (month 3)
+    const fiscalMonth = (month + 9) % 12;
+    const quarterStartMonth = Math.floor(fiscalMonth / 3) * 3;
+    const calendarMonth = (quarterStartMonth - 9 + 12) % 12;
+    const fiscalYear = month < 3 ? year - 1 : year;
+    
+    const start = new Date(fiscalYear, calendarMonth, 1);
+    const end = new Date(fiscalYear, calendarMonth + 3, 0);
+    
+    return { start: adapter.normalize(start), end: adapter.normalize(end) };
+  }
+};
+
+// Register via provider (app.config.ts)
+export const appConfig: ApplicationConfig = {
+  providers: [provideCustomPresets([THIS_FISCAL_QUARTER])]
+};
+
+// Use in component
+this.rangeStore.applyPreset('THIS_FISCAL_QUARTER');
+// { start: "2026-01-01", end: "2026-03-31" }
+```
+
+##### Hotel/Hospitality Presets
+
+```typescript
+const HOTEL_PRESETS: RangePresetPlugin[] = [
+  {
+    key: 'CHECK_IN_WEEK',
+    resolve: (clock, adapter) => {
+      // Friday to Friday
+      const now = clock.now();
+      const dayOfWeek = adapter.getDay(now);
+      const daysToFriday = dayOfWeek <= 5 ? 5 - dayOfWeek : 7 - dayOfWeek + 5;
+      const nextFriday = adapter.addDays(now, daysToFriday);
+      const followingFriday = adapter.addDays(nextFriday, 7);
+      return { start: nextFriday, end: followingFriday };
+    }
+  },
+  {
+    key: 'NEXT_30_NIGHTS',
+    resolve: (clock, adapter) => {
+      const now = clock.now();
+      const tomorrow = adapter.addDays(now, 1);
+      const end = adapter.addDays(tomorrow, 30);
+      return { start: tomorrow, end };
+    }
+  }
+];
+
+providers: [provideCustomPresets(HOTEL_PRESETS)]
+```
+
+##### External Preset Packages
+
+```typescript
+// @acme/fiscal-presets/index.ts
+import { RangePresetPlugin, providePresetPackage } from '@oneluiz/dual-datepicker/core';
+
+export const FISCAL_PRESETS: RangePresetPlugin[] = [
+  { key: 'THIS_FISCAL_QUARTER', resolve: ... },
+  { key: 'FISCAL_YEAR_TO_DATE', resolve: ... }
+];
+
+export function provideFiscalPresets() {
+  return providePresetPackage('@acme/fiscal-presets', FISCAL_PRESETS);
+}
+
+// Install external package
+npm install @acme/fiscal-presets
+
+// Use in app (app.config.ts)
+import { provideFiscalPresets } from '@acme/fiscal-presets';
+providers: [provideFiscalPresets()]
+```
+
+#### Design Principles Applied
+
+- ✅ **Open/Closed Principle**: Extend presets without modifying core
+- ✅ **Dependency Injection**: DateClock + DateAdapter passed to plugins
+- ✅ **Single Responsibility**: Plugin defines logic, registry manages collection
+- ✅ **Interface Segregation**: Minimal interface (key + resolve)
+- ✅ **Testability**: Pure plugin functions, easy to mock
+
+#### Benefits
+
+**For Library Users**:
+- ✅ Zero config for built-in presets (unchanged)
+- ✅ Easy custom preset creation
+- ✅ Industry-specific presets available as packages
+- ✅ Dynamic preset management at runtime
+- ✅ 100% backward compatible
+
+**For Enterprise**:
+- ✅ Fiscal year support (governments, education, corporations)
+- ✅ Hotel/hospitality workflows (check-in cycles, night stays)
+- ✅ Logistics/shipping schedules (shipping weeks, delivery windows)
+- ✅ Custom business logic (company reporting periods)
+- ✅ Multi-tenant preset management
+
+**For Library Maintainers**:
+- ✅ No more feature requests for industry presets
+- ✅ Extensible without code changes
+- ✅ Enables ecosystem of external packages
+- ✅ Cleaner architecture (~230 lines deleted from PresetEngine)
+- ✅ Easier testing and mocking
+
+#### Files Changed
+
+**New Files**:
+- `src/core/range-preset.plugin.ts` (~200 lines)
+- `src/core/preset-registry.ts` (~250 lines)
+- `src/core/built-in-presets.ts` (~320 lines)
+- `src/core/preset-providers.ts` (~280 lines)
+- `PRESET_PLUGIN_EXAMPLES.ts` (~450 lines examples)
+- `docs/PRESET_PLUGINS.md` (comprehensive documentation)
+
+**Modified Files**:
+- `src/core/preset.engine.ts` (refactored, ~230 lines deleted)
+- `src/core/index.ts` (added 4 exports)
+- `src/dual-datepicker.component.ts` (added auto-registration)
+
+#### Migration Guide
+
+**No migration required!** Existing code works unchanged:
+
+```typescript
+// ✅ Still works exactly the same
+const store = inject(DualDateRangeStore);
+store.applyPreset('LAST_30_DAYS');
+```
+
+**New features (optional)**:
+
+```typescript
+// ✅ Add custom presets
+providers: [provideCustomPresets([MY_CUSTOM_PRESET])]
+
+// ✅ Direct registry access
+const registry = inject(PresetRegistry);
+registry.register(MY_PLUGIN);
+```
+
+#### Bug Fixes
+
+- Fixed: Used `adapter.getDayOfWeek()` in `THIS_WEEK_PRESET` and `LAST_WEEK_PRESET` (method doesn't exist)
+- Changed to: `adapter.getDay()` (correct method name, returns 0-6 where Sunday=0)
+
+#### Documentation
+
+- Added: [PRESET_PLUGINS.md](docs/PRESET_PLUGINS.md) - Complete plugin architecture guide
+- Added: [PRESET_PLUGIN_EXAMPLES.ts](PRESET_PLUGIN_EXAMPLES.ts) - 8 comprehensive examples
+- Examples include: fiscal year, hotel/hospitality, logistics, external packages, testing, dynamic registration
+
+### Added
+
+- `RangePresetPlugin` interface for extensible presets
+- `PresetRegistry` service for plugin management
+- `provideCustomPresets()` function for app-level custom presets
+- `providePresetPackage()` function for external preset packages
+- 18 built-in presets converted to plugin format
+- Comprehensive plugin system documentation
+- 8 industry-specific preset examples
+
+### Changed
+
+- **PresetEngine** refactored to use `PresetRegistry` (deleted ~230 lines)
+- Built-in presets now register via `APP_INITIALIZER`
+- Exports updated in `src/core/index.ts`
+
+### Fixed
+
+- Used correct `adapter.getDay()` method in week-based presets (was `getDayOfWeek()`)
+
+### Deprecated
+
+- Legacy `RangePreset` interface (replaced by `RangePresetPlugin`)
+- Still supported for backward compatibility
+
+### Breaking Changes
+
+**None** - 100% backward compatible
+
 ## [3.5.1] - 2026-02-21
 
 ### 🛡️ Enterprise Feature: Timezone-Safe Date Adapter Layer
