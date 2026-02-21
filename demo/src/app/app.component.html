@@ -2693,6 +2693,16 @@ const isDisabled = validator.isDateDisabled('2026-01-15', disabledDatesArray);</
                 </button>
               </li>
               <li>
+                <button class="sidebar-link" (click)="scrollToSection('v3-8-0')">
+                  v3.8.0
+                </button>
+              </li>
+              <li>
+                <button class="sidebar-link" (click)="scrollToSection('v3-6-0')">
+                  v3.6.0
+                </button>
+              </li>
+              <li>
                 <button class="sidebar-link" (click)="scrollToSection('v3-5-0')">
                   v3.5.0
                 </button>
@@ -2705,6 +2715,11 @@ const isDisabled = validator.isDateDisabled('2026-01-15', disabledDatesArray);</
               <li>
                 <button class="sidebar-link" (click)="scrollToSection('v3-3-0')">
                   v3.3.0
+                </button>
+              </li>
+              <li>
+                <button class="sidebar-link" (click)="scrollToSection('v3-2-0')">
+                  v3.2.0
                 </button>
               </li>
             </ul>
@@ -3083,6 +3098,139 @@ export class DashboardComponent {{ '{' }}
 
           <hr class="section-divider">
 
+          <!-- Blog Header v3.8.0 -->
+          <div class="blog-header" id="v3-8-0">
+            <span class="blog-date">November 2025</span>
+            <h1 class="blog-title">⚡ ng-dual-datepicker v3.8.0</h1>
+            <p class="blog-subtitle">Virtual Weeks - Performance optimization for large date ranges</p>
+          </div>
+
+          <!-- What's New Section v3.8.0 -->
+          <div class="blog-section">
+            <h2>🚀 What's New</h2>
+            <p>Version 3.8.0 introduces <strong>Virtual Weeks</strong>, a performance optimization feature for rendering large date ranges efficiently.</p>
+            
+            <div class="features-grid">
+              <div class="feature-card">
+                <h3>⚡ Virtual Scrolling</h3>
+                <p>Render only visible weeks instead of all months. Perfect for applications displaying many months simultaneously.</p>
+              </div>
+              <div class="feature-card">
+                <h3>🎯 Configurable Window</h3>
+                <p>Control how many weeks to render at once with <code>windowSize</code> and <code>startIndex</code> configuration.</p>
+              </div>
+              <div class="feature-card">
+                <h3>📊 Reduced DOM Nodes</h3>
+                <p>Significantly reduces DOM node count when working with large date ranges, improving rendering performance.</p>
+              </div>
+              <div class="feature-card">
+                <h3>🔄 Dynamic Updates</h3>
+                <p>As user scrolls or navigates, new weeks are rendered dynamically while old ones are removed from the DOM.</p>
+              </div>
+            </div>
+
+            <h3>Usage Example</h3>
+            <pre class="code-example">&lt;ngx-dual-datepicker
+  [virtualWeeks]="{{'{'}}{{'}'}} windowSize: 3, startIndex: 0 {{'}'}}{{'}'}} "
+  [(ngModel)]="dateRange"&gt;
+&lt;/ngx-dual-datepicker&gt;
+
+// Renders only 3 weeks at a time (~21 visible days)
+// Perfect for performance when displaying many months</pre>
+
+            <h3>When to Use</h3>
+            <ul class="feature-list">
+              <li>✅ Applications displaying 6+ months simultaneously</li>
+              <li>✅ Dashboard views with persistent calendar visibility</li>
+              <li>✅ Mobile devices with limited resources</li>
+              <li>✅ Long-range date selections (years of data)</li>
+            </ul>
+          </div>
+
+          <hr class="section-divider">
+
+          <!-- Blog Header v3.6.0 -->
+          <div class="blog-header" id="v3-6-0">
+            <span class="blog-date">October 2025</span>
+            <h1 class="blog-title">🔌 ng-dual-datepicker v3.6.0</h1>
+            <p class="blog-subtitle">Plugin-Based Preset System - Extensible and type-safe preset architecture</p>
+          </div>
+
+          <!-- What's New Section v3.6.0 -->
+          <div class="blog-section">
+            <h2>🚀 What's New</h2>
+            <p>Version 3.6.0 introduces a <strong>plugin-based preset system</strong> that replaces the old CommonPresets pattern with a more powerful, type-safe, and extensible architecture.</p>
+            
+            <div class="features-grid">
+              <div class="feature-card">
+                <h3>🔌 Plugin Architecture</h3>
+                <p>Create custom preset plugins implementing the <code>RangePresetPlugin</code> interface for maximum flexibility.</p>
+              </div>
+              <div class="feature-card">
+                <h3>🎯 Dependency Injection</h3>
+                <p>Configure presets via Angular DI with <code>provideCustomPresets()</code> and <code>providePresetPackage()</code>.</p>
+              </div>
+              <div class="feature-card">
+                <h3>📦 Built-in Presets</h3>
+                <p>10 ready-to-use presets: TODAY, YESTERDAY, LAST_7_DAYS, LAST_30_DAYS, THIS_WEEK, LAST_WEEK, THIS_MONTH, LAST_MONTH, THIS_YEAR, LAST_YEAR.</p>
+              </div>
+              <div class="feature-card">
+                <h3>✅ Type Safety</h3>
+                <p>Full TypeScript support with generic types and compile-time validation.</p>
+              </div>
+            </div>
+
+            <h3>Usage Example</h3>
+            <pre class="code-example">// In your app.config.ts or component providers:
+import {{ '{' }} provideCustomPresets, LAST_7_DAYS_PRESET, THIS_MONTH_PRESET {{ '}' }} from '&#64;oneluiz/dual-datepicker';
+
+export const appConfig: ApplicationConfig = {{ '{' }}
+  providers: [
+    provideCustomPresets([
+      LAST_7_DAYS_PRESET,
+      THIS_MONTH_PRESET,
+      LAST_30_DAYS_PRESET
+    ])
+  ]
+{{ '}' }};
+
+// Or provide a preset package
+import {{ '{' }} providePresetPackage, BUILT_IN_PRESETS {{ '}' }} from '&#64;oneluiz/dual-datepicker';
+
+providers: [providePresetPackage(BUILT_IN_PRESETS)]</pre>
+
+            <h3>Create Custom Preset Plugin</h3>
+            <pre class="code-example">import {{ '{' }} RangePresetPlugin {{ '}' }} from '&#64;oneluiz/dual-datepicker';
+
+const QUARTER_TO_DATE: RangePresetPlugin = {{ '{' }}
+  key: 'QUARTER_TO_DATE',
+  label: 'Quarter to Date',
+  resolve: (clock, adapter) => {{'{'}}{{'}'}}
+    const now = adapter.normalize(new Date());
+    const quarter = Math.floor(now.getMonth() / 3);
+    const start = new Date(now.getFullYear(), quarter * 3, 1);
+    return {{ '{' }}
+      start: adapter.normalize(start),
+      end: now
+    {{ '}' }};
+  {{'}'}}
+{{ '}' }};
+
+// Use in providers
+providers: [provideCustomPresets([QUARTER_TO_DATE])]</pre>
+
+            <h3>Key Benefits</h3>
+            <ul class="feature-list">
+              <li>✅ Cleaner API - No more <code>CommonPresets.simple</code> pattern</li>
+              <li>✅ Better tree-shaking - Only bundle presets you use</li>
+              <li>✅ Extensible - Create unlimited custom presets</li>
+              <li>✅ Testable - Pure functions, easy to unit test</li>
+              <li>✅ Framework-aligned - Uses Angular DI patterns</li>
+            </ul>
+          </div>
+
+          <hr class="section-divider">
+
           <!-- Blog Header v3.4.0 -->
           <div class="blog-header" id="v3-4-0">
             <span class="blog-date">February 20, 2026</span>
@@ -3442,6 +3590,105 @@ export class AppointmentComponent {{ '{' }}
                 <button class="cta-btn secondary" (click)="setActiveTab('docs')">Read Documentation</button>
               </div>
             </div>
+          </div>
+
+          <hr class="section-divider">
+
+          <!-- Blog Header v3.2.0 -->
+          <div class="blog-header" id="v3-2-0">
+            <span class="blog-date">September 2025</span>
+            <h1 class="blog-title">🚀 ng-dual-datepicker v3.2.0</h1>
+            <p class="blog-subtitle">Power Features - Disabled Dates, Display Format, Apply Button, and Hover Preview</p>
+          </div>
+
+          <!-- What's New Section v3.2.0 -->
+          <div class="blog-section">
+            <h2>🎯 What's New</h2>
+            <p>Version 3.2.0 introduces <strong>four game-changing features</strong> that bring professional date picker capabilities to your applications.</p>
+            
+            <div class="features-grid">
+              <div class="feature-card">
+                <h3>🚫 Disabled Dates</h3>
+                <p>Block specific dates or use custom logic to disable weekends, holidays, or any business rules.</p>
+              </div>
+              <div class="feature-card">
+                <h3>🎨 Display Format</h3>
+                <p>Customize date display format (MM/DD/YYYY, DD/MM/YYYY, YYYY-MM-DD, etc.) to match regional preferences.</p>
+              </div>
+              <div class="feature-card">
+                <h3>✅ Apply Button</h3>
+                <p>Require explicit confirmation before emitting changes. Perfect for expensive operations like API calls.</p>
+              </div>
+              <div class="feature-card">
+                <h3>👁️ Hover Preview</h3>
+                <p>Visual preview of date range on hover with purple dashed borders. Always enabled for better UX.</p>
+              </div>
+            </div>
+
+            <h3>1. Disabled Dates</h3>
+            <pre class="code-example">// Option 1: Array of specific dates
+holidays: Date[] = [
+  new Date(2026, 0, 1),   // New Year
+  new Date(2026, 11, 25), // Christmas
+];
+
+&lt;ngx-dual-datepicker
+  [disabledDates]="holidays"
+  [(ngModel)]="dateRange"&gt;
+&lt;/ngx-dual-datepicker&gt;
+
+// Option 2: Function with custom logic
+isDateDisabled = (date: Date): boolean => {{'{'}}{{'}'}}
+  const day = date.getDay();
+  // Disable weekends (Sat & Sun)
+  return day === 0 || day === 6;
+{{'}'}};</pre>
+
+            <h3>2. Display Format</h3>
+            <pre class="code-example">// European format
+&lt;ngx-dual-datepicker
+  displayFormat="DD/MM/YYYY"
+  [(ngModel)]="dateRange"&gt;
+&lt;/ngx-dual-datepicker&gt;
+
+// US format
+displayFormat="MM/DD/YYYY"
+
+// ISO format
+displayFormat="YYYY-MM-DD"
+
+// Custom format with full month name
+displayFormat="MMMM DD, YYYY"  // January 15, 2026</pre>
+
+            <h3>3. Require Apply Button</h3>
+            <pre class="code-example">&lt;ngx-dual-datepicker
+  [requireApply]="true"
+  [(ngModel)]="dateRange"
+  (dateRangeChange)="onDateApplied($event)"&gt;
+&lt;/ngx-dual-datepicker&gt;
+
+// How it works:
+// 1. User selects dates → shown as "pending" (no event emitted)
+// 2. User clicks "Apply" → dateRangeChange fires
+// 3. User clicks "Cancel" → selection discarded
+
+// Perfect for:
+// - Dashboard data loading
+// - API-heavy reports
+// - Expensive calculations</pre>
+
+            <h3>4. Hover Range Preview</h3>
+            <p>Automatically enabled! After selecting a start date, hovering over other dates shows a purple dashed preview of the potential range. Zero configuration required.</p>
+
+            <h3>Key Benefits</h3>
+            <ul class="feature-list">
+              <li>✅ <strong>Disabled Dates</strong>: Perfect for booking systems, business day selection, holiday blocking</li>
+              <li>✅ <strong>Display Format</strong>: Match regional preferences and user expectations</li>
+              <li>✅ <strong>Apply Button</strong>: Prevent unwanted API calls during date selection</li>
+              <li>✅ <strong>Hover Preview</strong>: Instant visual feedback improves user confidence</li>
+              <li>✅ All features work together seamlessly</li>
+              <li>✅ Backward compatible - all features are opt-in</li>
+            </ul>
           </div>
 
           <hr class="release-divider">
