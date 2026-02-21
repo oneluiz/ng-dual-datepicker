@@ -2,8 +2,9 @@
 
 A lightweight, zero-dependency date range picker for Angular 17+. Built with standalone components, Reactive Forms, and Angular Signals. No Angular Material required.
 
-> **🆕 NEW in v3.5.1**: [**Timezone-Safe Date Adapter**](docs/TIMEZONE_ADAPTER.md) - Fixes enterprise-critical timezone bugs in ERP, BI, POS, and invoicing systems 🛡️  
-> **🆕 NEW in v3.5.0**: [**Headless Architecture**](docs/HEADLESS.md) - Use date range state WITHOUT the UI component. Perfect for SSR, services, and global dashboard filters! 🎯
+> **🚀 v4.0.0**: [**Public API Formalization**](#v400-public-api-formalization) - Stable, documented API contract. ~50% smaller package. Better tree-shaking. Breaking changes documented in [CHANGELOG.md](CHANGELOG.md) 📦  
+> **🆕 v3.5.1**: [**Timezone-Safe Date Adapter**](docs/TIMEZONE_ADAPTER.md) - Fixes enterprise-critical timezone bugs in ERP, BI, POS, and invoicing systems 🛡️  
+> **🆕 v3.5.0**: [**Headless Architecture**](docs/HEADLESS.md) - Use date range state WITHOUT the UI component. Perfect for SSR, services, and global dashboard filters! 🎯
 
 [![npm version](https://img.shields.io/npm/v/@oneluiz/dual-datepicker)](https://www.npmjs.com/package/@oneluiz/dual-datepicker)
 [![npm provenance](https://img.shields.io/badge/provenance-available-brightgreen)](https://www.npmjs.com/package/@oneluiz/dual-datepicker)
@@ -21,6 +22,29 @@ npm install @oneluiz/dual-datepicker
 ---
 
 ## 🌟 What's New
+
+### v4.0.0: Public API Formalization
+
+**Major release** formalizing the stable public API contract:
+
+**What Changed:**
+- ✅ **Stable Public API** - Clear contract with 11 main exports
+- ✅ **~50% Smaller Package** - 250 KB (was 500 KB)
+- ✅ **Better Tree-Shaking** - Pure ESM bundles
+- ⚠️ **Breaking Changes** - Internal APIs removed, DateAdapter methods renamed
+
+**Migration:**
+```typescript
+// ❌ Before (v3.x)
+import { CalendarGridFactory } from '@oneluiz/dual-datepicker';
+const date = adapter.parse('2026-01-15');
+
+// ✅ After (v4.0)
+import { DualDateRangeStore } from '@oneluiz/dual-datepicker';
+const date = adapter.parseISODate('2026-01-15');
+```
+
+**[📖 Read the full migration guide in CHANGELOG.md →](CHANGELOG.md#400---2026-02-21)**
 
 ### Timezone-Safe Date Adapter (v3.5.1)
 

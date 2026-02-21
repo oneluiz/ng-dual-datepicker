@@ -2298,6 +2298,66 @@ export class BookingComponent &#123;
                     <td><code>'0.375rem 0.75rem'</code></td>
                     <td>Input padding</td>
                   </tr>
+                  <tr>
+                    <td><code>theme</code> <span class="badge-new">v3.3.0</span></td>
+                    <td><code>ThemeType</code></td>
+                    <td><code>'default'</code></td>
+                    <td>Pre-built theme: 'default' | 'bootstrap' | 'bulma' | 'foundation' | 'tailwind' | 'custom'</td>
+                  </tr>
+                  <tr>
+                    <td><code>disabledDates</code> <span class="badge-new">v3.2.0</span></td>
+                    <td><code>Date[] | ((date: Date) => boolean)</code></td>
+                    <td><code>undefined</code></td>
+                    <td>Array of disabled dates OR predicate function to disable dates (e.g., weekends, holidays)</td>
+                  </tr>
+                  <tr>
+                    <td><code>displayFormat</code> <span class="badge-new">v3.2.0</span></td>
+                    <td><code>string</code></td>
+                    <td><code>'D MMM'</code></td>
+                    <td>Format for displaying dates in the input field (e.g., 'D MMM' = '15 Jan', 'DD/MM/YYYY' = '15/01/2026')</td>
+                  </tr>
+                  <tr>
+                    <td><code>requireApply</code> <span class="badge-new">v3.2.0</span></td>
+                    <td><code>boolean</code></td>
+                    <td><code>false</code></td>
+                    <td>Require user to click Apply button to confirm selection (prevents auto-close)</td>
+                  </tr>
+                  <tr>
+                    <td><code>enableTimePicker</code> <span class="badge-new">v3.4.0</span></td>
+                    <td><code>boolean</code></td>
+                    <td><code>false</code></td>
+                    <td>Enable time selection (hours and minutes) in addition to dates</td>
+                  </tr>
+                  <tr>
+                    <td><code>timeFormat</code> <span class="badge-new">v3.4.0</span></td>
+                    <td><code>'12h' | '24h'</code></td>
+                    <td><code>'24h'</code></td>
+                    <td>Time display format: 12-hour (with AM/PM) or 24-hour</td>
+                  </tr>
+                  <tr>
+                    <td><code>minuteStep</code> <span class="badge-new">v3.4.0</span></td>
+                    <td><code>number</code></td>
+                    <td><code>15</code></td>
+                    <td>Step interval for minute selector (1, 5, 15, 30, or 60)</td>
+                  </tr>
+                  <tr>
+                    <td><code>defaultStartTime</code> <span class="badge-new">v3.4.0</span></td>
+                    <td><code>string</code></td>
+                    <td><code>'00:00'</code></td>
+                    <td>Default time for start date when time picker is enabled (format: HH:mm)</td>
+                  </tr>
+                  <tr>
+                    <td><code>defaultEndTime</code> <span class="badge-new">v3.4.0</span></td>
+                    <td><code>string</code></td>
+                    <td><code>'23:59'</code></td>
+                    <td>Default time for end date when time picker is enabled (format: HH:mm)</td>
+                  </tr>
+                  <tr>
+                    <td><code>virtualWeeks</code> <span class="badge-new">v3.8.0</span></td>
+                    <td><code>VirtualWeeksConfig</code></td>
+                    <td><code>undefined</code></td>
+                    <td>Performance optimization for rendering only visible weeks (windowing). See VirtualWeeksConfig interface below.</td>
+                  </tr>
                 </tbody>
               </table>
             </div>
@@ -2423,6 +2483,37 @@ export class MyComponent &#123;
   months: ['January', 'February', 'March', ...],
   days: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
 &#125;</pre>
+            </div>
+
+            <h3>ThemeType <span class="badge-new">v3.3.0</span></h3>
+            <div class="code-block">
+              <pre>type ThemeType = 'default' | 'bootstrap' | 'bulma' | 'foundation' | 'tailwind' | 'custom';
+
+// Usage:
+&lt;ngx-dual-datepicker
+  theme="bootstrap"
+  [(ngModel)]="dateRange"&gt;
+&lt;/ngx-dual-datepicker&gt;
+
+// Or import theme SCSS manually:
+&#64;import '&#64;oneluiz/dual-datepicker/themes/bootstrap.scss';</pre>
+            </div>
+
+            <h3>VirtualWeeksConfig <span class="badge-new">v3.8.0</span></h3>
+            <div class="code-block">
+              <pre>interface VirtualWeeksConfig &#123;
+  windowSize: number;  // Number of weeks to render at a time (e.g., 3 for ~21 visible days)
+  startIndex: number;  // Starting week index (0-based)
+&#125;
+
+// Example: Performance optimization for large date ranges
+&lt;ngx-dual-datepicker
+  [virtualWeeks]="&#123; windowSize: 3, startIndex: 0 &#125;"
+  [(ngModel)]="dateRange"&gt;
+&lt;/ngx-dual-datepicker&gt;
+
+// Note: Use when rendering many months simultaneously
+// Reduces DOM nodes by only rendering visible weeks</pre>
             </div>
           </section>
 
