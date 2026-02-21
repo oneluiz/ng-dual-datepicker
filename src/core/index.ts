@@ -12,6 +12,11 @@
  * - CalendarGridCache with LRU memoization
  * - Separates grid structure from decorations for performance
  * 
+ * v3.8.0: Range Highlight Cache
+ * - RangeHighlighter for decoration logic (pure computation)
+ * - RangeHighlighterCache with LRU (48 grids)
+ * - Eliminates redundant decoration recomputations
+ * 
  * Import from here for clean barrel exports
  */
 
@@ -30,4 +35,5 @@ export * from './built-in-presets';
 export * from './preset-providers';
 
 // v3.7.0: Calendar Grid Cache
+// v3.8.0: Range Highlight Cache
 export * from './calendar-grid';
