@@ -2,9 +2,16 @@
  * Headless Preset Engine
  * Pure functions that resolve date ranges WITHOUT render dependency
  * Perfect for SSR, global state, dashboard filters
+ * 
+ * v3.5.0: SSR-Safe via Clock Injection
+ * All date calculations use DateClock instead of new Date()
+ * This ensures server and client resolve identical presets
  */
 
+import { Injectable, inject, Optional } from '@angular/core';
 import { formatISODate } from './range.validator';
+import { DateClock, DATE_CLOCK } from './date-clock';
+import { SystemClock } from './system-clock';
 
 export interface RangePreset {
   /**
@@ -22,11 +29,28 @@ export interface PresetRange {
 /**
  * Registry of built-in presets
  * Can be extended by consumers
+ * 
+ * SSR-Safe Architecture:
+ * - Injects DateClock via DI
+ * - All presets use clock.now() instead of new Date()
+ * - Deterministic: same clock.now() → same preset
+ * - Override DATE_CLOCK token in SSR to ensure consistency
  */
+@Injectable({
+  providedIn: 'root'
+})
 export class PresetEngine {
   private presets = new Map<string, RangePreset>();
+  private clock: DateClock;
 
   constructor() {
+    // Try to inject DATE_CLOCK, fallback to SystemClock if not provided
+    try {
+      this.clock = inject(DATE_CLOCK, { optional: true }) ?? new SystemClock();
+    } catch {
+      // In case inject() fails (e.g., called outside injection context)
+      this.clock = new SystemClock();
+    }
     this.registerBuiltInPresets();
   }
 
@@ -39,12 +63,19 @@ export class PresetEngine {
 
   /**
    * Resolve a preset to date range
+   * 
+   * SSR Note: Uses injected DateClock for deterministic resolution
+   * Override DATE_CLOCK token to control time in SSR scenarios
+   * 
+   * @param key - Preset key (e.g., 'TODAY', 'LAST_7_DAYS')
+   * @param now - Optional override for current date (defaults to clock.now())
    */
-  resolve(key: string, now: Date = new Date()): PresetRange | null {
+  resolve(key: string, now?: Date): PresetRange | null {
     const preset = this.presets.get(key);
     if (!preset) return null;
 
-    const { start, end } = preset.resolve(now);
+    const currentDate = now ?? this.clock.now();
+    const { start, end } = preset.resolve(currentDate);
     return {
       start: formatISODate(start),
       end: formatISODate(end)
@@ -249,6 +280,16 @@ export function createPreset(
 }
 
 /**
- * Singleton preset engine instance
+ * @deprecated Use dependency injection instead:
+ * ```typescript
+ * private engine = inject(PresetEngine);
+ * ```
+ * 
+ * Singleton preset engine instance for backward compatibility
+ * 
+ * WARNING: This singleton uses SystemClock directly and is NOT SSR-safe.
+ * For SSR applications, inject PresetEngine and override DATE_CLOCK token.
+ * 
+ * This export will be removed in v4.0.0
  */
 export const presetEngine = new PresetEngine();

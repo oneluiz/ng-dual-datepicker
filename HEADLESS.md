@@ -66,20 +66,72 @@ rangeStore.reset();
 Headless preset resolver:
 
 ```typescript
-import { presetEngine } from '@oneluiz/dual-datepicker';
+import { PresetEngine, inject } from '@oneluiz/dual-datepicker';
+
+// Inject as service (v3.5.0+)
+const engine = inject(PresetEngine);
 
 // Resolve preset without UI
-const range = presetEngine.resolve('THIS_MONTH');
+const range = engine.resolve('THIS_MONTH');
 // { start: '2026-02-01', end: '2026-02-28' }
 
 // Register custom preset
-presetEngine.register('FISCAL_YEAR', {
+engine.register('FISCAL_YEAR', {
   resolve: (now) => {
     // Your custom logic
     return { start: fiscalStart, end: fiscalEnd };
   }
 });
 ```
+
+#### SSR-Safe Clock Injection (v3.5.0)
+
+**Problem**: Presets like "Last 7 Days" use `new Date()`, causing SSR hydration mismatches.
+
+**Solution**: Override the `DATE_CLOCK` token for deterministic date resolution:
+
+```typescript
+// server.ts (SSR)
+import { DATE_CLOCK } from '@oneluiz/dual-datepicker';
+
+const requestTime = new Date();
+
+const html = await renderApplication(AppComponent, {
+  providers: [
+    {
+      provide: DATE_CLOCK,
+      useValue: { now: () => requestTime }
+    }
+  ]
+});
+```
+
+```typescript
+// main.ts (Client)
+import { DATE_CLOCK } from '@oneluiz/dual-datepicker';
+
+bootstrapApplication(AppComponent, {
+  providers: [
+    {
+      provide: DATE_CLOCK,
+      useValue: {
+        // Get server time from transfer state or meta tag
+        now: () => new Date(getServerTime())
+      }
+    }
+  ]
+});
+```
+
+**Result**: Server and client resolve identical presets ✅
+
+**Benefits**:
+- ✅ No hydration mismatches
+- ✅ Consistent date filters across SSR and client
+- ✅ Perfect for ERP/BI dashboards
+- ✅ Zero breaking changes (optional feature)
+
+See [SSR_CLOCK_INJECTION.md](./SSR_CLOCK_INJECTION.md) for complete guide.
 
 ### 3. `RangeValidator`
 

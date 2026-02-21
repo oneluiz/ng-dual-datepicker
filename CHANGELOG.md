@@ -25,6 +25,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - 15+ built-in presets (TODAY, THIS_MONTH, THIS_QUARTER, etc.)
 - Register custom presets
 - Deterministic date calculation
+- **NEW**: Injectable service with Clock Injection for SSR-safe resolution
 
 **RangeValidator** - Pure validation functions:
 - `validateRangeOrder(start, end)`
@@ -32,15 +33,45 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `isDateDisabled(date, disabledDates)`
 - No side effects, pure functions
 
+#### 🔥 SSR-Safe Clock Injection
+
+**Problem Solved**: Presets like "Last 7 Days" used `new Date()`, causing SSR hydration mismatches.
+
+**Solution**: Inject `DATE_CLOCK` token to control time deterministically:
+
+```typescript
+// Server (SSR)
+provide(DATE_CLOCK, {
+  useValue: { now: () => new Date('2026-02-21T00:00:00Z') }
+});
+
+// Client uses same time → Perfect hydration ✅
+```
+
+**Benefits**:
+- ✅ No SSR hydration mismatches
+- ✅ Consistent date filters across server and client
+- ✅ Perfect for ERP/BI dashboards requiring identical server/client state
+- ✅ Testable with controlled time
+- ✅ Zero breaking changes (backward compatible)
+
+**Architecture**:
+- `DateClock` interface for time abstraction
+- `SystemClock` default implementation (uses `new Date()`)
+- `DATE_CLOCK` injection token for override
+- PresetEngine now uses DI instead of static `new Date()`
+
+See [SSR_CLOCK_INJECTION.md](./SSR_CLOCK_INJECTION.md) for complete guide.
+
 #### Use Cases
 
 Perfect for:
 - 📊 **Dashboard filters** - Control multiple charts with single global state
-- 🏢 **SSR applications** - Server-side date range logic
+- 🏢 **SSR applications** - Server-side date range logic with hydration consistency
 - 🔄 **Global state** - Share range across unrelated components
 - 🎯 **Service layer** - Filter API calls without UI
 - 📈 **Analytics & BI** - Headless reporting engines
-- 🧪 **Testing** - Test date logic without DOM
+- 🧪 **Testing** - Test date logic without DOM, with controlled time
 
 #### Example Usage
 

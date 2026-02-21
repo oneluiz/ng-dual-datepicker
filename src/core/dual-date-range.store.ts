@@ -30,7 +30,9 @@ import {
   parseISODate,
   formatISODate
 } from './range.validator';
-import { presetEngine, PresetRange } from './preset.engine';
+import { PresetEngine, PresetRange } from './preset.engine';
+import { DateClock, DATE_CLOCK } from './date-clock';
+import { SystemClock } from './system-clock';
 
 export interface DateRangeState {
   start: string; // ISO date
@@ -52,6 +54,20 @@ export interface DateRangeConfig {
   providedIn: 'root'
 })
 export class DualDateRangeStore {
+  // Dependency Injection - SSR-Safe
+  private presetEngine = inject(PresetEngine);
+  private clock: DateClock;
+
+  constructor() {
+    // Try to inject DATE_CLOCK, fallback to SystemClock if not provided
+    try {
+      this.clock = inject(DATE_CLOCK, { optional: true }) ?? new SystemClock();
+    } catch {
+      // In case inject() fails (e.g., called outside injection context)
+      this.clock = new SystemClock();
+    }
+  }
+
   // Configuration
   private config = signal<DateRangeConfig>({
     enableTimePicker: false,
@@ -265,9 +281,15 @@ export class DualDateRangeStore {
 
   /**
    * Apply a preset by key
+   * 
+   * SSR-Safe: Uses injected DateClock for deterministic resolution
+   * 
+   * @param presetKey - Preset identifier (e.g., 'TODAY', 'LAST_7_DAYS')
+   * @param now - Optional date override (defaults to clock.now())
    */
-  applyPreset(presetKey: string, now: Date = new Date()): void {
-    const range = presetEngine.resolve(presetKey, now);
+  applyPreset(presetKey: string, now?: Date): void {
+    const currentDate = now ?? this.clock.now();
+    const range = this.presetEngine.resolve(presetKey, currentDate);
     
     if (range) {
       this.setRange(range.start, range.end);

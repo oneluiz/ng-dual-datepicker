@@ -245,7 +245,35 @@ export class DashboardComponent {
 - ✅ Perfect for services and guards
 - ✅ Testable and deterministic
 
-**[📖 Full Headless Architecture Guide →](HEADLESS.md)** | **[💻 Code Examples →](HEADLESS_EXAMPLES.ts)**
+#### SSR-Safe Clock Injection
+
+Presets like "Last 7 Days" now use **clock injection** for SSR hydration consistency:
+
+```typescript
+// Server (SSR)
+import { DATE_CLOCK } from '@oneluiz/dual-datepicker';
+
+const requestTime = new Date();
+
+renderApplication(AppComponent, {
+  providers: [
+    { provide: DATE_CLOCK, useValue: { now: () => requestTime } }
+  ]
+});
+```
+
+```typescript
+// Client (Browser)
+bootstrapApplication(AppComponent, {
+  providers: [
+    { provide: DATE_CLOCK, useValue: { now: () => new Date(getServerTime()) } }
+  ]
+});
+```
+
+**Result**: Server and client resolve identical presets ✅ No hydration mismatch!
+
+**[📖 Full Headless Architecture Guide →](HEADLESS.md)** | **[💻 Code Examples →](HEADLESS_EXAMPLES.ts)** | **[🚀 SSR Clock Injection Guide →](SSR_CLOCK_INJECTION.md)**
 
 ---
 
