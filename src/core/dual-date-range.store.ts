@@ -1,10 +1,13 @@
 /**
  * Headless Date Range Store using Angular Signals
  * 
+ * Version: 3.5.1
+ * 
  * Architecture:
  * - State lives HERE, not in UI component
  * - Deterministic: no hidden side effects
  * - SSR-compatible: no window/document dependencies
+ * - Timezone-safe: uses DateAdapter for all date operations
  * - Testable: pure signal-based state
  * - Reusable: inject anywhere (services, components, guards)
  * 
@@ -33,6 +36,8 @@ import {
 import { PresetEngine, PresetRange } from './preset.engine';
 import { DateClock, DATE_CLOCK } from './date-clock';
 import { SystemClock } from './system-clock';
+import { DateAdapter, DATE_ADAPTER } from './date-adapter';
+import { NativeDateAdapter } from './native-date-adapter';
 
 export interface DateRangeState {
   start: string; // ISO date
@@ -54,9 +59,10 @@ export interface DateRangeConfig {
   providedIn: 'root'
 })
 export class DualDateRangeStore {
-  // Dependency Injection - SSR-Safe
+  // Dependency Injection - SSR-Safe & Timezone-Safe
   private presetEngine = inject(PresetEngine);
   private clock: DateClock;
+  private adapter: DateAdapter;
 
   constructor() {
     // Try to inject DATE_CLOCK, fallback to SystemClock if not provided
@@ -65,6 +71,13 @@ export class DualDateRangeStore {
     } catch {
       // In case inject() fails (e.g., called outside injection context)
       this.clock = new SystemClock();
+    }
+
+    // Try to inject DATE_ADAPTER, fallback to NativeDateAdapter if not provided
+    try {
+      this.adapter = inject(DATE_ADAPTER, { optional: true }) ?? new NativeDateAdapter();
+    } catch {
+      this.adapter = new NativeDateAdapter();
     }
   }
 
@@ -108,8 +121,8 @@ export class DualDateRangeStore {
     const cfg = this.config();
 
     const result: DateRangeState = {
-      start: formatISODate(start),
-      end: formatISODate(end)
+      start: this.adapter.toISODate(start),
+      end: this.adapter.toISODate(end)
     };
 
     if (cfg.enableTimePicker) {
@@ -357,23 +370,25 @@ export class DualDateRangeStore {
     }
   }
 
-  // Helper methods
+  // Helper methods - using DateAdapter for timezone safety
   private parseDate(date: Date | string | null): Date | null {
     if (!date) return null;
-    if (date instanceof Date) return date;
-    return parseISODate(date);
+    if (date instanceof Date) return this.adapter.normalize(date);
+    return this.adapter.parseISODate(date);
   }
 
   private getNextMonth(date: Date): Date {
-    return new Date(date.getFullYear(), date.getMonth() + 1, 1);
+    return this.adapter.addMonths(date, 1);
   }
 
   private getPreviousMonth(date: Date): Date {
-    return new Date(date.getFullYear(), date.getMonth() - 1, 1);
+    return this.adapter.addMonths(date, -1);
   }
 
   private formatDateShort(date: Date): string {
     const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-    return `${date.getDate()} ${months[date.getMonth()]}`;
+    const month = this.adapter.getMonth(date);
+    const day = this.adapter.getDay(date);
+    return `${day} ${months[month]}`;
   }
 }

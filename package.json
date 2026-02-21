@@ -1,7 +1,7 @@
 {
   "name": "@oneluiz/dual-datepicker",
-  "version": "3.5.0",
-  "description": "A customizable dual-calendar date range picker for Angular 17+ with Reactive Forms, Signals, Headless Architecture, Multi-Range support, and Time Picker",
+  "version": "3.5.1",
+  "description": "A customizable dual-calendar date range picker for Angular 17+ with Reactive Forms, Signals, Headless Architecture, Multi-Range support, Time Picker, and Timezone-Safe Date Adapter",
   "keywords": [
     "angular",
     "datepicker",
@@ -14,7 +14,9 @@
     "typescript",
     "reactive-forms",
     "signals",
-    "control-value-accessor"
+    "control-value-accessor",
+    "timezone-safe",
+    "date-adapter"
   ],
   "author": "Luis Cortes",
   "license": "MIT",

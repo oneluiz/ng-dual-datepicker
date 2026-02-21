@@ -2,7 +2,8 @@
 
 A lightweight, zero-dependency date range picker for Angular 17+. Built with standalone components, Reactive Forms, and Angular Signals. No Angular Material required.
 
-> **🆕 NEW in v3.5.0**: [**Headless Architecture**](HEADLESS.md) - Use date range state WITHOUT the UI component. Perfect for SSR, services, and global dashboard filters! 🎯
+> **🆕 NEW in v3.5.1**: [**Timezone-Safe Date Adapter**](docs/TIMEZONE_ADAPTER.md) - Fixes enterprise-critical timezone bugs in ERP, BI, POS, and invoicing systems 🛡️  
+> **🆕 NEW in v3.5.0**: [**Headless Architecture**](docs/HEADLESS.md) - Use date range state WITHOUT the UI component. Perfect for SSR, services, and global dashboard filters! 🎯
 
 [![npm version](https://img.shields.io/npm/v/@oneluiz/dual-datepicker)](https://www.npmjs.com/package/@oneluiz/dual-datepicker)
 [![npm provenance](https://img.shields.io/badge/provenance-available-brightgreen)](https://www.npmjs.com/package/@oneluiz/dual-datepicker)
@@ -20,6 +21,25 @@ npm install @oneluiz/dual-datepicker
 ---
 
 ## 🌟 What's New
+
+### Timezone-Safe Date Adapter (v3.5.1)
+
+**Fixed**: Enterprise timezone bugs that caused date ranges to shift by ±1 day.
+
+```typescript
+// ✅ No more timezone shift bugs!
+const store = inject(DualDateRangeStore);
+store.applyPreset('THIS_MONTH');
+const range = store.range(); // { start: "2024-03-01", end: "2024-03-31" }
+// Always correct, even across timezones and DST transitions
+
+// ✅ Optional: Use your preferred date library
+providers: [
+  { provide: DATE_ADAPTER, useClass: LuxonDateAdapter }
+]
+```
+
+**[📖 Read the Timezone Adapter Guide →](docs/TIMEZONE_ADAPTER.md)**
 
 ### Headless Architecture (v3.5.0)
 
@@ -44,7 +64,7 @@ http.get(`/api/sales?start=${range.start}&end=${range.end}`);
 - 🎯 Service-layer filtering
 - 📈 Analytics and BI tools
 
-**[📖 Read the Headless Architecture Guide →](HEADLESS.md)**
+**[📖 Read the Headless Architecture Guide →](docs/HEADLESS.md)**
 
 ---
 

@@ -5,6 +5,172 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.5.1] - 2026-02-21
+
+### 🛡️ Enterprise Feature: Timezone-Safe Date Adapter Layer
+
+**Fixed**: Enterprise-critical timezone bugs in ERP, BI, POS, and invoicing systems caused by native `Date` operations.
+
+#### The Problem
+
+Before this update:
+- ❌ Date ranges shifted by ±1 day due to timezone/DST conversions
+- ❌ `toISOString()` caused UTC conversion bugs ("2024-03-15" → "2024-03-14T18:00:00Z" in GMT-6)
+- ❌ Month arithmetic had overflow bugs (Jan 31 + 1 month = Mar 2)
+- ❌ Server (UTC) vs client (local) timezone discrepancies in ERP/BI reports
+- ❌ No way to swap date libraries without rewriting core logic
+
+**Real-world impact**: Invoices dated wrong day, "This Month" reports include wrong dates, hotel reservations appear for incorrect days.
+
+#### The Solution: DateAdapter Interface
+
+New **DateAdapter** abstraction layer with 18 timezone-safe operations:
+
+```typescript
+interface DateAdapter {
+  // Core operations (no timezone shift)
+  normalize(date: Date | null): Date;
+  toISODate(date: Date | null): string; // Timezone-safe YYYY-MM-DD
+  parseISODate(isoDate: string | null): Date | null;
+  
+  // Comparison (ignores time)
+  isSameDay(date1: Date, date2: Date): boolean;
+  isBeforeDay(date1: Date, date2: Date): boolean;
+  isAfterDay(date1: Date, date2: Date): boolean;
+  
+  // Arithmetic (handles overflow)
+  addDays(date: Date, days: number): Date;
+  addMonths(date: Date, months: number): Date; // Jan 31 + 1m = Feb 28 ✅
+  
+  // Boundaries
+  startOfDay(date: Date): Date;
+  endOfDay(date: Date): Date;
+  startOfMonth(date: Date): Date;
+  endOfMonth(date: Date): Date;
+  startOfWeek(date: Date, startDay?: number): Date;
+  
+  // Accessors
+  getYear(date: Date): number;
+  getMonth(date: Date): number;
+  getDay(date: Date): number;
+  getDayOfWeek(date: Date): number;
+  getWeekOfYear(date: Date): number;
+}
+```
+
+#### What Changed
+
+**✅ Core Refactored to Use DateAdapter**:
+- `PresetEngine`: All 18 presets (TODAY, LAST_7_DAYS, THIS_MONTH, etc.) now use adapter methods
+- `DualDateRangeStore`: All date operations (parsing, formatting, navigation) use adapter
+- `NativeDateAdapter`: Zero-dependency implementation included by default
+
+**Example Before/After**:
+```typescript
+// ❌ Before (v3.5.0) - Timezone bugs possible
+this.register('YESTERDAY', {
+  resolve: (now) => {
+    const date = new Date(now);
+    date.setDate(date.getDate() - 1);
+    return { start: date, end: date };
+  }
+});
+
+// ✅ After (v3.5.1) - Timezone-safe
+this.register('YESTERDAY', {
+  resolve: (now) => {
+    const date = this.adapter.addDays(now, -1);
+    return { start: date, end: date };
+  }
+});
+```
+
+#### Zero Breaking Changes
+
+**✅ Backward Compatible**: Existing code works unchanged.
+
+```typescript
+// Still works exactly the same way
+const store = inject(DualDateRangeStore);
+store.applyPreset('THIS_MONTH');
+const range = store.range(); // { start: "2024-03-01", end: "2024-03-31" }
+```
+
+**Default Behavior**: Uses `NativeDateAdapter` (zero dependencies) automatically.
+
+#### Custom Adapters (Optional)
+
+Swap to Luxon, Day.js, or any date library:
+
+```typescript
+// 1. Implement DateAdapter interface
+@Injectable({ providedIn: 'root' })
+export class LuxonDateAdapter implements DateAdapter {
+  toISODate(date: Date | null): string {
+    return DateTime.fromJSDate(date).toISODate();
+  }
+  // ... implement remaining methods
+}
+
+// 2. Provide via DATE_ADAPTER token
+providers: [
+  { provide: DATE_ADAPTER, useClass: LuxonDateAdapter }
+]
+```
+
+#### Files Changed
+
+**New Files**:
+- `src/core/date-adapter.ts` - DateAdapter interface + DATE_ADAPTER token
+- `src/core/native-date-adapter.ts` - Zero-dependency implementation
+- `docs/TIMEZONE_ADAPTER.md` - Complete guide and examples
+
+**Updated Files**:
+- `src/core/preset.engine.ts` - Injects DateAdapter, all presets refactored
+- `src/core/dual-date-range.store.ts` - Uses adapter for all date operations
+- `src/core/index.ts` - Exports date-adapter and native-date-adapter
+
+#### Benefits for Enterprise
+
+**ERP Systems**:
+- ✅ Invoice dates never shift due to timezone/DST
+- ✅ Accounting periods align correctly across regions
+
+**BI/Analytics**:
+- ✅ "This Month" returns actual month data (not shifted ±1 day)
+- ✅ Date filters work consistently across server/client
+
+**POS Systems**:
+- ✅ Daily sales reports match actual business days
+- ✅ No "ghost transactions" from previous/next day
+
+**Hotel/Booking**:
+- ✅ Reservations appear for correct check-in dates
+- ✅ DST transitions don't break availability calendars
+
+#### Documentation
+
+See complete guide: [TIMEZONE_ADAPTER.md](./docs/TIMEZONE_ADAPTER.md)
+
+#### API Additions
+
+**New Exports** (from `@oneluiz/dual-datepicker/core`):
+- `DateAdapter` - Interface for custom adapters
+- `NativeDateAdapter` - Default zero-dependency implementation
+- `DATE_ADAPTER` - Injection token for providing custom adapters
+
+**Injection Tokens**:
+```typescript
+import { DATE_ADAPTER } from '@oneluiz/dual-datepicker/core';
+
+// Provide custom adapter
+providers: [
+  { provide: DATE_ADAPTER, useClass: MyCustomAdapter }
+]
+```
+
+---
+
 ## [3.5.0] - 2026-02-20
 
 ### 🚀 Major Feature: Headless Architecture
