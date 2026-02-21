@@ -23,15 +23,17 @@ The date range logic now lives in a **separate store** that can be used:
 │  - No UI dependencies                │
 └─────────────────────────────────────┘
            ↑
-           │ consumes
+           │ uses internally
            │
 ┌─────────────────────────────────────┐
 │  DualDatepickerComponent             │  ← UI LAYER
 │  - Renders calendars                 │
-│  - Delegates to store (future v4.0)  │
-│  - Backward compatible               │
+│  - Uses store for state (v3.5.0)    │
+│  - 100% backward compatible API      │
 └─────────────────────────────────────┘
 ```
+
+**NEW**: The component now uses `DualDateRangeStore` internally for all state management, providing cleaner architecture while maintaining full backward compatibility.
 
 ## 📦 Core Modules
 

@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { DateAdapter, DATE_ADAPTER } from './date-adapter';
 import { NativeDateAdapter } from './native-date-adapter';
+import { DualDateRangeStore } from './core/dual-date-range.store';
 
 export interface DateRange {
   startDate: string;
@@ -56,8 +57,27 @@ export type ThemeType = 'default' | 'bootstrap' | 'bulma' | 'foundation' | 'tail
 })
 export class DualDatepickerComponent implements OnInit, OnChanges, ControlValueAccessor {
   @Input() placeholder: string = 'Select date range';
-  @Input() startDate: string = '';
-  @Input() endDate: string = '';
+  @Input() set startDate(value: string) {
+    if (value) {
+      const date = this.dateAdapter.parse(value);
+      if (date) this.rangeStore.setStart(date);
+    }
+  }
+  get startDate(): string {
+    const date = this.rangeStore.startDate();
+    return date ? this.formatDate(date) : '';
+  }
+  
+  @Input() set endDate(value: string) {
+    if (value) {
+      const date = this.dateAdapter.parse(value);
+      if (date) this.rangeStore.setEnd(date);
+    }
+  }
+  get endDate(): string {
+    const date = this.rangeStore.endDate();
+    return date ? this.formatDate(date) : '';
+  }
   @Input() showPresets: boolean = true;
   @Input() showClearButton: boolean = false;
   @Input() multiRange: boolean = false;
@@ -90,44 +110,83 @@ export class DualDatepickerComponent implements OnInit, OnChanges, ControlValueA
 
   // Date adapter injection
   private dateAdapter = inject<DateAdapter>(DATE_ADAPTER);
+  
+  // Headless store for date range state (v3.5.0+)
+  protected readonly rangeStore = inject(DualDateRangeStore);
 
-  // Signals for reactive state
+  // UI-only signals
   showDatePicker = signal(false);
-  dateRangeText = signal('');
-  selectingStartDate = signal(true);
   currentMonth = signal(this.dateAdapter.today());
   previousMonth = signal(this.dateAdapter.today());
   currentMonthDays = signal<any[]>([]);
   previousMonthDays = signal<any[]>([]);
   isDisabled = signal(false);
-  
-  // Apply/Confirm support
-  pendingStartDate: string = '';
-  pendingEndDate: string = '';
-  hasPendingChanges = signal(false);
-  
-  // Time picker support
-  startHour: number = 0;
-  startMinute: number = 0;
-  endHour: number = 23;
-  endMinute: number = 59;
   showStartTimePicker = signal(false);
   showEndTimePicker = signal(false);
-  
-  // Hover range preview
   hoverDate = signal<string | null>(null);
   
-  // Multi-range support
+  // Computed time properties from store
+  get startHour(): number {
+    const time = this.rangeStore.startTime();
+    return this.parseTime(time).hour;
+  }
+  
+  get startMinute(): number {
+    const time = this.rangeStore.startTime();
+    return this.parseTime(time).minute;
+  }
+  
+  get endHour(): number {
+    const time = this.rangeStore.endTime();
+    return this.parseTime(time).hour;
+  }
+  
+  get endMinute(): number {
+    const time = this.rangeStore.endTime();
+    return this.parseTime(time).minute;
+  }
+  
+  private setStartHourMinute(hour: number, minute: number): void {
+    const timeStr = this.formatTime(hour, minute);
+    this.rangeStore.setStartTime(timeStr);
+  }
+  
+  private setEndHourMinute(hour: number, minute: number): void {
+    const timeStr = this.formatTime(hour, minute);
+    this.rangeStore.setEndTime(timeStr);
+  }
+  
+  // Multi-range support (UI-specific)
   selectedRanges = signal<DateRange[]>([]);
   currentRangeIndex = signal<number>(-1);
 
-  // Keyboard navigation
-  focusedDay = signal<{ date: string; monthIndex: number } | null>(null); // monthIndex: 0 = previous, 1 = current
+  // Keyboard navigation (UI-specific)
+  focusedDay = signal<{ date: string; monthIndex: number } | null>(null);
   
   // Computed values
   currentMonthName = computed(() => this.getMonthName(this.currentMonth()));
   previousMonthName = computed(() => this.getMonthName(this.previousMonth()));
   weekDayNames = computed(() => this.getDayNames());
+  
+  // Computed from store
+  dateRangeText = computed(() => this.rangeStore.rangeText());
+  selectingStartDate = computed(() => this.rangeStore.selectingStart());
+  hasPendingChanges = computed(() => this.rangeStore.hasPendingChanges());
+  
+  // Computed for template access to pending dates (requireApply mode)
+  get pendingStartDate(): string {
+    // In requireApply mode, store keeps pending values
+    // For now, use actual store values as pending (store handles this)
+    if (!this.requireApply) return '';
+    const date = this.rangeStore.startDate();
+    return date && this.hasPendingChanges() ? this.formatDate(date) : '';
+  }
+  
+  get pendingEndDate(): string {
+    if (!this.requireApply) return '';
+    const date = this.rangeStore.endDate();
+    return date && this.hasPendingChanges() ? this.formatDate(date) : '';
+  }
 
   private readonly defaultMonthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
   private readonly defaultMonthNamesShort = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -139,10 +198,10 @@ export class DualDatepickerComponent implements OnInit, OnChanges, ControlValueA
   private onTouched: () => void = () => {};
 
   constructor(private elementRef: ElementRef) {
-    // Effect to emit changes when dates change
+    // Effect to emit changes when dates change in store
     effect(() => {
-      const range = this.dateRangeText();
-      if (this.startDate || this.endDate) {
+      const range = this.rangeStore.range();
+      if (range.start || range.end) {
         this.onChange(this.getDateRangeValue());
       }
     });
@@ -478,31 +537,55 @@ export class DualDatepickerComponent implements OnInit, OnChanges, ControlValueA
   }
 
   ngOnInit(): void {
-    // Initialize time picker with default times
-    if (this.enableTimePicker) {
-      const startTime = this.parseTime(this.defaultStartTime);
-      this.startHour = startTime.hour;
-      this.startMinute = startTime.minute;
-      
-      const endTime = this.parseTime(this.defaultEndTime);
-      this.endHour = endTime.hour;
-      this.endMinute = endTime.minute;
+    // Configure the headless store
+    this.rangeStore.configure({
+      enableTimePicker: this.enableTimePicker,
+      defaultStartTime: this.defaultStartTime,
+      defaultEndTime: this.defaultEndTime,
+      disabledDates: this.disabledDates
+    });
+    
+    // Initialize dates in store if provided
+    if (this.startDate) {
+      const date = this.dateAdapter.parse(this.startDate);
+      if (date) this.rangeStore.setStart(date);
+    }
+    if (this.endDate) {
+      const date = this.dateAdapter.parse(this.endDate);
+      if (date) this.rangeStore.setEnd(date);
     }
     
     if (this.startDate && this.endDate) {
-      this.updateDateRangeText();
       this.generateCalendars();
     }
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['startDate'] || changes['endDate']) {
-      if (this.startDate && this.endDate) {
-        this.updateDateRangeText();
-        this.generateCalendars();
-      } else if (!this.startDate && !this.endDate) {
-        this.dateRangeText.set('');
+      // Sync with store
+      if (changes['startDate'] && this.startDate) {
+        const date = this.dateAdapter.parse(this.startDate);
+        if (date) this.rangeStore.setStart(date);
       }
+      if (changes['endDate'] && this.endDate) {
+        const date = this.dateAdapter.parse(this.endDate);
+        if (date) this.rangeStore.setEnd(date);
+      }
+      
+      if (this.startDate && this.endDate) {
+        this.generateCalendars();
+      }
+    }
+    
+    // Update store configuration if relevant inputs change
+    if (changes['enableTimePicker'] || changes['defaultStartTime'] || 
+        changes['defaultEndTime'] || changes['disabledDates']) {
+      this.rangeStore.configure({
+        enableTimePicker: this.enableTimePicker,
+        defaultStartTime: this.defaultStartTime,
+        defaultEndTime: this.defaultEndTime,
+        disabledDates: this.disabledDates
+      });
     }
   }
 
@@ -545,20 +628,16 @@ export class DualDatepickerComponent implements OnInit, OnChanges, ControlValueA
     return formatted;
   }
 
+  // Note: updateDateRangeText is now handled by computed dateRangeText from store
+  // Keeping this method for backward compatibility but it's a no-op
   updateDateRangeText(): void {
-    if (this.startDate && this.endDate) {
-      const start = this.formatDateDisplay(this.startDate);
-      const end = this.formatDateDisplay(this.endDate);
-      this.dateRangeText.set(`${start} - ${end}`);
-    } else {
-      this.dateRangeText.set('');
-    }
+    // Text is now automatically computed from store.rangeText()
   }
 
   toggleDatePicker(): void {
     this.showDatePicker.update(value => !value);
     if (this.showDatePicker()) {
-      this.selectingStartDate.set(true);
+      // selectingStart is managed by store, no need to set here
       const currentMonthValue = this.currentMonth();
       const year = this.dateAdapter.getYear(currentMonthValue);
       const month = this.dateAdapter.getMonth(currentMonthValue);
@@ -609,11 +688,16 @@ export class DualDatepickerComponent implements OnInit, OnChanges, ControlValueA
       const dayDate = this.dateAdapter.createDate(year, month, day);
       const dateStr = this.formatDate(dayDate);
       
-      // Check if date is in pending range (for requireApply mode)
-      const isPendingStart = this.requireApply && this.pendingStartDate === dateStr;
-      const isPendingEnd = this.requireApply && this.pendingEndDate === dateStr;
-      const inPendingRange = this.requireApply && this.pendingStartDate && this.pendingEndDate &&
-                             dateStr >= this.pendingStartDate && dateStr <= this.pendingEndDate;
+       // Get pending dates from store (for requireApply mode)
+      const pendingStart = this.rangeStore.startDate(); // In pending mode, store holds pending values
+      const pendingEnd = this.rangeStore.endDate();
+      const pendingStartStr = pendingStart ? this.formatDate(pendingStart) : '';
+      const pendingEndStr = pendingEnd ? this.formatDate(pendingEnd) : '';
+      
+      const isPendingStart = this.requireApply && pendingStartStr === dateStr;
+      const isPendingEnd = this.requireApply && pendingEndStr === dateStr;
+      const inPendingRange = this.requireApply && pendingStartStr && pendingEndStr &&
+                             dateStr >= pendingStartStr && dateStr <= pendingEndStr;
       
       // Check if date is in hover preview range
       const inHoverRange = this.isInHoverRange(dateStr);
@@ -670,24 +754,29 @@ export class DualDatepickerComponent implements OnInit, OnChanges, ControlValueA
     // In multiRange mode, only show hover preview when selecting end date
     if (this.multiRange) {
       if (this.selectingStartDate()) return false;
-      if (!this.startDate) return false;
-      const minDate = this.startDate < hover ? this.startDate : hover;
-      const maxDate = this.startDate > hover ? this.startDate : hover;
+      const currentStart = this.startDate;
+      if (!currentStart) return false;
+      const minDate = currentStart < hover ? currentStart : hover;
+      const maxDate = currentStart > hover ? currentStart : hover;
       return dateStr >= minDate && dateStr <= maxDate;
     } else {
-      // In single range mode with requireApply
+      // In single range mode  
+      if (this.selectingStartDate()) return false;
+      
       if (this.requireApply) {
-        if (this.selectingStartDate()) return false;
-        if (!this.pendingStartDate) return false;
-        const minDate = this.pendingStartDate < hover ? this.pendingStartDate : hover;
-        const maxDate = this.pendingStartDate > hover ? this.pendingStartDate : hover;
+        // Use pending dates from store
+        const pendingStart = this.rangeStore.startDate();
+        if (!pendingStart) return false;
+        const pendingStartStr = this.formatDate(pendingStart);
+        const minDate = pendingStartStr < hover ? pendingStartStr : hover;
+        const maxDate = pendingStartStr > hover ? pendingStartStr : hover;
         return dateStr >= minDate && dateStr <= maxDate;
       } else {
-        // In single range mode without requireApply
-        if (this.selectingStartDate()) return false;
-        if (!this.startDate) return false;
-        const minDate = this.startDate < hover ? this.startDate : hover;
-        const maxDate = this.startDate > hover ? this.startDate : hover;
+        // Use actual dates
+        const currentStart = this.startDate;
+        if (!currentStart) return false;
+        const minDate = currentStart < hover ? currentStart : hover;
+        const maxDate = currentStart > hover ? currentStart : hover;
         return dateStr >= minDate && dateStr <= maxDate;
       }
     }
@@ -709,27 +798,32 @@ export class DualDatepickerComponent implements OnInit, OnChanges, ControlValueA
 
   selectDay(dayObj: any): void {
     if (!dayObj.isCurrentMonth || this.isDisabled() || dayObj.isDisabled) return;
+    
+    const selectedDate = this.dateAdapter.parse(dayObj.date);
+    if (!selectedDate) return;
 
     if (this.multiRange) {
       // Multi-range mode: add ranges to array
       if (this.selectingStartDate()) {
-        this.startDate = dayObj.date;
-        this.endDate = '';
-        this.dateRangeText.set('');
-        this.selectingStartDate.set(false);
+        this.rangeStore.setStart(selectedDate);
+        this.rangeStore.setEnd(null);
       } else {
-        if (dayObj.date < this.startDate) {
-          this.endDate = this.startDate;
-          this.startDate = dayObj.date;
+        const currentStart = this.rangeStore.startDate();
+        if (currentStart && selectedDate < currentStart) {
+          // Swap: selected becomes start, current start becomes end
+          this.rangeStore.setStart(selectedDate);
+          this.rangeStore.setEnd(currentStart);
         } else {
-          this.endDate = dayObj.date;
+          this.rangeStore.setEnd(selectedDate);
         }
         
         // Add the new range to the array
+        const range = this.rangeStore.range();
         const newRange: DateRange = {
-          startDate: this.startDate,
-          endDate: this.endDate,
-          rangeText: this.formatDateDisplay(this.startDate) + ' – ' + this.formatDateDisplay(this.endDate)
+          startDate: range.start,
+          endDate: range.end,
+          rangeText: this.formatDateDisplay(range.start) + ' – ' + this.formatDateDisplay(range.end),
+          ...(this.enableTimePicker && { startTime: range.startTime, endTime: range.endTime })
         };
         
         const currentRanges = [...this.selectedRanges()];
@@ -737,9 +831,7 @@ export class DualDatepickerComponent implements OnInit, OnChanges, ControlValueA
         this.selectedRanges.set(currentRanges);
         
         // Reset for next range selection
-        this.startDate = '';
-        this.endDate = '';
-        this.selectingStartDate.set(true);
+        this.rangeStore.reset();
         
         // Update display text
         this.updateMultiRangeText();
@@ -754,45 +846,42 @@ export class DualDatepickerComponent implements OnInit, OnChanges, ControlValueA
       }
       this.generateCalendars();
     } else {
-      // Single range mode (original behavior)
+      // Single range mode
       if (this.requireApply) {
         // Apply mode: use pending dates, don't emit until Apply is clicked
         if (this.selectingStartDate()) {
-          this.pendingStartDate = dayObj.date;
-          this.pendingEndDate = '';
-          this.selectingStartDate.set(false);
-          this.hasPendingChanges.set(true);
+          this.rangeStore.setPendingStart(selectedDate);
+          this.rangeStore.setPendingEnd(null);
         } else {
-          if (dayObj.date < this.pendingStartDate) {
-            this.pendingEndDate = this.pendingStartDate;
-            this.pendingStartDate = dayObj.date;
+          const pendingStart = this.rangeStore.startDate();
+          if (pendingStart && selectedDate < pendingStart) {
+            // Swap
+            this.rangeStore.setPendingStart(selectedDate);
+            this.rangeStore.setPendingEnd(pendingStart);
           } else {
-            this.pendingEndDate = dayObj.date;
+            this.rangeStore.setPendingEnd(selectedDate);
           }
-          this.selectingStartDate.set(true);
-          this.hasPendingChanges.set(true);
         }
         this.generateCalendars();
       } else {
         // Immediate mode: emit changes immediately
         if (this.selectingStartDate()) {
-          this.startDate = dayObj.date;
-          this.endDate = '';
-          this.dateRangeText.set('');
-          this.selectingStartDate.set(false);
+          this.rangeStore.setStart(selectedDate);
+          this.rangeStore.setEnd(null);
           this.emitChange();
         } else {
-          if (dayObj.date < this.startDate) {
-            this.endDate = this.startDate;
-            this.startDate = dayObj.date;
+          const currentStart = this.rangeStore.startDate();
+          if (currentStart && selectedDate < currentStart) {
+            // Swap
+            this.rangeStore.setStart(selectedDate);
+            this.rangeStore.setEnd(currentStart);
           } else {
-            this.endDate = dayObj.date;
+            this.rangeStore.setEnd(selectedDate);
           }
-          this.updateDateRangeText();
+          
           if (this.closeOnSelection) {
             this.showDatePicker.set(false);
           }
-          this.selectingStartDate.set(true);
           this.emitChange();
           this.emitSelection();
         }
@@ -804,15 +893,8 @@ export class DualDatepickerComponent implements OnInit, OnChanges, ControlValueA
   applySelection(): void {
     if (!this.hasPendingChanges()) return;
     
-    // Apply pending dates
-    this.startDate = this.pendingStartDate;
-    this.endDate = this.pendingEndDate;
-    this.updateDateRangeText();
-    
-    // Clear pending state
-    this.pendingStartDate = '';
-    this.pendingEndDate = '';
-    this.hasPendingChanges.set(false);
+    // Apply pending dates through store
+    this.rangeStore.applyPending();
     
     // Emit changes
     this.emitChange();
@@ -820,15 +902,11 @@ export class DualDatepickerComponent implements OnInit, OnChanges, ControlValueA
     
     // Close picker
     this.showDatePicker.set(false);
-    this.selectingStartDate.set(true);
   }
 
   cancelSelection(): void {
-    // Discard pending changes
-    this.pendingStartDate = '';
-    this.pendingEndDate = '';
-    this.hasPendingChanges.set(false);
-    this.selectingStartDate.set(true);
+    // Discard pending changes through store
+    this.rangeStore.cancelPending();
     
     // Regenerate calendars to clear pending visual state
     this.generateCalendars();
@@ -864,9 +942,13 @@ export class DualDatepickerComponent implements OnInit, OnChanges, ControlValueA
     }
 
     const range = preset.getValue();
-    this.startDate = range.start;
-    this.endDate = range.end;
-    this.updateDateRangeText();
+    const startDate = this.dateAdapter.parse(range.start);
+    const endDate = this.dateAdapter.parse(range.end);
+    
+    if (startDate && endDate) {
+      this.rangeStore.setRange(startDate, endDate);
+    }
+    
     this.generateCalendars();
     if (this.closeOnPresetSelection) {
       this.showDatePicker.set(false);
@@ -875,11 +957,8 @@ export class DualDatepickerComponent implements OnInit, OnChanges, ControlValueA
   }
 
   clear(): void {
-    this.startDate = '';
-    this.endDate = '';
-    this.dateRangeText.set('');
+    this.rangeStore.reset();
     this.showDatePicker.set(false);
-    this.selectingStartDate.set(true);
     
     if (this.multiRange) {
       this.selectedRanges.set([]);
@@ -908,40 +987,37 @@ export class DualDatepickerComponent implements OnInit, OnChanges, ControlValueA
   
   private updateMultiRangeText(): void {
     const count = this.selectedRanges().length;
-    if (count === 0) {
-      this.dateRangeText.set('');
-    } else if (count === 1) {
-      this.dateRangeText.set('1 range selected');
-    } else {
-      this.dateRangeText.set(`${count} ranges selected`);
-    }
+    // Note: dateRangeText is now computed from store, this is for multi-range UI only
+    // We could store this in a separate signal if needed, but for now just track ranges count
   }
 
   private emitChange(): void {
+    const storeRange = this.rangeStore.range();
     const range: DateRange = {
-      startDate: this.startDate,
-      endDate: this.endDate,
+      startDate: storeRange.start,
+      endDate: storeRange.end,
       rangeText: this.dateRangeText()
     };
     
     if (this.enableTimePicker) {
-      range.startTime = this.formatTime(this.startHour, this.startMinute);
-      range.endTime = this.formatTime(this.endHour, this.endMinute);
+      range.startTime = storeRange.startTime;
+      range.endTime = storeRange.endTime;
     }
     
     this.dateRangeChange.emit(range);
   }
 
   private emitSelection(): void {
+    const storeRange = this.rangeStore.range();
     const range: DateRange = {
-      startDate: this.startDate,
-      endDate: this.endDate,
+      startDate: storeRange.start,
+      endDate: storeRange.end,
       rangeText: this.dateRangeText()
     };
     
     if (this.enableTimePicker) {
-      range.startTime = this.formatTime(this.startHour, this.startMinute);
-      range.endTime = this.formatTime(this.endHour, this.endMinute);
+      range.startTime = storeRange.startTime;
+      range.endTime = storeRange.endTime;
     }
     
     this.dateRangeSelected.emit(range);
@@ -960,15 +1036,16 @@ export class DualDatepickerComponent implements OnInit, OnChanges, ControlValueA
   }
 
   private getDateRangeValue(): DateRange {
+    const storeRange = this.rangeStore.range();
     const range: DateRange = {
-      startDate: this.startDate,
-      endDate: this.endDate,
+      startDate: storeRange.start,
+      endDate: storeRange.end,
       rangeText: this.dateRangeText()
     };
     
     if (this.enableTimePicker) {
-      range.startTime = this.formatTime(this.startHour, this.startMinute);
-      range.endTime = this.formatTime(this.endHour, this.endMinute);
+      range.startTime = storeRange.startTime;
+      range.endTime = storeRange.endTime;
     }
     
     return range;
@@ -988,79 +1065,71 @@ export class DualDatepickerComponent implements OnInit, OnChanges, ControlValueA
   }
 
   incrementStartHour(): void {
-    this.startHour = (this.startHour + 1) % 24;
-    if (this.requireApply) {
-      this.hasPendingChanges.set(true);
-    } else {
+    const newHour = (this.startHour + 1) % 24;
+    this.setStartHourMinute(newHour, this.startMinute);
+    if (!this.requireApply) {
       this.emitChange();
     }
   }
 
   decrementStartHour(): void {
-    this.startHour = this.startHour === 0 ? 23 : this.startHour - 1;
-    if (this.requireApply) {
-      this.hasPendingChanges.set(true);
-    } else {
+    const newHour = this.startHour === 0 ? 23 : this.startHour - 1;
+    this.setStartHourMinute(newHour, this.startMinute);
+    if (!this.requireApply) {
       this.emitChange();
     }
   }
 
   incrementStartMinute(): void {
-    this.startMinute = (this.startMinute + this.minuteStep) % 60;
-    if (this.requireApply) {
-      this.hasPendingChanges.set(true);
-    } else {
+    const newMinute = (this.startMinute + this.minuteStep) % 60;
+    this.setStartHourMinute(this.startHour, newMinute);
+    if (!this.requireApply) {
       this.emitChange();
     }
   }
 
   decrementStartMinute(): void {
-    this.startMinute = this.startMinute - this.minuteStep;
-    if (this.startMinute < 0) {
-      this.startMinute = 60 - this.minuteStep;
+    let newMinute = this.startMinute - this.minuteStep;
+    if (newMinute < 0) {
+      newMinute = 60 - this.minuteStep;
     }
-    if (this.requireApply) {
-      this.hasPendingChanges.set(true);
-    } else {
+    this.setStartHourMinute(this.startHour, newMinute);
+    if (!this.requireApply) {
       this.emitChange();
     }
   }
 
   incrementEndHour(): void {
-    this.endHour = (this.endHour + 1) % 24;
-    if (this.requireApply) {
-      this.hasPendingChanges.set(true);
-    } else {
+    const newHour = (this.endHour + 1) % 24;
+    this.setEndHourMinute(newHour, this.endMinute);
+    if (!this.requireApply) {
       this.emitChange();
     }
   }
 
   decrementEndHour(): void {
-    this.endHour = this.endHour === 0 ? 23 : this.endHour - 1;
-    if (this.requireApply) {
-      this.hasPendingChanges.set(true);
-    } else {
+    const newHour = this.endHour === 0 ? 23 : this.endHour - 1;
+    this.setEndHourMinute(newHour, this.endMinute);
+    if (!this.requireApply) {
       this.emitChange();
     }
   }
 
   incrementEndMinute(): void {
-    this.endMinute = (this.endMinute + this.minuteStep) % 60;
-    if (this.requireApply) {
-      this.hasPendingChanges.set(true);
-    } else {
+    const newMinute = (this.endMinute + this.minuteStep) % 60;
+    this.setEndHourMinute(this.endHour, newMinute);
+    if (!this.requireApply) {
       this.emitChange();
     }
   }
 
   decrementEndMinute(): void {
-    this.endMinute = this.endMinute - this.minuteStep;
-    if (this.endMinute < 0) {
-      this.endMinute = 60 - this.minuteStep;
+    let newMinute = this.endMinute - this.minuteStep;
+    if (newMinute < 0) {
+      newMinute = 60 - this.minuteStep;
     }
-    if (this.requireApply) {
-      this.hasPendingChanges.set(true);
-    } else {
+    this.setEndHourMinute(this.endHour, newMinute);
+    if (!this.requireApply) {
       this.emitChange();
     }
   }
@@ -1111,30 +1180,24 @@ export class DualDatepickerComponent implements OnInit, OnChanges, ControlValueA
   // ControlValueAccessor implementation
   writeValue(value: DateRange | null): void {
     if (value) {
+      // Use setters which delegate to store
       this.startDate = value.startDate || '';
       this.endDate = value.endDate || '';
       
       if (this.enableTimePicker) {
         if (value.startTime) {
-          const startTime = this.parseTime(value.startTime);
-          this.startHour = startTime.hour;
-          this.startMinute = startTime.minute;
+          this.rangeStore.setStartTime(value.startTime);
         }
         if (value.endTime) {
-          const endTime = this.parseTime(value.endTime);
-          this.endHour = endTime.hour;
-          this.endMinute = endTime.minute;
+          this.rangeStore.setEndTime(value.endTime);
         }
       }
       
       if (this.startDate && this.endDate) {
-        this.updateDateRangeText();
         this.generateCalendars();
       }
     } else {
-      this.startDate = '';
-      this.endDate = '';
-      this.dateRangeText.set('');
+      this.rangeStore.reset();
     }
   }
 

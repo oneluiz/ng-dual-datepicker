@@ -59,11 +59,13 @@ http.get(`/api/sales?start=${range.start}&end=${range.end}`);
 #### Architecture
 
 ```
-Core Logic (NEW)          UI Layer (existing)
-├── DualDateRangeStore    ├── DualDatepickerComponent
-├── PresetEngine          │   ↓ (will consume store in v4.0)
-└── RangeValidator        └── Backward compatible
+Core Logic (v3.5.0)           UI Layer
+├── DualDateRangeStore        ├── DualDatepickerComponent
+├── PresetEngine              │   └─► Uses DualDateRangeStore internally
+└── RangeValidator            └── 100% backward compatible API
 ```
+
+**Component Now Uses Store**: The `DualDatepickerComponent` has been refactored to use `DualDateRangeStore` internally for all state management. This provides cleaner architecture, better testability, and consistent state handling. The public API remains unchanged for backward compatibility.
 
 #### Documentation
 

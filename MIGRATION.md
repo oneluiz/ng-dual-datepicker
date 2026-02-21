@@ -9,13 +9,19 @@ The headless architecture is an **opt-in feature**. You can:
 - Gradually adopt headless patterns where beneficial
 - Mix both approaches in the same app
 
-## What Changed?
+##  What Changed?
 
-### Before (v3.4.0 and below)
+### Internal Architecture (v3.5.0)
 
-All logic lived inside the component:
+The `DualDatepickerComponent` now uses `DualDateRangeStore` internally for state management. This means:
+- ✅ **For end users**: Nothing changes - same API, same behavior
+- ✅ **For developers**: Option to use the store directly in services, guards, resolvers
+- ✅ **Benefit**: Cleaner codebase, better testability, consistent state handling
+
+### Component Usage (Still the same!)
 
 ```typescript
+// Your existing code works unchanged
 <ngx-dual-datepicker
   [startDate]="startDate"
   [endDate]="endDate"
@@ -23,21 +29,15 @@ All logic lived inside the component:
 </ngx-dual-datepicker>
 ```
 
-### After (v3.5.0+)
+### New Option: Headless Store
 
-Logic can optionally live in a separate store:
+You can **optionally** use the store directly:
 
 ```typescript
-// Option 1: Keep using component (backward compatible)
-<ngx-dual-datepicker
-  [startDate]="startDate"
-  [endDate]="endDate"
-  (dateRangeChange)="onRangeChange($event)">
-</ngx-dual-datepicker>
-
-// Option 2: Use headless store (NEW)
+// NEW: Use store in services, without UI component
 const rangeStore = inject(DualDateRangeStore);
 rangeStore.applyPreset('THIS_MONTH');
+const range = rangeStore.range(); // { start: '2026-02-01', end: '2026-02-28' }
 ```
 
 ## Migration Patterns
