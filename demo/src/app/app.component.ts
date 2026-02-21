@@ -1,7 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { DualDatepickerComponent, DateRange, MultiDateRange, PresetConfig, CommonPresets, ThemeType } from '../../../src/public-api';
+import { DualDatepickerComponent, DateRange, MultiDateRange, PresetConfig, ThemeType } from '../../../src/public-api';
 
 @Component({
   selector: 'app-root',
@@ -20,9 +20,8 @@ export class AppComponent {
   // Example 1: Basic
   example1Range: DateRange | null = null;
 
-  // Example 2: With custom presets
+  // Example 2: Using built-in presets
   example2Range: DateRange | null = null;
-  customPresets: PresetConfig[] = CommonPresets.simple;
 
   // Example 3: With custom colors (GitHub style)
   example3Range: DateRange | null = null;
@@ -51,9 +50,8 @@ export class AppComponent {
   // Example 10: Date Adapter System
   example10Range: DateRange | null = null;
 
-  // Example 11: CommonPresets - Financial/Reporting
+  // Example 11: Built-in Presets
   example11Range: DateRange | null = null;
-  financialPresets = CommonPresets.financial;
 
   // Example 12: Multi-Range Support (NEW v2.7.0 - DIFFERENTIATOR!)
   example12MultiRange: MultiDateRange | null = null;

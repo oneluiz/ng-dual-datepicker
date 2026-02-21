@@ -2688,7 +2688,7 @@ const isDisabled = validator.isDateDisabled('2026-01-15', disabledDatesArray);</
                     <li><code>.format()</code> → <code>.toISODate()</code></li>
                   </ul>
                 </li>
-                <li><strong>Legacy files removed</strong> - Duplicate files have been cleaned up (use imports from <code>@oneluiz/dual-datepicker</code> instead)</li>
+                <li><strong>Legacy files removed</strong> - Duplicate files have been cleaned up (use imports from <code>&#64;oneluiz/dual-datepicker</code> instead)</li>
               </ul>
             </div>
 
@@ -2746,18 +2746,18 @@ import {{'{'}}{{'}'}}
   DateAdapter,
   RangePresetPlugin,
   provideCustomPresets
-{{'}'}} from '@oneluiz/dual-datepicker';
+{{'}'}} from '&#64;oneluiz/dual-datepicker';
 
 // ❌ Avoid internal imports
-// import {{'{'}}{{'}'}} CalendarGridFactory {{'}'}} from '@oneluiz/dual-datepicker/core/internal';</pre>
+// import {{'{'}}{{'}'}} CalendarGridFactory {{'}'}} from '&#64;oneluiz/dual-datepicker/core/internal';</pre>
 
             <h3>3. Replace Deprecated Utilities</h3>
             <p>If using <code>preset-utils</code> (removed), migrate to preset plugins:</p>
             <pre class="code-example">// ❌ Before (v3.x - deprecated)
-import {{'{'}}{{'}'}} PresetUtils {{'}'}} from '@oneluiz/dual-datepicker/preset-utils';
+import {{'{'}}{{'}'}} PresetUtils {{'}'}} from '&#64;oneluiz/dual-datepicker/preset-utils';
 
 // ✅ After (v4.0 - use plugins)
-import {{'{'}}{{'}'}} RangePresetPlugin, PresetRegistry {{'}'}} from '@oneluiz/dual-datepicker';
+import {{'{'}}{{'}'}} RangePresetPlugin, PresetRegistry {{'}'}} from '&#64;oneluiz/dual-datepicker';
 
 const myPreset: RangePresetPlugin = {{'{'}}{{'}'}}
   key: 'MY_CUSTOM',
