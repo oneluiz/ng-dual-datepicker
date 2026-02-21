@@ -79,6 +79,9 @@ export class DualDateRangeStore {
     } catch {
       this.adapter = new NativeDateAdapter();
     }
+
+    // Update _rightMonth to correct value after adapter is available
+    this._rightMonth.set(this.getNextMonth(new Date()));
   }
 
   // Configuration
@@ -92,7 +95,7 @@ export class DualDateRangeStore {
   private _startDate = signal<Date | null>(null);
   private _endDate = signal<Date | null>(null);
   private _leftMonth = signal<Date>(new Date());
-  private _rightMonth = signal<Date>(this.getNextMonth(new Date()));
+  private _rightMonth = signal<Date>(new Date()); // Temporary value, updated in constructor
   private _selectingStart = signal<boolean>(true);
 
   // Time state
@@ -388,7 +391,7 @@ export class DualDateRangeStore {
   private formatDateShort(date: Date): string {
     const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     const month = this.adapter.getMonth(date);
-    const day = this.adapter.getDay(date);
+    const day = this.adapter.getDate(date);  // FIX: use getDate() not getDay()
     return `${day} ${months[month]}`;
   }
 }
