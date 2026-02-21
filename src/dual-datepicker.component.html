@@ -65,7 +65,7 @@
           }
         </div>
         <div class="date-picker-days">
-          @for (dayObj of previousMonthDays(); track dayObj.date || $index) {
+          @for (dayObj of previousMonthVisibleDays(); track dayObj.date || $index) {
             <button 
               type="button"
               class="date-picker-day" 
@@ -111,7 +111,7 @@
           }
         </div>
         <div class="date-picker-days">
-          @for (dayObj of currentMonthDays(); track dayObj.date || $index) {
+          @for (dayObj of currentMonthVisibleDays(); track dayObj.date || $index) {
             <button 
               type="button"
               class="date-picker-day" 

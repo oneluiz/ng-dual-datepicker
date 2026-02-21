@@ -6,7 +6,7 @@ import { NativeDateAdapter } from './native-date-adapter';
 import { DualDateRangeStore } from './core/dual-date-range.store';
 import { PresetRegistry } from './core/preset-registry';
 import { BUILT_IN_PRESETS } from './core/built-in-presets';
-import { CalendarGridCache, CalendarGrid, CalendarCell, RangeHighlighterCache, DecoratedCell } from './core/calendar-grid';
+import { CalendarGridCache, CalendarGrid, CalendarCell, RangeHighlighterCache, DecoratedCell, VirtualWeeksConfig, getVisibleWeeks, navigateWeekWindow, isVirtualWeeksEnabled } from './core/calendar-grid';
 
 export interface DateRange {
   startDate: string;
@@ -116,6 +116,26 @@ export class DualDatepickerComponent implements OnInit, OnChanges, ControlValueA
   @Input() minuteStep: number = 15; // Step for minute selector (1, 5, 15, 30)
   @Input() defaultStartTime: string = '00:00'; // Default start time HH:mm
   @Input() defaultEndTime: string = '23:59'; // Default end time HH:mm
+  
+  /**
+   * Virtual Weeks Configuration (v3.9.0+)
+   * 
+   * Enables windowed rendering to reduce DOM complexity and improve mobile performance.
+   * Only renders a subset of calendar weeks instead of all 6.
+   * 
+   * Example: `{ windowSize: 3 }` renders only 3 weeks (21 cells) instead of 6 weeks (42 cells),
+   * reducing DOM nodes by ~50% per calendar.
+   * 
+   * @default undefined (disabled - renders all 6 weeks for backward compatibility)
+   * 
+   * Example:
+   * ```html
+   * <ngx-dual-datepicker
+   *   [virtualWeeks]="{ windowSize: 3 }">
+   * </ngx-dual-datepicker>
+   * ```
+   */
+  @Input() virtualWeeks?: VirtualWeeksConfig;
 
   @Output() dateRangeChange = new EventEmitter<DateRange>();
   @Output() dateRangeSelected = new EventEmitter<DateRange>();
@@ -144,6 +164,68 @@ export class DualDatepickerComponent implements OnInit, OnChanges, ControlValueA
   showStartTimePicker = signal(false);
   showEndTimePicker = signal(false);
   hoverDate = signal<string | null>(null);
+  
+  /**
+   * Virtual Weeks State (v3.9.0+)
+   * 
+   * Signals to track which week window is currently visible for each calendar.
+   * - weekStart = 0: Shows first N weeks (windowSize)
+   * - weekStart = 1: Shows weeks 1 to N+1, etc.
+   * 
+   * Reset to 0 when month changes for consistent UX.
+   */
+  previousMonthWeekStart = signal(0);
+  currentMonthWeekStart = signal(0);
+  
+  /**
+   * Computed: Visible weeks for windowed rendering (v3.9.0+)
+   * 
+   * If virtualWeeks is enabled, returns only the visible subset of weeks.
+   * Otherwise, returns all weeks for backward compatibility.
+   * 
+   * Example: If windowSize=3 and weekStart=0, returns first 3 weeks (rows 0-2).
+   */
+  previousMonthVisibleDays = computed(() => {
+    const allDays = this.previousMonthDays();
+    if (!this.virtualWeeks || !isVirtualWeeksEnabled(this.virtualWeeks.windowSize, 6)) {
+      return allDays;
+    }
+    
+    // Calendar has 6 weeks (42 cells = 7 days × 6 weeks)
+    const allWeeks: any[][] = [];
+    for (let i = 0; i < 6; i++) {
+      allWeeks.push(allDays.slice(i * 7, (i + 1) * 7));
+    }
+    
+    const visibleWeeks = getVisibleWeeks(
+      allWeeks,
+      this.previousMonthWeekStart(),
+      this.virtualWeeks.windowSize
+    );
+    
+    return visibleWeeks.flat();
+  });
+  
+  currentMonthVisibleDays = computed(() => {
+    const allDays = this.currentMonthDays();
+    if (!this.virtualWeeks || !isVirtualWeeksEnabled(this.virtualWeeks.windowSize, 6)) {
+      return allDays;
+    }
+    
+    // Calendar has 6 weeks (42 cells = 7 days × 6 weeks)
+    const allWeeks: any[][] = [];
+    for (let i = 0; i < 6; i++) {
+      allWeeks.push(allDays.slice(i * 7, (i + 1) * 7));
+    }
+    
+    const visibleWeeks = getVisibleWeeks(
+      allWeeks,
+      this.currentMonthWeekStart(),
+      this.virtualWeeks.windowSize
+    );
+    
+    return visibleWeeks.flat();
+  });
   
   // Computed time properties from store
   get startHour(): number {
@@ -688,6 +770,13 @@ export class DualDatepickerComponent implements OnInit, OnChanges, ControlValueA
   generateCalendars(): void {
     this.previousMonthDays.set(this.generateMonthCalendar(this.previousMonth()));
     this.currentMonthDays.set(this.generateMonthCalendar(this.currentMonth()));
+    
+    // Reset virtual week windows when month changes (v3.9.0+)
+    // Always start at first week for consistent UX
+    if (this.virtualWeeks) {
+      this.previousMonthWeekStart.set(0);
+      this.currentMonthWeekStart.set(0);
+    }
   }
 
   /**
@@ -757,6 +846,62 @@ export class DualDatepickerComponent implements OnInit, OnChanges, ControlValueA
     } else {
       if (!this.startDate || !this.endDate) return false;
       return dateStr >= this.startDate && dateStr <= this.endDate;
+    }
+  }
+
+  /**
+   * Virtual Weeks Navigation (v3.9.0+)
+   * 
+   * Navigate the visible week window up/down for windowed rendering.
+   * 
+   * @param monthIndex 0 = previous month, 1 = current month
+   * @param direction -1 = scroll up (previous weeks), +1 = scroll down (next weeks)
+   * 
+   * Example: If windowSize=3 and weekStart=0, navigateWeeks(0, +1) shows weeks 1-3.
+   */
+  navigateWeeks(monthIndex: number, direction: number): void {
+    if (!this.virtualWeeks) return;
+    
+    const totalWeeks = 6; // Standard calendar grid has 6 weeks
+    const currentStart = monthIndex === 0 
+      ? this.previousMonthWeekStart() 
+      : this.currentMonthWeekStart();
+    
+    const newStart = navigateWeekWindow(
+      currentStart,
+      direction,
+      totalWeeks,
+      this.virtualWeeks.windowSize
+    );
+    
+    if (monthIndex === 0) {
+      this.previousMonthWeekStart.set(newStart);
+    } else {
+      this.currentMonthWeekStart.set(newStart);
+    }
+  }
+
+  /**
+   * Check if week navigation is available (v3.9.0+)
+   * 
+   * @param monthIndex 0 = previous month, 1 = current month
+   * @param direction -1 = up (can scroll to previous weeks?), +1 = down (can scroll to next weeks?)
+   * @returns true if navigation is available in that direction
+   */
+  canNavigateWeeks(monthIndex: number, direction: number): boolean {
+    if (!this.virtualWeeks) return false;
+    
+    const totalWeeks = 6;
+    const currentStart = monthIndex === 0 
+      ? this.previousMonthWeekStart() 
+      : this.currentMonthWeekStart();
+    
+    if (direction < 0) {
+      // Can scroll up if not at start
+      return currentStart > 0;
+    } else {
+      // Can scroll down if window doesn't extend past end
+      return currentStart + this.virtualWeeks.windowSize < totalWeeks;
     }
   }
 

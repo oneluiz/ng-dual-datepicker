@@ -11,6 +11,11 @@
  * - RangeHighlighter for decoration logic
  * - RangeHighlighterCache with LRU (48 grids)
  * - Separates grid structure from decorations
+ * 
+ * v3.9.0: Virtual Weeks (Windowed Rendering)
+ * - Virtual-weeks logic for reduced DOM complexity
+ * - Render only visible weeks (configurable window)
+ * - ~50% reduction in DOM nodes with windowSize=3
  *
  * Usage:
  * ```typescript
@@ -23,6 +28,14 @@
  * const decorated = this.highlighterCache.get(grid, {
  *   start, end, hoverDate, disabledDates
  * });
+ * 
+ * // Optional: Windowed rendering (v3.9.0+)
+ * const windowSize = 3; // Render only 3 weeks
+ * const visibleWeeks = getVisibleWeeks(
+ *   decorated.weeks, 
+ *   weekStartIndex, 
+ *   windowSize
+ * );
  * // decorated.cells[0].iso => '2026-02-01'
  * // decorated.cells[0].isInRange => true
  * ```
@@ -34,3 +47,5 @@ export * from './calendar-grid.cache';
 export * from './range-highlighter.types';
 export * from './range-highlighter';
 export * from './range-highlighter.cache';
+export * from './virtual-weeks.types';
+export * from './virtual-weeks.logic';
