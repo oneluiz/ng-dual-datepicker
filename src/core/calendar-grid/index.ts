@@ -16,6 +16,11 @@
  * - Virtual-weeks logic for reduced DOM complexity
  * - Render only visible weeks (configurable window)
  * - ~50% reduction in DOM nodes with windowSize=3
+ * 
+ * v3.9.2: Cache Bounds (Memory Safety)
+ * - MAX_CACHE_ENTRIES = 48 prevents unbounded growth
+ * - FIFO eviction for long-running sessions
+ * - Critical for ERP, BI, hotel systems
  *
  * Usage:
  * ```typescript
@@ -49,3 +54,4 @@ export * from './range-highlighter';
 export * from './range-highlighter.cache';
 export * from './virtual-weeks.types';
 export * from './virtual-weeks.logic';
+export * from './cache.config';

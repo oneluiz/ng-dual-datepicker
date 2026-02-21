@@ -92,25 +92,25 @@ describe('CalendarGridCache', () => {
     test('should evict oldest entry when limit exceeded', () => {
       const cache = new CalendarGridCache(factory);
       
-      // Cache limit is 24 by default
-      // Generate 25 months to force eviction
+      // Cache limit is 48 (v3.9.2)
+      // Generate 49 months to force eviction
       const months: Date[] = [];
-      for (let i = 0; i < 25; i++) {
+      for (let i = 0; i < 49; i++) {
         months.push(makeDate(2026 + Math.floor(i / 12), (i % 12) + 1, 1));
       }
       
-      // Cache all 25 months
+      // Cache all 49 months
       months.forEach(month => cache.get(month, 0));
       
-      // Cache should be at max size (24)
-      assert.equal(cache.size(), 24);
+      // Cache should be at max size (48)
+      assert.equal(cache.size(), 48);
       
       // First month should have been evicted
       const firstMonth = months[0];
       assert.equal(cache.has(firstMonth, 0), false);
       
       // Last month should still be cached
-      const lastMonth = months[24];
+      const lastMonth = months[48];
       assert.equal(cache.has(lastMonth, 0), true);
     });
 

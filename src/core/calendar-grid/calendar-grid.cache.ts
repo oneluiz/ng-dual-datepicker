@@ -7,21 +7,27 @@
  * Strategy:
  * - Key: year-month-weekStart-locale
  * - LRU eviction (least recently used) when limit is reached
- * - Default limit: 24 months (covers 1 year forward + 1 year back)
+ * - Default limit: 48 months (covers 2 years of navigation)
  *
  * Performance impact:
  * - Eliminates ~90% of grid recalculations in typical usage
  * - Memory footprint: ~10KB per cached month (negligible)
+ * 
+ * Memory safety (v3.9.2):
+ * - MAX_CACHE_ENTRIES prevents unbounded growth in long-running sessions
+ * - Critical for: ERP, BI dashboards, hotel reservation systems
+ * - FIFO eviction when limit exceeded
  */
 
 import { Injectable } from '@angular/core';
 import { CalendarGridFactory } from './calendar-grid.factory';
 import { CalendarGrid, CalendarGridCacheKey } from './calendar-grid.types';
+import { MAX_CACHE_ENTRIES } from './cache.config';
 
 @Injectable({ providedIn: 'root' })
 export class CalendarGridCache {
   private cache = new Map<string, CalendarGrid>();
-  private readonly maxSize: number = 24;
+  private readonly maxSize: number = MAX_CACHE_ENTRIES;
 
   constructor(private factory: CalendarGridFactory) {}
 

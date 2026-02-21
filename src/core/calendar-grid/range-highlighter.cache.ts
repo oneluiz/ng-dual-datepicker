@@ -5,7 +5,7 @@
  * Eliminates redundant decoration computations when range/constraints don't change.
  * 
  * @module core/calendar-grid/range-highlighter.cache
- * @version 3.8.0
+ * @version 3.9.2
  */
 
 import { Injectable, Inject } from '@angular/core';
@@ -13,6 +13,7 @@ import { DateAdapter, DATE_ADAPTER } from '../date-adapter';
 import { CalendarGrid } from './calendar-grid.types';
 import { DecoratedGrid, RangeDecorationParams, DecoratedGridCacheKey } from './range-highlighter.types';
 import { RangeHighlighter } from './range-highlighter';
+import { MAX_CACHE_ENTRIES } from './cache.config';
 
 /**
  * Range Highlighter Cache
@@ -21,7 +22,7 @@ import { RangeHighlighter } from './range-highlighter';
  * 
  * Cache strategy:
  * - LRU eviction (Map preserves insertion order)
- * - Max 48 entries (~1-2 years of decorated grids)
+ * - Max 48 entries (v3.9.2: Memory safety for long-running sessions)
  * - Key: month + start + end + hover + disabled signature
  * 
  * Performance:
@@ -29,10 +30,11 @@ import { RangeHighlighter } from './range-highlighter';
  * - Cache miss: ~1ms (decoration + store)
  * - Hit rate: Expected >80% in typical usage
  * 
- * Memory:
- * - ~15KB per decorated grid
- * - Max 48 grids = ~720KB
- * - Auto-eviction prevents leaks
+ * Memory safety (v3.9.2):
+ * - MAX_CACHE_ENTRIES prevents unbounded growth
+ * - Critical for: ERP, BI dashboards, hotel systems
+ * - FIFO eviction when limit exceeded
+ * - ~720KB max memory footprint
  * 
  * Edge cases handled:
  * - Function predicates: Not cacheable (recompute every time)
@@ -55,7 +57,7 @@ import { RangeHighlighter } from './range-highlighter';
 @Injectable({ providedIn: 'root' })
 export class RangeHighlighterCache {
   private cache = new Map<string, DecoratedGrid>();
-  private maxSize = 48; // ~1-2 years of decorated grids
+  private maxSize = MAX_CACHE_ENTRIES;
 
   constructor(
     private highlighter: RangeHighlighter,
