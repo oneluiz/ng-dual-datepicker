@@ -494,7 +494,7 @@
       <aside class="docs-sidebar">
         <nav class="sidebar-nav">
           <div class="sidebar-section">
-            <h6 class="section-title">Getting Started</h6>
+            <h6 class="section-title">Quick Start</h6>
             <ul class="section-links">
               <li>
                 <button class="sidebar-link" (click)="scrollToExample('example-1')">
@@ -511,14 +511,25 @@
                   GitHub Style
                 </button>
               </li>
+            </ul>
+          </div>
+
+          <div class="sidebar-section">
+            <h6 class="section-title">Latest Features</h6>
+            <ul class="section-links">
               <li>
-                <button class="sidebar-link" (click)="scrollToExample('example-theming')">
-                  <span class="badge-new">v3.3.0</span> Theming System
+                <button class="sidebar-link" (click)="scrollToExample('example-timepicker')">
+                  🕐 Time Picker <span class="badge-new">v3.4.0</span>
                 </button>
               </li>
               <li>
-                <button class="sidebar-link" (click)="scrollToExample('example-timepicker')">
-                  <span class="badge-new">v3.4.0</span> Time Picker
+                <button class="sidebar-link" (click)="scrollToExample('example-theming')">
+                  🎨 Theming System
+                </button>
+              </li>
+              <li>
+                <button class="sidebar-link" (click)="scrollToExample('keyboard-nav')">
+                  ⌨️ Keyboard Navigation
                 </button>
               </li>
             </ul>
@@ -528,8 +539,18 @@
             <h6 class="section-title">Configuration</h6>
             <ul class="section-links">
               <li>
-                <button class="sidebar-link" (click)="scrollToExample('example-4')">
-                  Without Presets
+                <button class="sidebar-link" (click)="scrollToExample('example-15')">
+                  Apply/Confirm Mode
+                </button>
+              </li>
+              <li>
+                <button class="sidebar-link" (click)="scrollToExample('example-13')">
+                  Disabled Dates
+                </button>
+              </li>
+              <li>
+                <button class="sidebar-link" (click)="scrollToExample('example-14')">
+                  Display Format
                 </button>
               </li>
               <li>
@@ -543,8 +564,8 @@
                 </button>
               </li>
               <li>
-                <button class="sidebar-link" (click)="scrollToExample('example-8')">
-                  External Clear
+                <button class="sidebar-link" (click)="scrollToExample('example-4')">
+                  Without Presets
                 </button>
               </li>
               <li>
@@ -559,65 +580,28 @@
             <h6 class="section-title">Advanced</h6>
             <ul class="section-links">
               <li>
-                <button class="sidebar-link" (click)="scrollToExample('example-10')">
-                  Date Adapter
-                </button>
-              </li>
-              <li>
-                <button class="sidebar-link" (click)="scrollToExample('example-11')">
-                  CommonPresets
-                </button>
-              </li>
-              <li>
                 <button class="sidebar-link" (click)="scrollToExample('example-12')">
                   Multi-Range Support
                 </button>
               </li>
-            </ul>
-          </div>
-
-          <div class="sidebar-section">
-            <h6 class="section-title">v3.2.0, v3.3.0, v3.4.0 & v3.5.0 Features</h6>
-            <ul class="section-links">
               <li>
-                <button class="sidebar-link" (click)="scrollToExample('example-13')">
-                  🚫 Disabled Dates
-                  <span class="badge-new">NEW</span>
+                <button class="sidebar-link" (click)="scrollToExample('example-10')">
+                  Date Adapters
                 </button>
               </li>
               <li>
-                <button class="sidebar-link" (click)="scrollToExample('example-14')">
-                  🎨 Display Format
-                  <span class="badge-new">NEW</span>
+                <button class="sidebar-link" (click)="scrollToExample('example-11')">
+                  CommonPresets Utils
                 </button>
               </li>
               <li>
-                <button class="sidebar-link" (click)="scrollToExample('example-15')">
-                  ✅ Apply Button
-                  <span class="badge-new">NEW</span>
+                <button class="sidebar-link" (click)="scrollToExample('example-8')">
+                  External Control
                 </button>
               </li>
               <li>
                 <button class="sidebar-link" (click)="scrollToExample('example-16')">
-                  🎨 Hover Preview
-                  <span class="badge-new">NEW</span>
-                </button>
-              </li>
-              <li>
-                <button class="sidebar-link" (click)="scrollToExample('example-headless')">
-                  🏗️ Headless Architecture
-                  <span class="badge-new">v3.5.0</span>
-                </button>
-              </li>
-            </ul>
-          </div>
-
-          <div class="sidebar-section">
-            <h6 class="section-title">v3.1.0 Features</h6>
-            <ul class="section-links">
-              <li>
-                <button class="sidebar-link" (click)="scrollToExample('keyboard-nav')">
-                  ⌨️ Keyboard Navigation
+                  Hover Preview
                 </button>
               </li>
             </ul>
@@ -759,7 +743,7 @@
 
           <!-- Example Theming: Theming System -->
           <div class="example-card" id="example-theming">
-            <h2><span class="badge-new">v3.3.0</span> Theming System</h2>
+            <h2>🎨 Theming System</h2>
             <p class="example-description">
               Apply built-in themes to match popular CSS frameworks. Choose from Bootstrap, Bulma, Foundation, Tailwind CSS, or create your own with CSS variables.
             </p>
@@ -1152,22 +1136,7 @@
                 <li>✅ Easy range management - add/remove with one click</li>
                 <li>✅ Perfect for complex scheduling scenarios</li>
                 <li>✅ Real-world business need</li>
-                <li>❌ <strong>Angular Material CANNOT do this!</strong></li>
-                <li>❌ <strong>Most date pickers CANNOT do this!</strong></li>
               </ul>
-              <div class="material-comparison">
-                <p class="comparison-title">📊 Feature Comparison</p>
-                <div class="comparison">
-                  <div class="our-feature">
-                    <span class="feature-name">ng-dual-datepicker</span>
-                    <span class="feature-value">✅ Multi-Range</span>
-                  </div>
-                  <div class="their-feature">
-                    <span class="feature-name">Angular Material</span>
-                    <span class="feature-value">❌ Single Range Only</span>
-                  </div>
-                </div>
-              </div>
             </div>
             <div class="code-block">
               <pre>{{ codeExamples.multiRange }}</pre>
@@ -1250,19 +1219,6 @@
                 <li>✅ Cannot be selected via mouse or keyboard</li>
                 <li>✅ Perfect for business days, holidays, blockout dates</li>
               </ul>
-              <div class="material-comparison">
-                <p class="comparison-title">📊 Feature Comparison</p>
-                <div class="comparison">
-                  <div class="our-feature">
-                    <span class="feature-name">ng-dual-datepicker</span>
-                    <span class="feature-value">✅ Flexible Disabled Dates</span>
-                  </div>
-                  <div class="their-feature">
-                    <span class="feature-name">Angular Material</span>
-                    <span class="feature-value">⚠️ Limited Support</span>
-                  </div>
-                </div>
-              </div>
             </div>
             <div class="code-block">
               <pre>{{ codeExamples.disabledDates }}</pre>
@@ -1371,19 +1327,6 @@
                 <li>✅ <strong>Custom Separators</strong> - Use /, -, dots, spaces, commas</li>
                 <li>✅ <strong>Mix Tokens</strong> - Create any format combination</li>
               </ul>
-              <div class="material-comparison">
-                <p class="comparison-title">📊 Feature Comparison</p>
-                <div class="comparison">
-                  <div class="our-feature">
-                    <span class="feature-name">ng-dual-datepicker</span>
-                    <span class="feature-value">✅ Flexible Format</span>
-                  </div>
-                  <div class="their-feature">
-                    <span class="feature-name">Angular Material</span>
-                    <span class="feature-value">⚠️ DateAdapter Required</span>
-                  </div>
-                </div>
-              </div>
             </div>
             <div class="code-block">
               <pre>{{ codeExamples.displayFormat }}</pre>
@@ -1442,19 +1385,6 @@
                 <li>💰 <strong>Financial systems</strong> - Complex data processing</li>
                 <li>📉 <strong>BI Tools</strong> - Heavy database queries</li>
               </ul>
-              <div class="material-comparison">
-                <p class="comparison-title">📊 Feature Comparison</p>
-                <div class="comparison">
-                  <div class="our-feature">
-                    <span class="feature-name">ng-dual-datepicker</span>
-                    <span class="feature-value">✅ Apply/Confirm</span>
-                  </div>
-                  <div class="their-feature">
-                    <span class="feature-name">Angular Material</span>
-                    <span class="feature-value">❌ Not Available</span>
-                  </div>
-                </div>
-              </div>
             </div>
             <div class="code-block">
               <pre>{{ codeExamples.requireApply }}</pre>
@@ -1510,19 +1440,6 @@
                 <li>👁️ <strong>70% opacity</strong> - Subtle, non-intrusive preview</li>
                 <li>🌈 <strong>Different from selected</strong> - Clear visual distinction</li>
               </ul>
-              <div class="material-comparison">
-                <p class="comparison-title">📊 Feature Comparison</p>
-                <div class="comparison">
-                  <div class="our-feature">
-                    <span class="feature-name">ng-dual-datepicker</span>
-                    <span class="feature-value">✅ Hover Preview</span>
-                  </div>
-                  <div class="their-feature">
-                    <span class="feature-name">Angular Material</span>
-                    <span class="feature-value">❌ Not Available</span>
-                  </div>
-                </div>
-              </div>
             </div>
             <div class="code-block">
               <pre>{{ codeExamples.hoverPreview }}</pre>
@@ -1608,14 +1525,23 @@
             <ul class="section-links">
               <li>
                 <button class="sidebar-link" (click)="scrollToSection('preset-system')">
-                  <span class="badge-new">NEW</span>
                   Preset System
                 </button>
               </li>
               <li>
                 <button class="sidebar-link" (click)="scrollToSection('multi-range')">
-                  <span class="badge-new">NEW</span>
                   Multi-Range Support
+                </button>
+              </li>
+            </ul>
+          </div>
+
+          <div class="sidebar-section">
+            <h6 class="section-title">Resources</h6>
+            <ul class="section-links">
+              <li>
+                <button class="sidebar-link" (click)="scrollToSection('roadmap')">
+                  Roadmap
                 </button>
               </li>
             </ul>
@@ -1785,7 +1711,7 @@
                 <span class="a11y-icon">✅</span>
                 <div>
                   <strong>Full keyboard navigation</strong>
-                  <p><span class="badge-new">NEW v3.1.0</span> Complete keyboard control with 8 shortcuts</p>
+                  <p>Complete keyboard control with 8 shortcuts</p>
                   <ul class="a11y-details">
                     <li>✅ Arrow keys: Navigate days & weeks</li>
                     <li>✅ Enter/Space: Select focused day</li>
@@ -2383,7 +2309,7 @@ export class BookingComponent &#123;
                     <td><code>enableKeyboardNavigation</code></td>
                     <td><code>boolean</code></td>
                     <td><code>true</code></td>
-                    <td><span class="badge-new">v3.1.0</span> Enable/disable keyboard navigation (arrow keys, Enter, Escape, etc.)</td>
+                    <td>Enable/disable keyboard navigation (arrow keys, Enter, Escape, etc.)</td>
                   </tr>
                   <tr>
                     <td><code>locale</code></td>
