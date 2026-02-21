@@ -5,6 +5,217 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.0.0] - 2026-02-21
+
+### 🚨 BREAKING CHANGES
+
+#### Internal APIs No Longer Exported
+
+Internal implementation details are no longer exported from the main barrel file (`@oneluiz/dual-datepicker`). This improves tree-shaking and reduces bundle size for consumers.
+
+**Affected APIs:**
+- `CalendarGridFactory`, `CalendarGridCache`
+- `RangeHighlighter`, `RangeHighlighterCache`
+- `VirtualWeeksEngine`, `GridCache`
+- Testing utilities (`FixedClock`, date helpers)
+
+**Migration:**
+- Use public API exports from `@oneluiz/dual-datepicker`
+- Do NOT import from `@oneluiz/dual-datepicker/core/internal`
+- If you need internal APIs, consider using the public headless store instead
+
+#### DateAdapter Method Renames
+
+Methods have been renamed for clarity and consistency:
+
+| Old Method | New Method | Notes |
+|------------|------------|-------|
+| `.parse(str)` | `.parseISODate(str)` | Parses ISO string to Date |
+| `.createDate(y, m, d)` | `.normalize(new Date(y, m, d))` | Creates normalized date |
+| `.today()` | `.normalize(new Date())` | Gets current date |
+| `.format(date, 'yyyy-MM-dd')` | `.toISODate(date)` | Formats date to ISO string |
+
+**Migration:**
+```typescript
+// Before (v3.x)
+const date = adapter.parse('2026-01-15');
+const today = adapter.today();
+
+// After (v4.0)
+const date = adapter.parseISODate('2026-01-15');
+const today = adapter.normalize(new Date());
+```
+
+#### Legacy Files Removed
+
+The following duplicate files have been removed:
+- `src/date-adapter.ts` → Use `@oneluiz/dual-datepicker` (from public API)
+- `src/native-date-adapter.ts` → Use `NativeDateAdapter` from public API
+- `src/preset-utils.ts` → Use preset plugins (introduced in v3.6.0)
+
+### ✨ Features
+
+#### Formalized Public API
+
+New barrel exports provide a clear, stable public API contract:
+
+**`src/core/public.ts`** - Public API exports:
+- `DualDateRangeStore` - Headless store for custom UIs
+- `DateAdapter`, `DATE_ADAPTER`, `NativeDateAdapter` - Date abstraction
+- `RangePresetPlugin`, `PresetRegistry`, `BUILT_IN_PRESETS` - Preset system
+- `provideCustomPresets()`, `providePresetPackage()` - DI providers
+- `validateRangeOrder()`, `applyBounds()` - Validation utilities
+- `PresetEngine` - Preset resolution engine
+
+**`src/core/internal.ts`** - Internal implementation (for component use only):
+- Calendar grid system
+- Range highlighter system
+- Virtual weeks logic
+- Testing utilities
+
+All public exports are fully documented with JSDoc comments.
+
+#### Optimized npm Package
+
+The published package now excludes development artifacts:
+
+**Excluded:**
+- `demo/` - Demo application source
+- `docs/` - GitHub Pages documentation
+- `src/` - Library source code (only compiled output included)
+- `testing/` - Test infrastructure
+- `.github/` - CI/CD workflows
+
+**Included:**
+- `fesm2022/`, `esm2022/` - Compiled bundles (ES2022)
+- `*.d.ts`, `*.metadata.json` - TypeScript definitions
+- `themes/` - SCSS theme files
+- `README.md`, `LICENSE`, `THEMING.md` - Documentation
+
+**Package Size:** 250.7 KB compressed, 1.1 MB unpacked (42 files)
+
+**Previous Size:** ~500 KB compressed (demo/docs included)
+
+**Size Reduction:** ~50%
+
+#### Better Tree-Shaking
+
+- Pure ESM bundles with proper sideEffects configuration
+- Separate entry points for public/internal APIs
+- No circular dependencies
+- Optimized for modern bundlers (Webpack 5, Vite, esbuild)
+
+### 📦 Package Scripts
+
+New scripts for package verification:
+
+```bash
+# Dry-run npm pack and show file list
+npm run pack:check
+
+# Create .tgz and inspect contents
+npm run pack:verify
+```
+
+### 🧪 Tests
+
+- **208 tests passing** (4 intentionally skipped)
+- All existing functionality preserved
+- No logic changes, only import path updates
+
+### 📚 Documentation
+
+- Public API fully documented with JSDoc
+- Breaking changes documented in this CHANGELOG
+- Migration guide included above
+
+---
+
+## [3.9.3] - 2026-02-21
+
+### 🔒 Stability
+
+#### Anti-Recompute Guard
+
+Added 10 golden tests documenting cache behavior to prevent future regressions:
+
+- Same parameters always return same instance (`===`)
+- Changing any parameter triggers new computation
+- Null/undefined parameters handled correctly
+- Disabled dates array changes trigger recomputation
+- Function predicates bypass cache (recompute every time)
+- Prevents recompute storm (100 identical calls = 1 computation)
+- Cache key is deterministic (property order doesn't matter)
+
+Tests ensure that:
+- `CalendarGridCache` never recomputes for cached months
+- `RangeHighlighterCache` never recomputes for cached decorations
+- Cache behavior is deterministic across all scenarios
+
+---
+
+## [3.9.2] - 2026-02-21
+
+### 🔒 Stability
+
+#### Cache Bounds Configuration
+
+Formalized cache size limits to prevent memory issues:
+
+```typescript
+// src/core/calendar-grid/cache.config.ts
+export const MAX_CACHE_ENTRIES = 48;
+```
+
+**Rationale:**
+- Previous limit: 100 entries
+- New limit: 48 entries (~1.5 years of calendar data)
+- Conservative threshold balances memory and performance
+- LRU eviction ensures hot data stays cached
+- Covers typical use cases (date range selection across multiple months)
+
+Tests verify:
+- Cache evicts oldest entry when limit exceeded
+- LRU policy keeps frequently accessed entries
+- Cache size never exceeds `MAX_CACHE_ENTRIES`
+
+---
+
+## [3.9.1] - 2026-02-21
+
+### 🔒 Stability
+
+#### Golden Tests - Semantic Freeze
+
+Added 39 golden tests to freeze semantics and prevent regressions:
+
+**Built-in Presets:**
+- `TODAY`, `YESTERDAY`, `LAST_7_DAYS`, `LAST_30_DAYS`
+- `THIS_WEEK`, `THIS_MONTH`, `LAST_MONTH`, `THIS_YEAR`
+- Deterministic behavior (multiple calls return same result)
+- All dates normalized to start of day
+
+**DateAdapter:**
+- `addMonths()` - Month overflow handling (Jan 31 + 1 month = Feb 28/29)
+- `isSameDay()` - Time component isolation
+- `toISODate()` - Timezone independence
+- `parseISODate()` - Deterministic parsing
+
+**Store Validation:**
+- `applyBounds()` - Min/max enforcement
+- Range order validation - Store rejects `end < start` (does not swap)
+- Equal dates allowed (single-day range)
+
+**Determinism & SSR-Safety:**
+- Same input produces same output
+- No `window`/`document` dependencies
+- Presets work without DOM
+- Normalized dates do not retain references
+
+All tests are marked as "GOLDEN" or "SEMANTICS" to indicate frozen behavior.
+
+---
+
 ## [3.6.0] - 2026-02-21
 
 ### 🔌 Enterprise Feature: Plugin-Driven Preset Architecture

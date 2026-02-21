@@ -1,12 +1,26 @@
 import { Component, Input, Output, EventEmitter, OnInit, OnChanges, SimpleChanges, HostListener, ElementRef, forwardRef, signal, computed, effect, inject, APP_INITIALIZER } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { DateAdapter, DATE_ADAPTER } from './date-adapter';
-import { NativeDateAdapter } from './native-date-adapter';
-import { DualDateRangeStore } from './core/dual-date-range.store';
-import { PresetRegistry } from './core/preset-registry';
-import { BUILT_IN_PRESETS } from './core/built-in-presets';
-import { CalendarGridCache, CalendarGrid, CalendarCell, RangeHighlighterCache, DecoratedCell, VirtualWeeksConfig, getVisibleWeeks, navigateWeekWindow, isVirtualWeeksEnabled } from './core/calendar-grid';
+
+// Public API imports
+import { DateAdapter, DATE_ADAPTER } from './core/public';
+import { NativeDateAdapter } from './core/public';
+import { DualDateRangeStore } from './core/public';
+import { PresetRegistry } from './core/public';
+import { BUILT_IN_PRESETS } from './core/public';
+
+// Internal API imports (component implementation)
+import {
+  CalendarGridCache,
+  CalendarGrid,
+  CalendarCell,
+  RangeHighlighterCache,
+  DecoratedCell,
+  VirtualWeeksConfig,
+  getVisibleWeeks,
+  navigateWeekWindow,
+  isVirtualWeeksEnabled
+} from './core/internal';
 
 export interface DateRange {
   startDate: string;
@@ -73,7 +87,7 @@ export class DualDatepickerComponent implements OnInit, OnChanges, ControlValueA
   @Input() placeholder: string = 'Select date range';
   @Input() set startDate(value: string) {
     if (value) {
-      const date = this.dateAdapter.parse(value);
+      const date = this.dateAdapter.parseISODate(value);
       if (date) this.rangeStore.setStart(date);
     }
   }
@@ -84,7 +98,7 @@ export class DualDatepickerComponent implements OnInit, OnChanges, ControlValueA
   
   @Input() set endDate(value: string) {
     if (value) {
-      const date = this.dateAdapter.parse(value);
+      const date = this.dateAdapter.parseISODate(value);
       if (date) this.rangeStore.setEnd(date);
     }
   }
@@ -156,8 +170,8 @@ export class DualDatepickerComponent implements OnInit, OnChanges, ControlValueA
 
   // UI-only signals
   showDatePicker = signal(false);
-  currentMonth = signal(this.dateAdapter.today());
-  previousMonth = signal(this.dateAdapter.today());
+  currentMonth = signal(this.dateAdapter.normalize(new Date()));
+  previousMonth = signal(this.dateAdapter.normalize(new Date()));
   currentMonthDays = signal<any[]>([]);
   previousMonthDays = signal<any[]>([]);
   isDisabled = signal(false);
@@ -413,7 +427,7 @@ export class DualDatepickerComponent implements OnInit, OnChanges, ControlValueA
         this.focusedDay.set({ date: this.startDate, monthIndex: inPrevMonth ? 0 : 1 });
       } else {
         // startDate is not visible, focus on today if visible
-        const today = this.dateAdapter.format(this.dateAdapter.today(), 'yyyy-MM-dd');
+        const today = this.dateAdapter.toISODate(this.dateAdapter.normalize(new Date()));
         const inCurrMonth = this.isDateInMonth(today, this.currentMonth());
         
         if (inCurrMonth) {
@@ -434,7 +448,7 @@ export class DualDatepickerComponent implements OnInit, OnChanges, ControlValueA
         this.focusedDay.set({ date: this.endDate, monthIndex: inPrevMonth ? 0 : 1 });
       } else {
         // endDate is not visible, focus on today if visible
-        const today = this.dateAdapter.format(this.dateAdapter.today(), 'yyyy-MM-dd');
+        const today = this.dateAdapter.toISODate(this.dateAdapter.normalize(new Date()));
         const inCurrMonth = this.isDateInMonth(today, this.currentMonth());
         
         if (inCurrMonth) {
@@ -449,7 +463,7 @@ export class DualDatepickerComponent implements OnInit, OnChanges, ControlValueA
       }
     } else {
       // Focus on today if visible, otherwise first day of current month
-      const today = this.dateAdapter.format(this.dateAdapter.today(), 'yyyy-MM-dd');
+      const today = this.dateAdapter.toISODate(this.dateAdapter.normalize(new Date()));
       const inCurrMonth = this.isDateInMonth(today, this.currentMonth());
       
       if (inCurrMonth) {
@@ -466,7 +480,7 @@ export class DualDatepickerComponent implements OnInit, OnChanges, ControlValueA
   }
 
   private isDateInMonth(dateStr: string, monthDate: Date): boolean {
-    const date = this.dateAdapter.parse(dateStr);
+    const date = this.dateAdapter.parseISODate(dateStr);
     if (!date) return false;
     const year = this.dateAdapter.getYear(date);
     const month = this.dateAdapter.getMonth(date);
@@ -482,7 +496,7 @@ export class DualDatepickerComponent implements OnInit, OnChanges, ControlValueA
       return;
     }
 
-    const currentDate = this.dateAdapter.parse(focused.date);
+    const currentDate = this.dateAdapter.parseISODate(focused.date);
     if (!currentDate) return;
 
     const newDate = this.dateAdapter.addDays(currentDate, direction);
@@ -523,7 +537,7 @@ export class DualDatepickerComponent implements OnInit, OnChanges, ControlValueA
       return;
     }
 
-    const currentDate = this.dateAdapter.parse(focused.date);
+    const currentDate = this.dateAdapter.parseISODate(focused.date);
     if (!currentDate) return;
 
     const newDate = this.dateAdapter.addDays(currentDate, direction * 7); // Move by week
@@ -580,19 +594,19 @@ export class DualDatepickerComponent implements OnInit, OnChanges, ControlValueA
       return;
     }
 
-    const currentDate = this.dateAdapter.parse(focused.date);
+    const currentDate = this.dateAdapter.parseISODate(focused.date);
     if (!currentDate) return;
 
     const currentYear = this.dateAdapter.getYear(currentDate);
     const currentMonth = this.dateAdapter.getMonth(currentDate);
     const currentDay = this.dateAdapter.getDate(currentDate);
     
-    const newDate = this.dateAdapter.createDate(currentYear + direction, currentMonth, currentDay);
+    const newDate = this.dateAdapter.normalize(new Date(currentYear + direction, currentMonth, currentDay));
     const newDateStr = this.formatDate(newDate);
 
     // Update months to show the new year
-    this.currentMonth.set(this.dateAdapter.createDate(currentYear + direction, currentMonth, 1));
-    this.previousMonth.set(this.dateAdapter.createDate(currentYear + direction, currentMonth - 1, 1));
+    this.currentMonth.set(this.dateAdapter.normalize(new Date(currentYear + direction, currentMonth, 1)));
+    this.previousMonth.set(this.dateAdapter.normalize(new Date(currentYear + direction, currentMonth - 1, 1)));
     this.generateCalendars();
 
     const inPrevMonth = this.isDateInMonth(newDateStr, this.previousMonth());
@@ -649,11 +663,11 @@ export class DualDatepickerComponent implements OnInit, OnChanges, ControlValueA
     
     // Initialize dates in store if provided
     if (this.startDate) {
-      const date = this.dateAdapter.parse(this.startDate);
+      const date = this.dateAdapter.parseISODate(this.startDate);
       if (date) this.rangeStore.setStart(date);
     }
     if (this.endDate) {
-      const date = this.dateAdapter.parse(this.endDate);
+      const date = this.dateAdapter.parseISODate(this.endDate);
       if (date) this.rangeStore.setEnd(date);
     }
     
@@ -666,11 +680,11 @@ export class DualDatepickerComponent implements OnInit, OnChanges, ControlValueA
     if (changes['startDate'] || changes['endDate']) {
       // Sync with store
       if (changes['startDate'] && this.startDate) {
-        const date = this.dateAdapter.parse(this.startDate);
+        const date = this.dateAdapter.parseISODate(this.startDate);
         if (date) this.rangeStore.setStart(date);
       }
       if (changes['endDate'] && this.endDate) {
-        const date = this.dateAdapter.parse(this.endDate);
+        const date = this.dateAdapter.parseISODate(this.endDate);
         if (date) this.rangeStore.setEnd(date);
       }
       
@@ -700,7 +714,7 @@ export class DualDatepickerComponent implements OnInit, OnChanges, ControlValueA
 
   formatDateDisplay(dateStr: string): string {
     if (!dateStr) return '';
-    const date = this.dateAdapter.parse(dateStr);
+    const date = this.dateAdapter.parseISODate(dateStr);
     if (!date) return '';
     
     const year = this.dateAdapter.getYear(date);
@@ -743,7 +757,7 @@ export class DualDatepickerComponent implements OnInit, OnChanges, ControlValueA
       const currentMonthValue = this.currentMonth();
       const year = this.dateAdapter.getYear(currentMonthValue);
       const month = this.dateAdapter.getMonth(currentMonthValue);
-      const previousMonthDate = this.dateAdapter.createDate(year, month - 1, 1);
+      const previousMonthDate = this.dateAdapter.normalize(new Date(year, month - 1, 1));
       this.previousMonth.set(previousMonthDate);
       this.generateCalendars();
       // Initialize keyboard focus only if keyboard navigation is enabled
@@ -975,7 +989,7 @@ export class DualDatepickerComponent implements OnInit, OnChanges, ControlValueA
   selectDay(dayObj: any): void {
     if (!dayObj.isCurrentMonth || this.isDisabled() || dayObj.isDisabled) return;
     
-    const selectedDate = this.dateAdapter.parse(dayObj.date);
+    const selectedDate = this.dateAdapter.parseISODate(dayObj.date);
     if (!selectedDate) return;
 
     if (this.multiRange) {
@@ -1092,12 +1106,12 @@ export class DualDatepickerComponent implements OnInit, OnChanges, ControlValueA
     const currentMonthValue = this.currentMonth();
     const year = this.dateAdapter.getYear(currentMonthValue);
     const month = this.dateAdapter.getMonth(currentMonthValue);
-    const newCurrentMonth = this.dateAdapter.createDate(year, month + direction, 1);
+    const newCurrentMonth = this.dateAdapter.normalize(new Date(year, month + direction, 1));
     this.currentMonth.set(newCurrentMonth);
     
     const newYear = this.dateAdapter.getYear(newCurrentMonth);
     const newMonth = this.dateAdapter.getMonth(newCurrentMonth);
-    const newPreviousMonth = this.dateAdapter.createDate(newYear, newMonth - 1, 1);
+    const newPreviousMonth = this.dateAdapter.normalize(new Date(newYear, newMonth - 1, 1));
     this.previousMonth.set(newPreviousMonth);
     this.generateCalendars();
   }
@@ -1118,8 +1132,8 @@ export class DualDatepickerComponent implements OnInit, OnChanges, ControlValueA
     }
 
     const range = preset.getValue();
-    const startDate = this.dateAdapter.parse(range.start);
-    const endDate = this.dateAdapter.parse(range.end);
+    const startDate = this.dateAdapter.parseISODate(range.start);
+    const endDate = this.dateAdapter.parseISODate(range.end);
     
     if (startDate && endDate) {
       this.rangeStore.setRange(startDate, endDate);

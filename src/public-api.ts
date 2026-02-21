@@ -1,17 +1,62 @@
 /**
  * Public API Surface of @oneluiz/dual-datepicker
+ * 
+ * v4.0.0: Formalized Public API
+ * - Only stable, documented APIs are exported
+ * - Internal implementation details removed
+ * - Backward compatibility maintained where possible
+ * 
+ * @public
+ * @packageDocumentation
+ * @module @oneluiz/dual-datepicker
  */
 
+// ============================================================================
+// UI COMPONENT
+// ============================================================================
+
+/**
+ * DualDatepickerComponent - Main Angular component
+ * 
+ * Standalone component for dual-calendar date range selection.
+ * Supports reactive forms, signals, themes, and extensive customization.
+ * 
+ * @public
+ * @since v1.0.0
+ */
 export { DualDatepickerComponent } from './dual-datepicker.component';
-export type { DateRange, MultiDateRange, PresetConfig, PresetRange, LocaleConfig, ThemeType } from './dual-datepicker.component';
 
-// Date Adapter System
-export { DateAdapter, DATE_ADAPTER } from './date-adapter';
-export { NativeDateAdapter } from './native-date-adapter';
+/**
+ * Component Types
+ * 
+ * TypeScript types for component inputs/outputs.
+ * 
+ * @public
+ */
+export type {
+  DateRange,
+  MultiDateRange,
+  PresetConfig,
+  PresetRange,
+  LocaleConfig,
+  ThemeType
+} from './dual-datepicker.component';
 
-// Preset Utilities (deprecated - use core/preset.engine instead)
-export * from './preset-utils';
+// ============================================================================
+// HEADLESS CORE (v3.5.0+)
+// ============================================================================
 
-// NEW v3.5.0: Headless Core - Use without UI
-// Perfect for SSR, global state, dashboard filters
-export * from './core';
+/**
+ * Headless Core API
+ * 
+ * Signal-based headless store, preset plugins, and date adapter system.
+ * Use without UI for:
+ * - SSR applications
+ * - Global state management
+ * - Dashboard filters
+ * - Custom UI implementations
+ * 
+ * @public
+ * @since v3.5.0
+ */
+export * from './core/public';

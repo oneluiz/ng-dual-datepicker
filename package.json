@@ -1,6 +1,6 @@
 {
   "name": "@oneluiz/dual-datepicker",
-  "version": "3.9.3",
+  "version": "4.0.0",
   "description": "A customizable dual-calendar date range picker for Angular 17+ with Reactive Forms, Signals, Headless Architecture, Plugin-Driven Presets, Multi-Range support, Time Picker, and Timezone-Safe Date Adapter",
   "keywords": [
     "angular",
@@ -28,6 +28,16 @@
     "url": "https://github.com/oneluiz/ng-dual-datepicker/issues"
   },
   "homepage": "https://oneluiz.github.io/ng-dual-datepicker/",
+  "files": [
+    "fesm2022/",
+    "esm2022/",
+    "*.d.ts",
+    "*.metadata.json",
+    "themes/",
+    "README.md",
+    "LICENSE",
+    "THEMING.md"
+  ],
   "peerDependencies": {
     "@angular/common": "^17.0.0 || ^18.0.0 || ^19.0.0 || ^20.0.0",
     "@angular/core": "^17.0.0 || ^18.0.0 || ^19.0.0 || ^20.0.0",
@@ -37,6 +47,8 @@
     "build": "ng-packagr -p ng-package.json && npm run postbuild",
     "postbuild": "mkdir -p dist/themes && cp -r dist/src/themes/* dist/themes/",
     "publish:pkg": "cd dist && npm publish --access public",
+    "pack:check": "npm pack --dry-run && echo '\n\n=== Files that would be published ===' && npm pack 2>/dev/null | tail -1 | xargs tar -tzf 2>/dev/null | head -50",
+    "pack:verify": "npm pack && tar -tzf *.tgz | grep -E '\\.(js|d\\.ts|metadata\\.json)$' | head -30 && rm -f *.tgz",
     "demo:serve": "ng serve demo",
     "demo:build": "ng build demo --base-href=/ng-dual-datepicker/ && cd docs && mv browser/* . 2>/dev/null || true && rm -rf browser 2>/dev/null || true && touch .nojekyll && cd ..",
     "test": "npm run test:compile && npm run test:run",
