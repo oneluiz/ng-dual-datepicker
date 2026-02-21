@@ -3,7 +3,7 @@
   <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom sticky-top">
     <div class="container-fluid px-4">
       <!-- Brand -->
-      <a class="navbar-brand d-flex align-items-center gap-2" href="#" (click)="setActiveTab('examples'); $event.preventDefault()">
+      <a class="navbar-brand d-flex align-items-center gap-2" href="#" (click)="setActiveTab('home'); $event.preventDefault()">
         <span class="fs-3">🗓️</span>
         <span class="fw-bold">ng-dual-datepicker</span>
         <span class="badge bg-primary ms-2">v{{ version }}</span>
@@ -20,6 +20,30 @@
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
             <a class="nav-link" 
+               [class.active]="activeTab === 'home'"
+               href="#" 
+               (click)="setActiveTab('home'); $event.preventDefault()">
+              Home
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" 
+               [class.active]="activeTab === 'installation'"
+               href="#" 
+               (click)="setActiveTab('installation'); $event.preventDefault()">
+              Installation
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" 
+               [class.active]="activeTab === 'configuration'"
+               href="#" 
+               (click)="setActiveTab('configuration'); $event.preventDefault()">
+              Configuration
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" 
                [class.active]="activeTab === 'examples'"
                href="#" 
                (click)="setActiveTab('examples'); $event.preventDefault()">
@@ -28,18 +52,34 @@
           </li>
           <li class="nav-item">
             <a class="nav-link" 
-               [class.active]="activeTab === 'api'"
+               [class.active]="activeTab === 'docs'"
                href="#" 
-               (click)="setActiveTab('api'); $event.preventDefault()">
-              API Reference
+               (click)="setActiveTab('docs'); $event.preventDefault()">
+              Documentation
             </a>
           </li>
           <li class="nav-item">
             <a class="nav-link" 
-               [class.active]="activeTab === 'docs'"
+               [class.active]="activeTab === 'api'"
                href="#" 
-               (click)="setActiveTab('docs'); $event.preventDefault()">
-              Docs
+               (click)="setActiveTab('api'); $event.preventDefault()">
+              API
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" 
+               [class.active]="activeTab === 'whats-new'"
+               href="#" 
+               (click)="setActiveTab('whats-new'); $event.preventDefault()">
+              What's New
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" 
+               [class.active]="activeTab === 'migration'"
+               href="#" 
+               (click)="setActiveTab('migration'); $event.preventDefault()">
+              Migration
             </a>
           </li>
         </ul>
@@ -59,8 +99,959 @@
     </div>
   </nav>
 
-  <!-- Content -->
   <main class="demo-content">
+    <!-- Home Tab -->
+    @if (activeTab === 'home') {
+      <div class="home-content fade-in">
+        <!-- Hero Section -->
+        <section class="hero-section">
+          <div class="container py-5">
+            <div class="row justify-content-center">
+              <div class="col-lg-8 col-xl-7 text-center">
+                <div class="hero-badge mb-3">
+                  <span class="badge bg-primary text-white px-3 py-2 rounded-pill fw-semibold">v{{ version }}</span>
+                </div>
+                <div class="display-3 fw-bold mb-4 text-emphasis">
+                  Angular Date Range Picker<br>Built for Modern Apps
+                </div>
+                <p class="lead mb-4 text-body-secondary">
+                  Lightweight, powerful, and fully customizable dual-calendar date range picker for Angular 17+. Zero dependencies, Signals-powered, with plugin-based architecture.
+                </p>
+                <div class="d-flex gap-3 justify-content-center mb-4 flex-wrap">
+                  <button class="btn btn-primary btn-lg px-4" (click)="setActiveTab('examples')">
+                    View Examples
+                  </button>
+                  <button class="btn btn-outline-secondary btn-lg px-4" (click)="setActiveTab('docs')">
+                    Read Docs
+                  </button>
+                </div>
+                <p class="text-muted small mb-3">v{{ version }} · <a href="https://www.npmjs.com/package/@oneluiz/dual-datepicker" target="_blank" class="link-secondary">NPM Package</a> · <a href="https://github.com/oneluiz/ng-dual-datepicker/releases" target="_blank" class="link-secondary">Changelog</a></p>
+                <div class="hero-install d-flex align-items-center gap-2">
+                  <code class="user-select-all flex-grow-1">npm install &#64;oneluiz/dual-datepicker</code>
+                  <button class="btn btn-sm btn-outline-secondary" (click)="copyToClipboard('npm install @oneluiz/dual-datepicker')" title="Copy to clipboard">
+                    <i class="bi bi-clipboard"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Stats Section -->
+        <section class="stats-section py-5 border-bottom">
+          <div class="container">
+            <div class="row g-4 text-center">
+              <div class="col-sm-6 col-lg-3">
+                <div class="d-flex flex-column align-items-center">
+                  <div class="mb-3">
+                    <i class="bi bi-file-earmark-zip text-primary" style="font-size: 2.5rem;"></i>
+                  </div>
+                  <h3 class="h2 fw-bold mb-1">~60 KB</h3>
+                  <p class="text-muted mb-0">Minified + Gzipped</p>
+                </div>
+              </div>
+              <div class="col-sm-6 col-lg-3">
+                <div class="d-flex flex-column align-items-center">
+                  <div class="mb-3">
+                    <i class="bi bi-shield-check text-success" style="font-size: 2.5rem;"></i>
+                  </div>
+                  <h3 class="h2 fw-bold mb-1">Zero</h3>
+                  <p class="text-muted mb-0">Dependencies</p>
+                </div>
+              </div>
+              <div class="col-sm-6 col-lg-3">
+                <div class="d-flex flex-column align-items-center">
+                  <div class="mb-3">
+                    <i class="bi bi-check2-circle text-info" style="font-size: 2.5rem;"></i>
+                  </div>
+                  <h3 class="h2 fw-bold mb-1">208</h3>
+                  <p class="text-muted mb-0">Passing tests</p>
+                </div>
+              </div>
+              <div class="col-sm-6 col-lg-3">
+                <div class="d-flex flex-column align-items-center">
+                  <div class="mb-3">
+                    <i class="bi bi-box-seam text-warning" style="font-size: 2.5rem;"></i>
+                  </div>
+                  <h3 class="h2 fw-bold mb-1">11</h3>
+                  <p class="text-muted mb-0">Public API exports</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Features Grid -->
+        <section class="features-section py-5 bg-light">
+          <div class="container">
+            <div class="row mb-5">
+              <div class="col-lg-8 mx-auto text-center">
+                <h2 class="display-5 fw-bold mb-3">Why choose ng-dual-datepicker?</h2>
+                <p class="lead text-muted">The lightweight, powerful alternative to Angular Material DateRangePicker with modern features and zero dependencies.</p>
+              </div>
+            </div>
+            
+            <div class="row g-4">
+              <div class="col-md-6 col-lg-3">
+                <div class="card h-100 border bg-white">
+                  <div class="card-body text-center p-4">
+                    <div class="mb-3">
+                      <div class="d-inline-flex align-items-center justify-content-center rounded-circle bg-primary bg-opacity-10 p-3">
+                        <i class="bi bi-box text-primary fs-2"></i>
+                      </div>
+                    </div>
+                    <h5 class="card-title fw-bold mb-2">Zero Dependencies</h5>
+                    <p class="card-text text-muted small">No external libraries required. Pure Angular implementation with no bloat.</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-6 col-lg-3">
+                <div class="card h-100 border bg-white">
+                  <div class="card-body text-center p-4">
+                    <div class="mb-3">
+                      <div class="d-inline-flex align-items-center justify-content-center rounded-circle bg-warning bg-opacity-10 p-3">
+                        <i class="bi bi-lightning-charge-fill text-warning fs-2"></i>
+                      </div>
+                    </div>
+                    <h5 class="card-title fw-bold mb-2">Angular Signals</h5>
+                    <p class="card-text text-muted small">Built with modern Angular Signals for optimal reactivity and performance.</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-6 col-lg-3">
+                <div class="card h-100 border bg-white">
+                  <div class="card-body text-center p-4">
+                    <div class="mb-3">
+                      <div class="d-inline-flex align-items-center justify-content-center rounded-circle bg-success bg-opacity-10 p-3">
+                        <i class="bi bi-puzzle text-success fs-2"></i>
+                      </div>
+                    </div>
+                    <h5 class="card-title fw-bold mb-2">Standalone Component</h5>
+                    <p class="card-text text-muted small">No NgModule imports needed. Works out of the box with Angular 17+.</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-6 col-lg-3">
+                <div class="card h-100 border bg-white">
+                  <div class="card-body text-center p-4">
+                    <div class="mb-3">
+                      <div class="d-inline-flex align-items-center justify-content-center rounded-circle bg-info bg-opacity-10 p-3">
+                        <i class="bi bi-palette text-info fs-2"></i>
+                      </div>
+                    </div>
+                    <h5 class="card-title fw-bold mb-2">Fully Customizable</h5>
+                    <p class="card-text text-muted small">Every color, padding, and border is configurable via inputs.</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-6 col-lg-3">
+                <div class="card h-100 border bg-white">
+                  <div class="card-body text-center p-4">
+                    <div class="mb-3">
+                      <div class="d-inline-flex align-items-center justify-content-center rounded-circle bg-primary bg-opacity-10 p-3">
+                        <i class="bi bi-box-seam text-primary fs-2"></i>
+                      </div>
+                    </div>
+                    <h5 class="card-title fw-bold mb-2">Lightweight</h5>
+                    <p class="card-text text-muted small">~60 KB gzipped total bundle. 5x smaller than Material alternatives.</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-6 col-lg-3">
+                <div class="card h-100 border bg-white">
+                  <div class="card-body text-center p-4">
+                    <div class="mb-3">
+                      <div class="d-inline-flex align-items-center justify-content-center rounded-circle bg-success bg-opacity-10 p-3">
+                        <i class="bi bi-universal-access text-success fs-2"></i>
+                      </div>
+                    </div>
+                    <h5 class="card-title fw-bold mb-2">Accessible</h5>
+                    <p class="card-text text-muted small">WCAG 2.1 Level AA compliant with full keyboard navigation.</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-6 col-lg-3">
+                <div class="card h-100 border bg-white position-relative">
+                  <div class="position-absolute top-0 end-0 m-2">
+                    <span class="badge bg-primary rounded-pill">Exclusive</span>
+                  </div>
+                  <div class="card-body text-center p-4">
+                    <div class="mb-3">
+                      <div class="d-inline-flex align-items-center justify-content-center rounded-circle bg-danger bg-opacity-10 p-3">
+                        <i class="bi bi-fire text-danger fs-2"></i>
+                      </div>
+                    </div>
+                    <h5 class="card-title fw-bold mb-2">Multi-Range Support</h5>
+                    <p class="card-text text-muted small">Select UNLIMITED date ranges. Material CAN'T do this!</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-6 col-lg-3">
+                <div class="card h-100 border bg-white position-relative">
+                  <div class="position-absolute top-0 end-0 m-2">
+                    <span class="badge bg-success rounded-pill">Popular</span>
+                  </div>
+                  <div class="card-body text-center p-4">
+                    <div class="mb-3">
+                      <div class="d-inline-flex align-items-center justify-content-center rounded-circle bg-warning bg-opacity-10 p-3">
+                        <i class="bi bi-gear-fill text-warning fs-2"></i>
+                      </div>
+                    </div>
+                    <h5 class="card-title fw-bold mb-2">Flexible Presets</h5>
+                    <p class="card-text text-muted small">Dynamic getValue() pattern. Create any custom date logic.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Comparison Section -->
+        <section class="comparison-section py-5 bg-light">
+          <div class="container">
+            <h2 class="text-center fw-bold mb-3">ng-dual-datepicker vs Angular Material</h2>
+            <p class="text-center text-muted mb-5">See why developers are switching to ng-dual-datepicker</p>
+            
+            <div class="table-responsive">
+              <table class="table table-bordered bg-white">
+                <thead class="table-light">
+                  <tr>
+                    <th scope="col">Feature</th>
+                    <th scope="col" class="text-center text-primary fw-bold">ng-dual-datepicker</th>
+                    <th scope="col" class="text-center text-muted">Angular Material</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row">Bundle Size</th>
+                    <td class="text-center text-success fw-semibold">~60 KB</td>
+                    <td class="text-center text-danger">~300+ KB</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Dependencies</th>
+                    <td class="text-center text-success fw-semibold">Zero</td>
+                    <td class="text-center text-danger">Material + CDK required</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Standalone</th>
+                    <td class="text-center text-success fw-semibold">✅ Native</td>
+                    <td class="text-center text-warning">⚠️ Module setup</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Angular Signals</th>
+                    <td class="text-center text-success fw-semibold">✅ Built-in</td>
+                    <td class="text-center text-danger">❌ Not yet</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Multi-Range</th>
+                    <td class="text-center text-success fw-semibold">✅ Unlimited</td>
+                    <td class="text-center text-danger">❌ Single only</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Setup Time</th>
+                    <td class="text-center text-success fw-semibold">&lt; 1 minute</td>
+                    <td class="text-center text-danger">~10+ minutes</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Customization</th>
+                    <td class="text-center text-success fw-semibold">Full control</td>
+                    <td class="text-center text-muted">Theme-constrained</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Learning Curve</th>
+                    <td class="text-center text-success fw-semibold">Minimal</td>
+                    <td class="text-center text-danger">Requires Material knowledge</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- Quick Start Section -->
+        <section class="quickstart-section py-5">
+          <div class="container">
+            <h2 class="text-center fw-bold mb-3">Get Started in 60 Seconds</h2>
+            <p class="text-center text-muted mb-5">Install, import, and you're ready to go</p>
+            
+            <div class="row g-4">
+              <div class="col-md-4">
+                <div class="card h-100 border">
+                  <div class="card-body">
+                    <div class="d-flex align-items-center mb-3">
+                      <span class="badge bg-primary text-white fs-5 rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">1</span>
+                      <h4 class="ms-3 mb-0 fw-bold">Install</h4>
+                    </div>
+                    <div class="bg-dark text-white p-3 rounded d-flex align-items-center gap-2">
+                      <code class="text-white flex-grow-1">npm install &#64;oneluiz/dual-datepicker</code>
+                      <button class="btn btn-sm btn-outline-light" (click)="copyToClipboard('npm install @oneluiz/dual-datepicker')" title="Copy to clipboard">
+                        <i class="bi bi-clipboard"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-4">
+                <div class="card h-100 border">
+                  <div class="card-body">
+                    <div class="d-flex align-items-center mb-3">
+                      <span class="badge bg-primary text-white fs-5 rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">2</span>
+                      <h4 class="ms-3 mb-0 fw-bold">Import</h4>
+                    </div>
+                    <div class="bg-dark text-white p-3 rounded" style="font-size: 0.85rem;">
+                      <code class="text-white">import &#123; DualDatepickerComponent &#125; from '&#64;oneluiz/dual-datepicker';
+&#64;Component(&#123;
+  standalone: true,
+  imports: [DualDatepickerComponent],
+  ...
+&#125;)</code>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-4">
+                <div class="card h-100 border">
+                  <div class="card-body">
+                    <div class="d-flex align-items-center mb-3">
+                      <span class="badge bg-primary text-white fs-5 rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">3</span>
+                      <h4 class="ms-3 mb-0 fw-bold">Use</h4>
+                    </div>
+                    <div class="bg-dark text-white p-3 rounded" style="font-size: 0.85rem;">
+                      <code class="text-white">&lt;ngx-dual-datepicker
+  (dateRangeChange)="onDateRangeChange($event)"&gt;
+&lt;/ngx-dual-datepicker&gt;</code>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="text-center mt-5">
+              <button class="btn btn-primary btn-lg px-5 py-3 fw-semibold" (click)="setActiveTab('examples')">
+                Explore 16 Interactive Examples
+                <i class="bi bi-arrow-right ms-2"></i>
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section class="cta-section py-5 bg-primary">
+          <div class="container">
+            <div class="text-center text-white py-5">
+              <div class="mb-4">
+                <span class="badge bg-white text-primary px-4 py-2 mb-3 fw-semibold">Get Started Today</span>
+                <h2 class="display-4 fw-bold mb-3">Ready to Build Better Date Pickers?</h2>
+                <p class="lead mb-0 mx-auto" style="max-width: 600px;">Join thousands of developers who chose simplicity, performance, and flexibility over bloated alternatives.</p>
+              </div>
+              
+              <!-- Stats Row -->
+              <div class="row g-4 mb-5 justify-content-center">
+                <div class="col-6 col-md-3">
+                  <div class="d-flex align-items-center justify-content-center gap-2">
+                    <i class="bi bi-download fs-4"></i>
+                    <div class="text-start">
+                      <div class="h4 mb-0 fw-bold">10K+</div>
+                      <small>Downloads</small>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6 col-md-3">
+                  <div class="d-flex align-items-center justify-content-center gap-2">
+                    <i class="bi bi-star-fill fs-4"></i>
+                    <div class="text-start">
+                      <div class="h4 mb-0 fw-bold">4.9/5</div>
+                      <small>Rating</small>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6 col-md-3">
+                  <div class="d-flex align-items-center justify-content-center gap-2">
+                    <i class="bi bi-lightning-charge-fill fs-4"></i>
+                    <div class="text-start">
+                      <div class="h4 mb-0 fw-bold">&lt;1min</div>
+                      <small>Setup time</small>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6 col-md-3">
+                  <div class="d-flex align-items-center justify-content-center gap-2">
+                    <i class="bi bi-box-seam fs-4"></i>
+                    <div class="text-start">
+                      <div class="h4 mb-0 fw-bold">60KB</div>
+                      <small>Bundle size</small>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- CTA Buttons -->
+              <div class="d-flex gap-3 justify-content-center flex-wrap">
+                <button class="btn btn-light btn-lg px-5 py-3 fw-bold" (click)="setActiveTab('examples')">
+                  <i class="bi bi-grid-3x3-gap me-2"></i>
+                  View Live Examples
+                </button>
+                <a href="https://github.com/oneluiz/ng-dual-datepicker" target="_blank" class="btn btn-outline-light btn-lg px-5 py-3 fw-bold">
+                  <i class="bi bi-github me-2"></i>
+                  Star on GitHub
+                </a>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    }
+
+    <!-- Installation Tab -->
+    @if (activeTab === 'installation') {
+      <div class="docs-main">
+        <div class="tab-content fade-in">
+          <div class="doc-content">
+            <h1 class="mb-4">📦 Installation</h1>
+            
+            <section class="doc-section" id="npm-install">
+              <h2>1. Install Package</h2>
+              <p class="lead">Install ng-dual-datepicker from npm:</p>
+              <div class="code-block position-relative">
+                <pre>npm install &#64;oneluiz/dual-datepicker</pre>
+                <button class="btn btn-sm btn-outline-secondary position-absolute top-0 end-0 m-2" (click)="copyToClipboard('npm install @oneluiz/dual-datepicker')" title="Copy to clipboard">
+                  <i class="bi bi-clipboard"></i>
+                </button>
+              </div>
+            </section>
+
+            <section class="doc-section" id="requirements">
+              <h2>2. Requirements</h2>
+              <ul class="requirements-list">
+                <li><strong>Angular:</strong> Version 17.0.0 or higher</li>
+                <li><strong>TypeScript:</strong> Version 5.0.0 or higher</li>
+                <li><strong>RxJS:</strong> Version 7.5.0 or higher (peer dependency)</li>
+              </ul>
+              <div class="alert alert-info mt-3">
+                <i class="bi bi-info-circle me-2"></i>
+                <strong>Note:</strong> This component uses Angular Signals and requires Angular 17+.
+              </div>
+            </section>
+
+            <section class="doc-section" id="standalone-setup">
+              <h2>3. Setup (Standalone Component)</h2>
+              <p>Import the component directly in your Angular standalone component:</p>
+              <div class="code-block">
+                <pre><code class="language-typescript">import &#123; Component &#125; from '&#64;angular/core';
+import &#123; DualDatepickerComponent &#125; from '&#64;oneluiz/dual-datepicker';
+
+&#64;Component(&#123;
+  selector: 'app-my-component',
+  standalone: true,
+  imports: [DualDatepickerComponent],
+  template: `
+    &lt;ngx-dual-datepicker
+      (dateRangeChange)="onDateRangeChange($event)"&gt;
+    &lt;/ngx-dual-datepicker&gt;
+  `
+&#125;)
+export class MyComponent &#123;
+  onDateRangeChange(range: DateRange) &#123;
+    console.log('Selected range:', range);
+  &#125;
+&#125;</code></pre>
+              </div>
+            </section>
+
+            <section class="doc-section" id="minimal-example">
+              <h2>4. Minimal Working Example</h2>
+              <p>Here's a complete minimal example:</p>
+              <div class="code-block">
+                <pre><code class="language-typescript">// app.component.ts
+import &#123; Component &#125; from '&#64;angular/core';
+import &#123; DualDatepickerComponent, DateRange &#125; from '&#64;oneluiz/dual-datepicker';
+
+&#64;Component(&#123;
+  selector: 'app-root',
+  standalone: true,
+  imports: [DualDatepickerComponent],
+  template: `
+    &lt;div class="container"&gt;
+      &lt;h1&gt;Date Range Picker&lt;/h1&gt;
+      &lt;ngx-dual-datepicker
+        (dateRangeChange)="selectedRange = $event"&gt;
+      &lt;/ngx-dual-datepicker&gt;
+      
+      &#64;if (selectedRange) &#123;
+        &lt;p&gt;Selected: &#123;&#123; selectedRange.start | date &#125;&#125; - &#123;&#123; selectedRange.end | date &#125;&#125;&lt;/p&gt;
+      &#125;
+    &lt;/div&gt;
+  `
+&#125;)
+export class AppComponent &#123;
+  selectedRange: DateRange | null = null;
+&#125;</code></pre>
+              </div>
+            </section>
+
+            <section class="doc-section" id="next-steps">
+              <h2>5. Next Steps</h2>
+              <div class="next-steps-grid">
+                <div class="next-step-card">
+                  <h3><i class="bi bi-palette text-primary"></i> Configuration</h3>
+                  <p>Learn how to customize colors, themes, and styling options.</p>
+                  <button class="btn btn-sm btn-primary" (click)="setActiveTab('configuration')">
+                    Go to Configuration
+                    <i class="bi bi-arrow-right ms-1"></i>
+                  </button>
+                </div>
+                <div class="next-step-card">
+                  <h3><i class="bi bi-code-square text-success"></i> Examples</h3>
+                  <p>Browse 16 interactive examples with copy-paste code.</p>
+                  <button class="btn btn-sm btn-success" (click)="setActiveTab('examples')">
+                    View Examples
+                    <i class="bi bi-arrow-right ms-1"></i>
+                  </button>
+                </div>
+                <div class="next-step-card">
+                  <h3><i class="bi bi-book text-info"></i> Documentation</h3>
+                  <p>Explore presets, adapters, disabled dates, and more.</p>
+                  <button class="btn btn-sm btn-info" (click)="setActiveTab('docs')">
+                    Read Docs
+                    <i class="bi bi-arrow-right ms-1"></i>
+                  </button>
+                </div>
+              </div>
+            </section>
+          </div>
+        </div>
+      </div>
+    }
+
+    <!-- Configuration Tab -->
+    @if (activeTab === 'configuration') {
+      <!-- Sidebar Navigation -->
+      <aside class="docs-sidebar">
+        <nav class="sidebar-nav">
+          <div class="sidebar-section">
+            <h6 class="section-title">Styling</h6>
+            <ul class="section-links">
+              <li>
+                <button class="sidebar-link" (click)="scrollToSection('css-variables')">
+                  CSS Variables
+                </button>
+              </li>
+              <li>
+                <button class="sidebar-link" (click)="scrollToSection('background-theme')">
+                  Background & Theme
+                </button>
+              </li>
+              <li>
+                <button class="sidebar-link" (click)="scrollToSection('color-customization')">
+                  Colors
+                </button>
+              </li>
+            </ul>
+          </div>
+          
+          <div class="sidebar-section">
+            <h6 class="section-title">Component Inputs</h6>
+            <ul class="section-links">
+              <li>
+                <button class="sidebar-link" (click)="scrollToSection('main-inputs')">
+                  Main Inputs
+                </button>
+              </li>
+              <li>
+                <button class="sidebar-link" (click)="scrollToSection('locale-config')">
+                  Locale & i18n
+                </button>
+              </li>
+              <li>
+                <button class="sidebar-link" (click)="scrollToSection('preset-config')">
+                  Presets
+                </button>
+              </li>
+            </ul>
+          </div>
+          
+          <div class="sidebar-section">
+            <h6 class="section-title">Examples</h6>
+            <ul class="section-links">
+              <li>
+                <button class="sidebar-link" (click)="scrollToSection('theme-examples')">
+                  Complete Themes
+                </button>
+              </li>
+            </ul>
+          </div>
+        </nav>
+      </aside>
+
+      <!-- Main Content -->
+      <div class="docs-main">
+        <div class="tab-content fade-in">
+          <div class="doc-content">
+            <h1 class="mb-4">⚙️ Configuration</h1>
+            <p class="lead">Complete guide to customizing ng-dual-datepicker's appearance and behavior.</p>
+
+            <section class="doc-section" id="css-variables">
+              <h2>🎨 CSS Variables (Design Tokens)</h2>
+              <p>The component exposes CSS custom properties for complete theme control.</p>
+              
+              <h3>Available CSS Variables</h3>
+              <div class="table-responsive">
+                <table class="table table-bordered">
+                  <thead class="table-light">
+                    <tr>
+                      <th>Variable Name</th>
+                      <th>Description</th>
+                      <th>Default Value</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><code>--ddp-bg-color</code></td>
+                      <td>Main background color</td>
+                      <td><code>#ffffff</code></td>
+                    </tr>
+                    <tr>
+                      <td><code>--ddp-text-color</code></td>
+                      <td>Primary text color</td>
+                      <td><code>#333333</code></td>
+                    </tr>
+                    <tr>
+                      <td><code>--ddp-border-color</code></td>
+                      <td>Border color</td>
+                      <td><code>#e0e0e0</code></td>
+                    </tr>
+                    <tr>
+                      <td><code>--ddp-range-color</code></td>
+                      <td>Selected range background</td>
+                      <td><code>#e3f2fd</code></td>
+                    </tr>
+                    <tr>
+                      <td><code>--ddp-range-text</code></td>
+                      <td>Selected range text color</td>
+                      <td><code>#1976d2</code></td>
+                    </tr>
+                    <tr>
+                      <td><code>--ddp-hover-color</code></td>
+                      <td>Hover state background</td>
+                      <td><code>#f5f5f5</code></td>
+                    </tr>
+                    <tr>
+                      <td><code>--ddp-disabled-color</code></td>
+                      <td>Disabled date color</td>
+                      <td><code>#cccccc</code></td>
+                    </tr>
+                    <tr>
+                      <td><code>--ddp-header-bg</code></td>
+                      <td>Calendar header background</td>
+                      <td><code>#f8f9fa</code></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </section>
+
+            <section class="doc-section" id="background-theme">
+              <h2>🖌️ Background & Theme</h2>
+              <p>Customize the overall appearance using CSS variables.</p>
+              
+              <h3>Example: Dark Theme</h3>
+              <div class="code-block">
+                <pre><code class="language-css">/* styles.css */
+ngx-dual-datepicker &#123;
+  --ddp-bg-color: #1e1e1e;
+  --ddp-text-color: #e0e0e0;
+  --ddp-border-color: #404040;
+  --ddp-range-color: #264f78;
+  --ddp-range-text: #4fc3f7;
+  --ddp-hover-color: #2d2d2d;
+  --ddp-disabled-color: #666666;
+  --ddp-header-bg: #252526;
+&#125;</code></pre>
+              </div>
+
+              <h3>Example: Blue Theme</h3>
+              <div class="code-block">
+                <pre><code class="language-css">ngx-dual-datepicker &#123;
+  --ddp-bg-color: #f0f8ff;
+  --ddp-text-color: #1565c0;
+  --ddp-border-color: #90caf9;
+  --ddp-range-color: #2196f3;
+  --ddp-range-text: #ffffff;
+  --ddp-hover-color: #e3f2fd;
+  --ddp-header-bg: #bbdefb;
+&#125;</code></pre>
+              </div>
+
+              <h3>Example: Custom Background Color</h3>
+              <div class="code-block">
+                <pre><code class="language-html">&lt;!-- Component template --&gt;
+&lt;ngx-dual-datepicker
+  style="--ddp-bg-color: #f5f5f5; --ddp-border-color: #ddd;"&gt;
+&lt;/ngx-dual-datepicker&gt;</code></pre>
+              </div>
+            </section>
+
+            <section class="doc-section" id="color-customization">
+              <h2>🎨 Color Customization</h2>
+              <p>Fine-tune individual color aspects.</p>
+
+              <h3>Change Selection Color</h3>
+              <div class="code-block">
+                <pre><code class="language-html">&lt;ngx-dual-datepicker
+  style="--ddp-range-color: #ffebee; --ddp-range-text: #c62828;"&gt;
+&lt;/ngx-dual-datepicker&gt;</code></pre>
+              </div>
+
+              <h3>Change Hover Color</h3>
+              <div class="code-block">
+                <pre><code class="language-html">&lt;ngx-dual-datepicker
+  style="--ddp-hover-color: #fff3e0;"&gt;
+&lt;/ngx-dual-datepicker&gt;</code></pre>
+              </div>
+
+              <h3>Change Disabled Dates Color</h3>
+              <div class="code-block">
+                <pre><code class="language-html">&lt;ngx-dual-datepicker
+  style="--ddp-disabled-color: #ffcdd2;"&gt;
+&lt;/ngx-dual-datepicker&gt;</code></pre>
+              </div>
+            </section>
+
+            <section class="doc-section" id="main-inputs">
+              <h2>📥 Main Component Inputs</h2>
+              <p>Key configuration options for behavior and appearance.</p>
+
+              <div class="table-responsive">
+                <table class="table table-bordered">
+                  <thead class="table-light">
+                    <tr>
+                      <th>Input</th>
+                      <th>Type</th>
+                      <th>Default</th>
+                      <th>Description</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><code>minDate</code></td>
+                      <td><code>Date</code></td>
+                      <td><code>null</code></td>
+                      <td>Minimum selectable date</td>
+                    </tr>
+                    <tr>
+                      <td><code>maxDate</code></td>
+                      <td><code>Date</code></td>
+                      <td><code>null</code></td>
+                      <td>Maximum selectable date</td>
+                    </tr>
+                    <tr>
+                      <td><code>disabledDates</code></td>
+                      <td><code>(date: Date) => boolean</code></td>
+                      <td><code>null</code></td>
+                      <td>Predicate function to disable specific dates</td>
+                    </tr>
+                    <tr>
+                      <td><code>showPresets</code></td>
+                      <td><code>boolean</code></td>
+                      <td><code>true</code></td>
+                      <td>Show/hide preset buttons</td>
+                    </tr>
+                    <tr>
+                      <td><code>presets</code></td>
+                      <td><code>DateRangePreset[]</code></td>
+                      <td><code>[]</code></td>
+                      <td>Custom preset configurations</td>
+                    </tr>
+                    <tr>
+                      <td><code>enableMultiRange</code></td>
+                      <td><code>boolean</code></td>
+                      <td><code>false</code></td>
+                      <td>Allow selecting multiple date ranges</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <h3>Example: Min/Max Dates</h3>
+              <div class="code-block">
+                <pre><code class="language-html">&lt;ngx-dual-datepicker
+  [minDate]="minDate"
+  [maxDate]="maxDate"&gt;
+&lt;/ngx-dual-datepicker&gt;</code></pre>
+              </div>
+              <div class="code-block">
+                <pre><code class="language-typescript">export class MyComponent &#123;
+  minDate = new Date('2024-01-01');
+  maxDate = new Date('2024-12-31');
+&#125;</code></pre>
+              </div>
+            </section>
+
+            <section class="doc-section" id="locale-config">
+              <h2>🌍 Locale & Internationalization</h2>
+              <p>Customize month names, day names, and week start day.</p>
+
+              <div class="table-responsive">
+                <table class="table table-bordered">
+                  <thead class="table-light">
+                    <tr>
+                      <th>Input</th>
+                      <th>Type</th>
+                      <th>Description</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><code>monthNames</code></td>
+                      <td><code>string[]</code></td>
+                      <td>Custom month names (12 items)</td>
+                    </tr>
+                    <tr>
+                      <td><code>dayNames</code></td>
+                      <td><code>string[]</code></td>
+                      <td>Custom day names (7 items, starting with Sunday)</td>
+                    </tr>
+                    <tr>
+                      <td><code>weekStartDay</code></td>
+                      <td><code>0-6</code></td>
+                      <td>First day of week (0 = Sunday, 1 = Monday, etc.)</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <h3>Example: Spanish Locale</h3>
+              <div class="code-block">
+                <pre><code class="language-html">&lt;ngx-dual-datepicker
+  [monthNames]="spanishMonths"
+  [dayNames]="spanishDays"
+  [weekStartDay]="1"&gt;
+&lt;/ngx-dual-datepicker&gt;</code></pre>
+              </div>
+              <div class="code-block">
+                <pre><code class="language-typescript">export class MyComponent &#123;
+  spanishMonths = [
+    'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+    'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+  ];
+  
+  spanishDays = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
+&#125;</code></pre>
+              </div>
+            </section>
+
+            <section class="doc-section" id="preset-config">
+              <h2>⚡ Preset Configuration</h2>
+              <p>Control preset visibility and provide custom presets.</p>
+
+              <h3>Disable Presets</h3>
+              <div class="code-block">
+                <pre><code class="language-html">&lt;ngx-dual-datepicker
+  [showPresets]="false"&gt;
+&lt;/ngx-dual-datepicker&gt;</code></pre>
+              </div>
+
+              <h3>Custom Presets</h3>
+              <div class="code-block">
+                <pre><code class="language-html">&lt;ngx-dual-datepicker
+  [presets]="customPresets"&gt;
+&lt;/ngx-dual-datepicker&gt;</code></pre>
+              </div>
+              <div class="code-block">
+                <pre><code class="language-typescript">import &#123; DateRangePreset &#125; from '&#64;oneluiz/dual-datepicker';
+
+export class MyComponent &#123;
+  customPresets: DateRangePreset[] = [
+    &#123;
+      label: 'Last 7 Days',
+      getValue: () => (&#123;
+        start: subDays(new Date(), 7),
+        end: new Date()
+      &#125;)
+    &#125;,
+    &#123;
+      label: 'This Month',
+      getValue: () => (&#123;
+        start: startOfMonth(new Date()),
+        end: endOfMonth(new Date())
+      &#125;)
+    &#125;
+  ];
+&#125;</code></pre>
+              </div>
+            </section>
+
+            <section class="doc-section" id="theme-examples">
+              <h2>🎨 Complete Theme Examples</h2>
+              
+              <h3>Material Design Theme</h3>
+              <div class="code-block">
+                <pre><code class="language-css">ngx-dual-datepicker &#123;
+  --ddp-bg-color: #ffffff;
+  --ddp-text-color: #212121;
+  --ddp-border-color: #e0e0e0;
+  --ddp-range-color: #e8eaf6;
+  --ddp-range-text: #3f51b5;
+  --ddp-hover-color: #f5f5f5;
+  --ddp-disabled-color: #bdbdbd;
+  --ddp-header-bg: #fafafa;
+  
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+&#125;</code></pre>
+              </div>
+
+              <h3>Nord Theme</h3>
+              <div class="code-block">
+                <pre><code class="language-css">ngx-dual-datepicker &#123;
+  --ddp-bg-color: #2e3440;
+  --ddp-text-color: #eceff4;
+  --ddp-border-color: #3b4252;
+  --ddp-range-color: #5e81ac;
+  --ddp-range-text: #eceff4;
+  --ddp-hover-color: #434c5e;
+  --ddp-disabled-color: #4c566a;
+  --ddp-header-bg: #3b4252;
+&#125;</code></pre>
+              </div>
+
+              <h3>Minimalist Theme</h3>
+              <div class="code-block">
+                <pre><code class="language-css">ngx-dual-datepicker &#123;
+  --ddp-bg-color: #fdfdfd;
+  --ddp-text-color: #1a1a1a;
+  --ddp-border-color: #f0f0f0;
+  --ddp-range-color: #000000;
+  --ddp-range-text: #ffffff;
+  --ddp-hover-color: #f8f8f8;
+  --ddp-disabled-color: #d0d0d0;
+  --ddp-header-bg: #fafafa;
+  
+  font-family: system-ui, -apple-system, sans-serif;
+  border: none;
+  box-shadow: 0 0 0 1px #e0e0e0;
+&#125;</code></pre>
+              </div>
+            </section>
+
+            <div class="alert alert-info mt-4">
+              <h5><i class="bi bi-lightbulb me-2"></i>Pro Tip</h5>
+              <p class="mb-0">For complete API documentation including all 28 inputs, visit the <button class="btn btn-sm btn-link p-0" (click)="setActiveTab('api')">API Reference</button> page.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    }
+
     <!-- Examples Tab -->
     @if (activeTab === 'examples') {
       <!-- Sidebar Navigation -->
@@ -2031,6 +3022,405 @@ const isDisabled = validator.isDateDisabled('2026-01-15', disabledDatesArray);</
       </div>
       </div> <!-- End docs-main -->
     }
+
+    <!-- What's New Tab -->
+    @if (activeTab === 'whats-new') {
+      <!-- Sidebar Navigation -->
+      <aside class="docs-sidebar">
+        <nav class="sidebar-nav">
+          <div class="sidebar-section">
+            <h6 class="section-title">Latest Releases</h6>
+            <ul class="section-links">
+              <li>
+                <button class="sidebar-link" (click)="scrollToSection('v4-0-0')">
+                  <span class="badge-new">NEW</span>
+                  v4.0.0
+                </button>
+              </li>
+              <li>
+                <button class="sidebar-link" (click)="scrollToSection('v3-9-x')">
+                  v3.9.x
+                </button>
+              </li>
+              <li>
+                <button class="sidebar-link" (click)="scrollToSection('v3-8-0')">
+                  v3.8.0
+                </button>
+              </li>
+            </ul>
+          </div>
+          
+          <div class="sidebar-section">
+            <h6 class="section-title">Archive</h6>
+            <ul class="section-links">
+              <li>
+                <button class="sidebar-link" (click)="scrollToSection('v3-6-0')">
+                  v3.6.0
+                </button>
+              </li>
+              <li>
+                <button class="sidebar-link" (click)="scrollToSection('v3-5-0')">
+                  v3.5.0
+                </button>
+              </li>
+              <li>
+                <button class="sidebar-link" (click)="scrollToSection('v3-0-0')">
+                  v3.0.0
+                </button>
+              </li>
+            </ul>
+          </div>
+        </nav>
+      </aside>
+
+      <!-- Main Content -->
+      <div class="docs-main">
+        <div class="tab-content fade-in">
+          <div class="doc-content">
+            <h1 class="mb-4">📰 What's New</h1>
+            <p class="lead">Timeline of major releases and improvements.</p>
+
+            <article class="release-article" id="v4-0-0">
+              <div class="release-header">
+                <span class="release-badge new">Current</span>
+                <h2>v4.0.0 — Public API Formalization</h2>
+                <div class="release-meta">
+                  <span class="release-date">February 2026</span>
+                  <span class="release-separator">•</span>
+                  <span class="release-breaking">Breaking Changes</span>
+                </div>
+              </div>
+              
+              <div class="release-body">
+                <h3>🎯 Goal: Production-Ready Public API</h3>
+                <p>v4.0.0 formalizes the public API contract, ensuring stability and maintainability for production use.</p>
+                
+                <h4>What's New</h4>
+                <ul>
+                  <li><strong>Public API Surface:</strong> All public exports are now documented and stable</li>
+                  <li><strong>Package Structure:</strong> Clear separation between public and internal APIs</li>
+                  <li><strong>Type Safety:</strong> Improved TypeScript types and interfaces</li>
+                  <li><strong>Documentation:</strong> Complete API reference with all 28 inputs documented</li>
+                  <li><strong>Build System:</strong> Optimized build output and tree-shaking</li>
+                </ul>
+
+                <h4>⚠️ Breaking Changes</h4>
+                <ul>
+                  <li>Internal imports are no longer accessible (use public API only)</li>
+                  <li>Removed deprecated legacy presets (use dynamic preset system)</li>
+                  <li>Package entry points reorganized</li>
+                </ul>
+
+                <h4>Migration Guide</h4>
+                <p>See the <button class="btn btn-sm btn-link p-0" (click)="setActiveTab('migration')">Migration Guide</button> for detailed upgrade instructions.</p>
+              </div>
+            </article>
+
+            <article class="release-article" id="v3-9-x">
+              <div class="release-header">
+                <h2>v3.9.x — Hardening & Stability</h2>
+                <div class="release-meta">
+                  <span class="release-date">January 2026</span>
+                </div>
+              </div>
+              
+              <div class="release-body">
+                <h4>Focus: Test Coverage & Performance</h4>
+                <ul>
+                  <li><strong>Test Suite:</strong> Expanded to 208+ unit tests</li>
+                  <li><strong>Cache System:</strong> Optimized date calculations with memoization</li>
+                  <li><strong>Type Guards:</strong> Added runtime validation for date operations</li>
+                  <li><strong>Edge Cases:</strong> Fixed timezone and DST issues</li>
+                  <li><strong>Performance:</strong> ~15% faster date range calculations</li>
+                </ul>
+
+                <h4>Internal Improvements</h4>
+                <ul>
+                  <li>Refactored state management for better predictability</li>
+                  <li>Improved memory efficiency in calendar rendering</li>
+                  <li>Enhanced error messages and debugging experience</li>
+                </ul>
+              </div>
+            </article>
+
+            <article class="release-article" id="v3-8-0">
+              <div class="release-header">
+                <h2>v3.8.0 — Preset System Overhaul</h2>
+                <div class="release-meta">
+                  <span class="release-date">December 2025</span>
+                </div>
+              </div>
+              
+              <div class="release-body">
+                <h4>Dynamic Presets</h4>
+                <ul>
+                  <li><strong>getValue() Pattern:</strong> Presets now execute at selection time (not configuration time)</li>
+                  <li><strong>Plugin Architecture:</strong> External preset plugins supported</li>
+                  <li><strong>Built-in Presets:</strong> 8 common presets included by default</li>
+                  <li><strong>Custom Presets:</strong> Easy to define via <code>presets</code> input</li>
+                </ul>
+
+                <h4>Examples</h4>
+                <ul>
+                  <li>Last 7 Days, Last 30 Days, Last 90 Days</li>
+                  <li>This Week, This Month, This Quarter</li>
+                  <li>Custom range with dynamic calculation</li>
+                </ul>
+              </div>
+            </article>
+
+            <article class="release-article" id="v3-6-0">
+              <div class="release-header">
+                <h2>v3.6.0 — Multi-Range Support</h2>
+                <div class="release-meta">
+                  <span class="release-date">October 2025</span>
+                </div>
+              </div>
+              
+              <div class="release-body">
+                <h4>Unique Feature</h4>
+                <ul>
+                  <li><strong>Multiple Ranges:</strong> Select unlimited date ranges in one picker</li>
+                  <li><strong>Visual Feedback:</strong> Each range highlighted with distinct colors</li>
+                  <li><strong>API:</strong> <code>enableMultiRange</code> input + <code>multiRangeChange</code> output</li>
+                  <li><strong>Use Cases:</strong> Blackout dates, availability calendars, reporting periods</li>
+                </ul>
+              </div>
+            </article>
+
+            <article class="release-article" id="v3-5-0">
+              <div class="release-header">
+                <h2>v3.5.0 — Headless Architecture</h2>
+                <div class="release-meta">
+                  <span class="release-date">September 2025</span>
+                </div>
+              </div>
+              
+              <div class="release-body">
+                <h4>Separation of Concerns</h4>
+                <ul>
+                  <li><strong>Headless Core:</strong> UI-less state management and date logic</li>
+                  <li><strong>DateAdapter:</strong> Pluggable date library support (native Date, date-fns, etc.)</li>
+                  <li><strong>Custom UI:</strong> Build your own UI on top of the core</li>
+                  <li><strong>SSR-Safe:</strong> No DOM dependencies in core logic</li>
+                </ul>
+              </div>
+            </article>
+
+            <article class="release-article" id="v3-0-0">
+              <div class="release-header">
+                <h2>v3.0.0 — Angular Signals Rewrite</h2>
+                <div class="release-meta">
+                  <span class="release-date">May 2025</span>
+                  <span class="release-separator">•</span>
+                  <span class="release-breaking">Breaking Changes</span>
+                </div>
+              </div>
+              
+              <div class="release-body">
+                <h4>Modern Reactive State</h4>
+                <ul>
+                  <li><strong>Angular Signals:</strong> Complete rewrite using Signals</li>
+                  <li><strong>OnPush:</strong> ChangeDetectionStrategy.OnPush everywhere</li>
+                  <li><strong>Performance:</strong> 30% faster rendering vs v2.x</li>
+                  <li><strong>Standalone:</strong> No NgModule imports required</li>
+                  <li><strong>Angular 17+:</strong> Minimum version requirement updated</li>
+                </ul>
+
+                <h4>Breaking Changes</h4>
+                <ul>
+                  <li>Minimum Angular version: 17.0.0</li>
+                  <li>Removed RxJS observables from public API</li>
+                  <li>Component API simplified (fewer inputs)</li>
+                </ul>
+              </div>
+            </article>
+
+            <div class="alert alert-info mt-4">
+              <h5><i class="bi bi-github me-2"></i>Complete Changelog</h5>
+              <p class="mb-0">For detailed commit history, see the <a href="https://github.com/oneluiz/ng-dual-datepicker/releases" target="_blank">GitHub Releases</a> page.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    }
+
+    <!-- Migration Guide Tab -->
+    @if (activeTab === 'migration') {
+      <div class="docs-main">
+        <div class="tab-content fade-in">
+          <div class="doc-content">
+            <h1 class="mb-4">🔄 Migration Guide</h1>
+            <p class="lead">Guide for upgrading from v3.x to v4.0.0</p>
+
+            <section class="doc-section" id="overview">
+              <h2>Overview</h2>
+              <p>v4.0.0 formalizes the Public API and removes access to internal imports. This guide helps you migrate safely.</p>
+              
+              <div class="alert alert-warning">
+                <h5><i class="bi bi-exclamation-triangle me-2"></i>Breaking Changes</h5>
+                <p class="mb-0">All internal imports have been removed from the public API. You must use only the public exports from the main entry point.</p>
+              </div>
+            </section>
+
+            <section class="doc-section" id="import-changes">
+              <h2>❌ Removed: Internal Imports</h2>
+              <p>These imports are NO LONGER available:</p>
+              
+              <div class="code-block">
+                <pre><code class="language-typescript">// ❌ REMOVED - Internal paths
+import &#123; Something &#125; from '&#64;oneluiz/dual-datepicker/core/...';
+import &#123; Something &#125; from '&#64;oneluiz/dual-datepicker/utils/...';
+import &#123; Something &#125; from '&#64;oneluiz/dual-datepicker/internal/...';</code></pre>
+              </div>
+
+              <h3>✅ Use Public API Only</h3>
+              <p>Import everything from the main entry point:</p>
+              <div class="code-block">
+                <pre><code class="language-typescript">// ✅ CORRECT - Public API
+import &#123; 
+  DualDatepickerComponent,
+  DateRange,
+  DateRangePreset,
+  // ... other public exports
+&#125; from '&#64;oneluiz/dual-datepicker';</code></pre>
+              </div>
+            </section>
+
+            <section class="doc-section" id="preset-migration">
+              <h2>🔄 Preset System Changes</h2>
+              
+              <h3>Old: CommonPresets (Removed)</h3>
+              <div class="code-block">
+                <pre><code class="language-typescript">// ❌ REMOVED
+import &#123; CommonPresets &#125; from '&#64;oneluiz/dual-datepicker/presets';
+
+presets = CommonPresets.LAST_7_DAYS;</code></pre>
+              </div>
+
+              <h3>New: Dynamic Presets (Built-in)</h3>
+              <div class="code-block">
+                <pre><code class="language-typescript">// ✅ NEW - Built-in presets are enabled by default
+&lt;ngx-dual-datepicker&gt;&lt;/ngx-dual-datepicker&gt;
+
+// 8 built-in presets automatically available:
+// - Today
+// - Yesterday
+// - Last 7 Days
+// - Last 30 Days
+// - This Month
+// - Last Month
+// - This Quarter
+// - This Year</code></pre>
+              </div>
+
+              <h3>Custom Presets</h3>
+              <div class="code-block">
+                <pre><code class="language-typescript">// ✅ Define custom presets
+import &#123; DateRangePreset &#125; from '&#64;oneluiz/dual-datepicker';
+
+customPresets: DateRangePreset[] = [
+  &#123;
+    label: 'Last 7 Days',
+    getValue: () => (&#123;
+      start: subDays(new Date(), 7),
+      end: new Date()
+    &#125;)
+  &#125;
+];</code></pre>
+              </div>
+            </section>
+
+            <section class="doc-section" id="api-changes">
+              <h2>📝 API Changes</h2>
+              
+              <h3>Removed Inputs</h3>
+              <ul>
+                <li><code>legacyMode</code> - No longer supported</li>
+                <li><code>useDeprecatedAPI</code> - Removed</li>
+              </ul>
+
+              <h3>Renamed Inputs</h3>
+              <p>None in this release. All existing inputs remain stable.</p>
+
+              <h3>New Inputs</h3>
+              <ul>
+                <li><code>enableMultiRange</code> - Enable multiple range selection (v3.6.0+)</li>
+                <li><code>showApplyButton</code> - Show apply/cancel buttons (v3.2.0+)</li>
+              </ul>
+            </section>
+
+            <section class="doc-section" id="package-structure">
+              <h2>📦 Package Structure</h2>
+              
+              <h3>Public Entry Point</h3>
+              <div class="code-block">
+                <pre><code class="language-typescript">// Only this entry point is supported:
+import &#123; ... &#125; from '&#64;oneluiz/dual-datepicker';</code></pre>
+              </div>
+
+              <h3>What's Exported</h3>
+              <p>The public API includes:</p>
+              <ul>
+                <li><strong>Components:</strong> <code>DualDatepickerComponent</code></li>
+                <li><strong>Interfaces:</strong> <code>DateRange</code>, <code>DateRangePreset</code>, <code>DateAdapter</code></li>
+                <li><strong>Types:</strong> All input/output types</li>
+                <li><strong>Constants:</strong> Public configuration constants (if any)</li>
+              </ul>
+            </section>
+
+            <section class="doc-section" id="migration-steps">
+              <h2>🚀 Migration Steps</h2>
+              
+              <ol class="migration-steps">
+                <li>
+                  <h4>1. Update Package</h4>
+                  <pre><code>npm install &#64;oneluiz/dual-datepicker&#64;^4.0.0</code></pre>
+                </li>
+                <li>
+                  <h4>2. Find Internal Imports</h4>
+                  <p>Search your codebase for internal imports:</p>
+                  <pre><code>grep -r "from '&#64;oneluiz/dual-datepicker/" src/</code></pre>
+                </li>
+                <li>
+                  <h4>3. Replace with Public API</h4>
+                  <p>Change all imports to use the main entry point:</p>
+                  <pre><code>import &#123; ... &#125; from '&#64;oneluiz/dual-datepicker';</code></pre>
+                </li>
+                <li>
+                  <h4>4. Remove CommonPresets</h4>
+                  <p>If you used <code>CommonPresets</code>, either:</p>
+                  <ul>
+                    <li>Use built-in presets (enabled by default), or</li>
+                    <li>Define custom presets with <code>[presets]</code> input</li>
+                  </ul>
+                </li>
+                <li>
+                  <h4>5. Test Thoroughly</h4>
+                  <p>Run your test suite and verify date picker functionality:</p>
+                  <pre><code>npm test</code></pre>
+                </li>
+                <li>
+                  <h4>6. Check TypeScript</h4>
+                  <p>Ensure no type errors:</p>
+                  <pre><code>npx tsc --noEmit</code></pre>
+                </li>
+              </ol>
+            </section>
+
+            <section class="doc-section" id="help">
+              <h2>Need Help?</h2>
+              <p>If you encounter issues during migration:</p>
+              <ul>
+                <li>Check the <button class="btn btn-sm btn-link p-0" (click)="setActiveTab('api')">API Reference</button> for public exports</li>
+                <li>Review <button class="btn btn-sm btn-link p-0" (click)="setActiveTab('examples')">Examples</button> for usage patterns</li>
+                <li>Open an issue on <a href="https://github.com/oneluiz/ng-dual-datepicker/issues" target="_blank">GitHub</a></li>
+              </ul>
+            </section>
+          </div>
+        </div>
+      </div>
+    }
   </main>
 
   <!-- Footer -->
@@ -2039,10 +3429,10 @@ const isDisabled = validator.isDateDisabled('2026-01-15', disabledDatesArray);</
       Made with ❤️ by <a href="https://github.com/oneluiz" target="_blank">&#64;oneluiz</a>
     </p>
     <p>
-      <strong>v3.5.0</strong> 🎉 | 
+      <strong>v{{ version }}</strong> 🎉 | 
       <a href="https://github.com/oneluiz/ng-dual-datepicker" target="_blank">GitHub</a> | 
       <a href="https://www.npmjs.com/package/@oneluiz/dual-datepicker" target="_blank">NPM</a> |
-      <a href="https://github.com/oneluiz/ng-dual-datepicker/releases/tag/v4.0.0" target="_blank">What's New in v4.0.0</a>
+      <a href="https://github.com/oneluiz/ng-dual-datepicker/releases" target="_blank">Releases</a>
     </p>
   </footer>
 </div>

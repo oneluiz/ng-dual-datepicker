@@ -15,8 +15,8 @@ export class AppComponent {
   // Library version (auto-synced from package.json)
   readonly version = packageInfo.version;
   
-  // Active tab - default to examples (most useful)
-  activeTab: 'examples' | 'api' | 'docs' = 'examples';
+  // Active tab - default to home (landing page)
+  activeTab: 'home' | 'installation' | 'configuration' | 'examples' | 'docs' | 'api' | 'whats-new' | 'migration' = 'home';
   
   // Active v3.2.0 feature tab
   activeV320Tab: 'disabled-dates' | 'display-format' | 'apply-button' | 'hover-preview' = 'disabled-dates';
@@ -119,7 +119,7 @@ export class AppComponent {
     this.datepicker8.clear();
   }
 
-  setActiveTab(tab: 'examples' | 'api' | 'docs') {
+  setActiveTab(tab: 'home' | 'installation' | 'configuration' | 'examples' | 'docs' | 'api' | 'whats-new' | 'migration') {
     this.activeTab = tab;
   }
   
