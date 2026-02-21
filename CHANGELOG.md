@@ -5,6 +5,93 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.5.0] - 2026-02-20
+
+### 🚀 Major Feature: Headless Architecture
+
+**Use date range state WITHOUT the UI component** - Brand new architecture that separates logic from UI!
+
+#### Core Modules
+
+**DualDateRangeStore** - Signal-based state container:
+- `@Injectable` store using Angular Signals
+- Works in services, components, guards, resolvers
+- SSR-compatible (no window/document dependencies)
+- Deterministic and testable
+- Observable-free (pure Signals)
+
+**PresetEngine** - Headless preset resolver:
+- Resolve presets without rendering
+- 15+ built-in presets (TODAY, THIS_MONTH, THIS_QUARTER, etc.)
+- Register custom presets
+- Deterministic date calculation
+
+**RangeValidator** - Pure validation functions:
+- `validateRangeOrder(start, end)`
+- `validateDateBounds(date, min, max)`
+- `isDateDisabled(date, disabledDates)`
+- No side effects, pure functions
+
+#### Use Cases
+
+Perfect for:
+- 📊 **Dashboard filters** - Control multiple charts with single global state
+- 🏢 **SSR applications** - Server-side date range logic
+- 🔄 **Global state** - Share range across unrelated components
+- 🎯 **Service layer** - Filter API calls without UI
+- 📈 **Analytics & BI** - Headless reporting engines
+- 🧪 **Testing** - Test date logic without DOM
+
+#### Example Usage
+
+```typescript
+// In any service or component
+const rangeStore = inject(DualDateRangeStore);
+
+// Apply preset
+rangeStore.applyPreset('THIS_MONTH');
+
+// Get range for API call
+const range = rangeStore.range();
+http.get(`/api/sales?start=${range.start}&end=${range.end}`);
+```
+
+#### Architecture
+
+```
+Core Logic (NEW)          UI Layer (existing)
+├── DualDateRangeStore    ├── DualDatepickerComponent
+├── PresetEngine          │   ↓ (will consume store in v4.0)
+└── RangeValidator        └── Backward compatible
+```
+
+#### Documentation
+
+- **[HEADLESS.md](HEADLESS.md)** - Complete architecture guide
+- **[HEADLESS_EXAMPLES.ts](HEADLESS_EXAMPLES.ts)** - 9 real-world code examples
+- Updated README with Quick Start section
+
+### 🔄 Backward Compatibility
+
+- ✅ **Zero breaking changes** - All existing code works unchanged
+- ✅ Existing `DualDatepickerComponent` unchanged  
+- ✅ All inputs/outputs preserved
+- ✅ Component will be refactored to use store internally in v4.0
+
+### 📦 New Exports
+
+```typescript
+// New in public API
+export { DualDateRangeStore } from './core';
+export { PresetEngine, presetEngine, createPreset } from './core';
+export { 
+  validateRangeOrder,
+  validateDateBounds,
+  isDateDisabled,
+  ValidationResult 
+} from './core';
+```
+
 ## [3.2.0] - 2026-02-20
 
 ### ✨ Features

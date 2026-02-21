@@ -2,6 +2,8 @@
 
 A lightweight, zero-dependency date range picker for Angular 17+. Built with standalone components, Reactive Forms, and Angular Signals. No Angular Material required.
 
+> **🆕 NEW in v3.5.0**: [**Headless Architecture**](HEADLESS.md) - Use date range state WITHOUT the UI component. Perfect for SSR, services, and global dashboard filters! 🎯
+
 [![npm version](https://img.shields.io/npm/v/@oneluiz/dual-datepicker)](https://www.npmjs.com/package/@oneluiz/dual-datepicker)
 [![npm provenance](https://img.shields.io/badge/provenance-available-brightgreen)](https://www.npmjs.com/package/@oneluiz/dual-datepicker)
 ![license](https://img.shields.io/npm/l/@oneluiz/dual-datepicker)
@@ -17,6 +19,35 @@ npm install @oneluiz/dual-datepicker
 
 ---
 
+## 🌟 What's New
+
+### Headless Architecture (v3.5.0)
+
+Use date range logic **without the UI component**:
+
+```typescript
+// Inject the store anywhere - no UI needed!
+const rangeStore = inject(DualDateRangeStore);
+
+// Apply preset
+rangeStore.applyPreset('THIS_MONTH');
+
+// Use in API calls
+const range = rangeStore.range();
+http.get(`/api/sales?start=${range.start}&end=${range.end}`);
+```
+
+**Perfect for:**
+- 📊 Dashboard filters (control multiple charts)
+- 🏢 SSR applications
+- 🔄 Global state management
+- 🎯 Service-layer filtering
+- 📈 Analytics and BI tools
+
+**[📖 Read the Headless Architecture Guide →](HEADLESS.md)**
+
+---
+
 ## 📋 Table of Contents
 
 - [Features](#-features)
@@ -26,6 +57,7 @@ npm install @oneluiz/dual-datepicker
   - [Basic Usage](#basic-usage)
   - [Reactive Forms](#with-reactive-forms)
   - [Angular Signals](#with-angular-signals)
+  - [Headless Usage](#headless-usage-new) ⭐ NEW
 - [Advanced Features](#-advanced-features)
   - [Multi-Range Selection](#multi-range-support)
   - [Disabled Dates](#disabled-dates)
@@ -168,6 +200,52 @@ dateRange = signal<DateRange | null>(null);
   (dateRangeChange)="dateRange.set($event)">
 </ngx-dual-datepicker>
 ```
+
+### Headless Usage (NEW) ⭐
+
+**Use date range state WITHOUT the UI component** - perfect for SSR, services, and global filters!
+
+```typescript
+import { Component, inject } from '@angular/core';
+import { DualDateRangeStore } from '@oneluiz/dual-datepicker';
+import { HttpClient } from '@angular/common/http';
+
+@Component({
+  template: `
+    <div class="dashboard">
+      <button (click)="setPreset('TODAY')">Today</button>
+      <button (click)="setPreset('THIS_MONTH')">This Month</button>
+      <p>{{ rangeText() }}</p>
+    </div>
+  `
+})
+export class DashboardComponent {
+  private rangeStore = inject(DualDateRangeStore);
+  private http = inject(HttpClient);
+  
+  // Expose signals for template
+  rangeText = this.rangeStore.rangeText;
+  
+  setPreset(key: string) {
+    this.rangeStore.applyPreset(key);
+    
+    // Use in API call
+    const range = this.rangeStore.range();
+    this.http.get(`/api/sales`, { 
+      params: { start: range.start, end: range.end } 
+    }).subscribe(data => console.log(data));
+  }
+}
+```
+
+**Benefits:**
+- ✅ No UI component needed
+- ✅ SSR-compatible
+- ✅ Global state management
+- ✅ Perfect for services and guards
+- ✅ Testable and deterministic
+
+**[📖 Full Headless Architecture Guide →](HEADLESS.md)** | **[💻 Code Examples →](HEADLESS_EXAMPLES.ts)**
 
 ---
 
