@@ -273,21 +273,25 @@ import { DateAdapter } from '@oneluiz/dual-datepicker';
 import dayjs, { Dayjs } from 'dayjs';
 
 @Injectable()
-export class DayJSAdapter extends DateAdapter<Dayjs> {
-  parse(value: any): Dayjs | null {
+export class DayJSAdapter implements DateAdapter {
+  parseISODate(value: string): Date | null {
     if (!value) return null;
     const parsed = dayjs(value);
-    return parsed.isValid() ? parsed : null;
+    return parsed.isValid() ? parsed.toDate() : null;
   }
 
-  format(date: Dayjs, format = 'YYYY-MM-DD'): string {
-    return date.format(format);
+  toISODate(date: Date): string {
+    return dayjs(date).format('YYYY-MM-DD');
   }
 
-  addDays(date: Dayjs, days: number): Dayjs {
-    return date.add(days, 'day');
+  normalize(date: Date): Date {
+    return dayjs(date).startOf('day').toDate();
   }
-  // ... implement other methods
+
+  addDays(date: Date, days: number): Date {
+    return dayjs(date).add(days, 'day').toDate();
+  }
+  // ... implement other methods (addMonths, isSameDay, etc.)
 }
 
 // 2. Provide custom adapter

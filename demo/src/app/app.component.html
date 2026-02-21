@@ -85,7 +85,7 @@
             <div class="row justify-content-center">
               <div class="col-lg-8 col-xl-7 text-center">
                 <div class="hero-badge mb-3">
-                  <span class="badge bg-warning text-dark px-3 py-2 rounded-pill fw-semibold">Currently v3.5.0</span>
+                  <span class="badge bg-warning text-dark px-3 py-2 rounded-pill fw-semibold">Currently v4.0.0</span>
                 </div>
                 <div class="display-3 fw-bold mb-4 text-emphasis">
                   Build fast, beautiful date pickers<br>with ng-dual-datepicker
@@ -101,7 +101,7 @@
                     Download
                   </button>
                 </div>
-                <p class="text-muted small mb-3">Currently v3.5.0 · <a href="https://github.com/oneluiz/ng-dual-datepicker" class="link-secondary">Download</a> · <a href="https://github.com/oneluiz/ng-dual-datepicker/releases" class="link-secondary">Release notes</a></p>
+                <p class="text-muted small mb-3">Currently v4.0.0 · <a href="https://github.com/oneluiz/ng-dual-datepicker" class="link-secondary">Download</a> · <a href="https://github.com/oneluiz/ng-dual-datepicker/releases" class="link-secondary">Release notes</a></p>
                 <div class="hero-install d-flex align-items-center gap-2">
                   <code class="user-select-all flex-grow-1">npm install &#64;oneluiz/dual-datepicker</code>
                   <button class="btn btn-sm btn-outline-secondary" (click)="copyToClipboard('npm install @oneluiz/dual-datepicker')" title="Copy to clipboard">
@@ -2670,7 +2670,115 @@ const isDisabled = validator.isDateDisabled('2026-01-15', disabledDatesArray);</
             </div>
           </div>
 
-          <!-- What's New Section -->
+          <!-- What's New Section v4.0.0 -->
+          <div class="blog-section">
+            <h2>🚀 What's New in v4.0.0 - Public API Formalization</h2>
+            <p class="text-danger fw-bold">⚠️ MAJOR RELEASE - Breaking Changes</p>
+            <p>Version 4.0.0 represents a major milestone that formalizes the <strong>public API contract</strong> and hides internal implementation details. This release improves tree-shaking, reduces bundle size by ~50%, and establishes a stable, documented API for long-term use.</p>
+            
+            <div class="alert alert-warning">
+              <h5>🔴 Breaking Changes</h5>
+              <ul class="mb-0">
+                <li><strong>Internal APIs no longer exported</strong> - APIs like <code>CalendarGridFactory</code>, <code>RangeHighlighterCache</code>, and testing utilities are no longer accessible from the main barrel export</li>
+                <li><strong>DateAdapter method renames</strong>:
+                  <ul>
+                    <li><code>.parse()</code> → <code>.parseISODate()</code></li>
+                    <li><code>.createDate()</code> → <code>.normalize(new Date())</code></li>
+                    <li><code>.today()</code> → <code>.normalize(new Date())</code></li>
+                    <li><code>.format()</code> → <code>.toISODate()</code></li>
+                  </ul>
+                </li>
+                <li><strong>Legacy files removed</strong> - Duplicate files have been cleaned up (use imports from <code>@oneluiz/dual-datepicker</code> instead)</li>
+              </ul>
+            </div>
+
+            <div class="features-grid">
+              <div class="feature-card">
+                <h3>📦 Stable Public API</h3>
+                <p>New <code>src/core/public.ts</code> defines a clear contract with 11 main exports: <code>DualDateRangeStore</code>, <code>DateAdapter</code>, preset plugins, DI providers, and validation utilities.</p>
+              </div>
+              <div class="feature-card">
+                <h3>🎯 ~50% Smaller Package</h3>
+                <p>npm package reduced from ~500 KB to 250.7 KB compressed by excluding demo, docs, and source code. Only compiled ES2022 bundles included.</p>
+              </div>
+              <div class="feature-card">
+                <h3>🌲 Better Tree-Shaking</h3>
+                <p>Pure ESM bundles with proper sideEffects configuration and separate public/internal entry points optimize for modern bundlers.</p>
+              </div>
+              <div class="feature-card">
+                <h3>📚 Fully Documented</h3>
+                <p>All public exports have comprehensive JSDoc comments. Breaking changes documented in <code>CHANGELOG.md</code> with migration guide.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Migration Guide -->
+          <div class="blog-section">
+            <h2>🔧 Migration Guide v3.x → v4.0</h2>
+            
+            <h3>1. Update DateAdapter Method Calls</h3>
+            <p>If you've implemented a custom DateAdapter, update method names:</p>
+            <pre class="code-example">// ❌ Before (v3.x)
+class MyAdapter extends DateAdapter {{'{'}}{{'}'}}
+  parse(value: string): Date | null {{'{'}}{{'}'}}
+  format(date: Date, format: string): string {{'{'}}{{'}'}}
+  createDate(year: number, month: number, day: number): Date {{'{'}}{{'}'}}
+  today(): Date {{'{'}}{{'}'}}
+{{'}'}}
+
+// ✅ After (v4.0)
+class MyAdapter implements DateAdapter {{'{'}}{{'}'}}
+  parseISODate(value: string): Date | null {{'{'}}{{'}'}}
+  toISODate(date: Date): string {{'{'}}{{'}'}}
+  normalize(date: Date): Date {{'{'}}{{'}'}}  // Use with new Date()
+{{'}'}}
+
+// Usage
+const date = adapter.normalize(new Date());  // Instead of adapter.today()
+const custom = adapter.normalize(new Date(2026, 0, 15));  // Instead of adapter.createDate()</pre>
+
+            <h3>2. Use Public API Imports</h3>
+            <p>Import from the main package entry point:</p>
+            <pre class="code-example">// ✅ Recommended (v4.0)
+import {{'{'}}{{'}'}}
+  DualDatepickerComponent,
+  DualDateRangeStore,
+  DateAdapter,
+  RangePresetPlugin,
+  provideCustomPresets
+{{'}'}} from '@oneluiz/dual-datepicker';
+
+// ❌ Avoid internal imports
+// import {{'{'}}{{'}'}} CalendarGridFactory {{'}'}} from '@oneluiz/dual-datepicker/core/internal';</pre>
+
+            <h3>3. Replace Deprecated Utilities</h3>
+            <p>If using <code>preset-utils</code> (removed), migrate to preset plugins:</p>
+            <pre class="code-example">// ❌ Before (v3.x - deprecated)
+import {{'{'}}{{'}'}} PresetUtils {{'}'}} from '@oneluiz/dual-datepicker/preset-utils';
+
+// ✅ After (v4.0 - use plugins)
+import {{'{'}}{{'}'}} RangePresetPlugin, PresetRegistry {{'}'}} from '@oneluiz/dual-datepicker';
+
+const myPreset: RangePresetPlugin = {{'{'}}{{'}'}}
+  key: 'MY_CUSTOM',
+  resolve: (clock, adapter) => ({{'{'}}{{'}'}}
+    start: adapter.normalize(new Date()),
+    end: adapter.addDays(adapter.normalize(new Date()), 7)
+  {{'}'}})
+{{'}'}};</pre>
+
+            <h3>4. Verify Build</h3>
+            <p>After updating, rebuild your application to catch any remaining issues:</p>
+            <pre class="code-example"># Clean build
+rm -rf node_modules package-lock.json
+npm install
+ng build --configuration production
+
+# Check bundle size (should be smaller!)
+ls -lh dist/*/main.*.js</pre>
+          </div>
+
+          <!-- What's New Section v3.5.0 (Previous) -->
           <div class="blog-section">
             <h2>🎯 What's New in v3.5.0</h2>
             <p>Version 3.5.0 introduces a revolutionary <strong>headless architecture</strong> that separates the date range logic from the UI. This architectural enhancement allows you to:</p>
@@ -3445,7 +3553,7 @@ export class AppointmentComponent {{ '{' }}
       <strong>v3.5.0</strong> 🎉 | 
       <a href="https://github.com/oneluiz/ng-dual-datepicker" target="_blank">GitHub</a> | 
       <a href="https://www.npmjs.com/package/@oneluiz/dual-datepicker" target="_blank">NPM</a> |
-      <a href="https://github.com/oneluiz/ng-dual-datepicker/releases/tag/v3.5.0" target="_blank">What's New in v3.5.0</a>
+      <a href="https://github.com/oneluiz/ng-dual-datepicker/releases/tag/v4.0.0" target="_blank">What's New in v4.0.0</a>
     </p>
   </footer>
 </div>
