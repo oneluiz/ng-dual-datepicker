@@ -1058,7 +1058,7 @@ export class MyComponent &#123;
       <aside class="docs-sidebar">
         <nav class="sidebar-nav">
           <div class="sidebar-section">
-            <h6 class="section-title">Examples (1-16)</h6>
+            <h6 class="section-title">Examples (1-18)</h6>
             <ul class="section-links">
               <li>
                 <button class="sidebar-link" (click)="scrollToExample('example-1')">
@@ -1143,6 +1143,11 @@ export class MyComponent &#123;
               <li>
                 <button class="sidebar-link" (click)="scrollToExample('example-16')">
                   17. Hover Preview
+                </button>
+              </li>
+              <li>
+                <button class="sidebar-link" (click)="scrollToExample('example-17')">
+                  18. Close Behavior 🚪
                 </button>
               </li>
             </ul>
@@ -1947,6 +1952,93 @@ export class MyComponent &#123;
             </div>
             <div class="code-block">
               <pre>{{ codeExamples.hoverPreview }}</pre>
+            </div>
+          </div>
+        </div>
+
+        <!-- Example 17: Close Behavior -->
+        <div class="demo-example" id="example-17">
+          <div class="demo-box">
+            <h2>🚪 Close Behavior Control</h2>
+            <p class="example-desc">
+              Control when the datepicker closes automatically. Choose whether to close on selection, 
+              outside click, or keep it open for manual control. Perfect for modals, multi-range selection, 
+              and custom workflows! 🎮
+            </p>
+            
+            <div style="display: grid; gap: 24px;">
+              <!-- Default: Auto-close on selection -->
+              <div>
+                <h4 style="margin: 0 0 12px 0; color: #374151;">
+                  <strong>Default Behavior</strong>
+                  <span style="font-size: 0.85rem; color: #6b7280; font-weight: normal;"> — Auto-close after selection & outside click</span>
+                </h4>
+                <ngx-dual-datepicker
+                  [closeOnSelection]="true"
+                  [closeOnClickOutside]="true"
+                  (dateRangeChange)="onDateRangeChange(17, $event)">
+                </ngx-dual-datepicker>
+                @if (example17Range) {
+                <div class="output" style="margin-top: 12px;">
+                  <strong>Selected:</strong> {{ example17Range.rangeText }}
+                </div>
+                }
+              </div>
+
+              <!-- Never auto-close -->
+              <div>
+                <h4 style="margin: 0 0 12px 0; color: #374151;">
+                  <strong>Never Auto-Close</strong>
+                  <span style="font-size: 0.85rem; color: #6b7280; font-weight: normal;"> — Stays open until manual close (click input or ESC)</span>
+                </h4>
+                <ngx-dual-datepicker
+                  [closeOnSelection]="false"
+                  [closeOnClickOutside]="false"
+                  (dateRangeChange)="onDateRangeChange(171, $event)">
+                </ngx-dual-datepicker>
+                @if (example17aRange) {
+                <div class="output" style="margin-top: 12px;">
+                  <strong>Selected:</strong> {{ example17aRange.rangeText }}
+                  <br>
+                  <small style="color: #6b7280;">💡 Click the input field again or press ESC to close</small>
+                </div>
+                }
+              </div>
+            </div>
+
+            <div class="adapter-info material-cant">
+              <h4>🎯 Configuration Options:</h4>
+              <ul>
+                <li><strong>closeOnSelection: boolean</strong> (default: <code>true</code>) - Auto-close after selecting both dates</li>
+                <li><strong>closeOnPresetSelection: boolean</strong> (default: <code>true</code>) - Auto-close after clicking a preset</li>
+                <li><strong>closeOnClickOutside: boolean</strong> (default: <code>true</code>) - Auto-close when clicking outside picker</li>
+              </ul>
+              
+              <h4>💎 Behavior Combinations:</h4>
+              <ul>
+                <li>✅ <strong>Default</strong> - All true: Standard datepicker behavior</li>
+                <li>🔄 <strong>Multi-range friendly</strong> - closeOnSelection=false: Select multiple ranges easily</li>
+                <li>📝 <strong>Modal mode</strong> - closeOnClickOutside=false: Prevent accidental closes</li>
+                <li>🔒 <strong>Always-visible</strong> - All false: Keep picker open permanently</li>
+                <li>⚡ <strong>Preset-only</strong> - closeOnPresetSelection=true + closeOnSelection=false: Quick preset selection</li>
+              </ul>
+
+              <h4>🔧 Use Cases:</h4>
+              <ul>
+                <li>📝 <strong>Forms with validation</strong> - Keep open until all fields valid</li>
+                <li>🎯 <strong>Multi-range workflows</strong> - Select multiple ranges without reopening</li>
+                <li>📱 <strong>Mobile-friendly</strong> - Prevent accidental closes on small screens</li>
+                <li>🎛️ <strong>Dashboard filters</strong> - Always-visible date pickers</li>
+                <li>⚙️ <strong>Step-by-step wizards</strong> - Control when user proceeds</li>
+              </ul>
+
+              <h4>⌨️ Keyboard Control:</h4>
+              <p style="margin: 8px 0 0 0; color: #6b7280;">
+                Regardless of close settings, users can always press <kbd>ESC</kbd> to close the picker or click the input field again to toggle.
+              </p>
+            </div>
+            <div class="code-block">
+              <pre>{{ codeExamples.closeBehavior }}</pre>
             </div>
           </div>
         </div>

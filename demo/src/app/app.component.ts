@@ -76,6 +76,10 @@ export class AppComponent {
   // Example 16: Hover Range Preview (NEW v3.2.0)
   example16Range: DateRange | null = null;
 
+  // Example 17: Close Behavior (NEW v4.0.0)
+  example17Range: DateRange | null = null;
+  example17aRange: DateRange | null = null;
+
   // Example 20: Theming System (NEW v3.3.0)
   example20Range: DateRange | null = null;
   selectedTheme: ThemeType = 'default';
@@ -185,6 +189,12 @@ export class AppComponent {
         break;
       case 16:
         this.example16Range = range;
+        break;
+      case 17:
+        this.example17Range = range;
+        break;
+      case 171:
+        this.example17aRange = range;
         break;
       case 20:
         this.example20Range = range;
@@ -516,6 +526,48 @@ onDateRangeChange(range: DateRange) {
 // → Purple dashed border (#6366f1)
 // → 70% opacity (subtle preview)
 // → Clear distinction from selected range
+
+// Works with all modes:`,
+      closeBehavior: `// Close Behavior - Control when the datepicker closes automatically
+
+// Default: Auto-close on selection and outside click
+<ngx-dual-datepicker
+  [closeOnSelection]="true"
+  [closeOnClickOutside]="true"
+  (dateRangeChange)="onDateRangeChange($event)">
+</ngx-dual-datepicker>
+
+// Keep open after selection (useful for multi-range)
+<ngx-dual-datepicker
+  [closeOnSelection]="false"
+  [closeOnClickOutside]="true"
+  (dateRangeChange)="onDateRangeChange($event)">
+</ngx-dual-datepicker>
+
+// Never auto-close (manual control only)
+<ngx-dual-datepicker
+  [closeOnSelection]="false"
+  [closeOnClickOutside]="false"
+  (dateRangeChange)="onDateRangeChange($event)">
+</ngx-dual-datepicker>
+
+// Control preset behavior separately
+<ngx-dual-datepicker
+  [closeOnPresetSelection]="true"
+  [closeOnSelection]="false"
+  (dateRangeChange)="onDateRangeChange($event)">
+</ngx-dual-datepicker>
+
+// Configuration options:
+// closeOnSelection: true     → Auto-close after selecting both dates
+// closeOnPresetSelection: true → Auto-close after preset selection  
+// closeOnClickOutside: true   → Auto-close when clicking outside
+
+// Use cases:
+// ✔ Modal forms - Keep open until explicit close
+// ✔ Multi-range selection - Don't close after each range
+// ✔ Always-visible pickers - Prevent auto-closing
+// ✔ Preset-only mode - Close on preset, stay open for manual
 
 // Works with all modes:
 // ✔ Single range mode
