@@ -10,15 +10,20 @@
  * - No decorations (selected, disabled, etc.) - those are applied separately
  */
 
-import { Injectable, Inject } from '@angular/core';
+import { Injectable, Inject, Optional } from '@angular/core';
 import { DateAdapter, DATE_ADAPTER } from '../date-adapter';
 import { CalendarCell, CalendarGrid } from './calendar-grid.types';
+import { NativeDateAdapter } from '../native-date-adapter';
 
 @Injectable({ providedIn: 'root' })
 export class CalendarGridFactory {
+  private adapter: DateAdapter;
+
   constructor(
-    @Inject(DATE_ADAPTER) private adapter: DateAdapter
-  ) {}
+    @Optional() @Inject(DATE_ADAPTER) adapter?: DateAdapter
+  ) {
+    this.adapter = adapter ?? new NativeDateAdapter();
+  }
 
   /**
    * Create a calendar grid for a given month

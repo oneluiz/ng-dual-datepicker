@@ -1,6 +1,6 @@
 {
   "name": "@oneluiz/dual-datepicker",
-  "version": "4.0.1",
+  "version": "4.0.2",
   "description": "A customizable dual-calendar date range picker for Angular 17+ with Reactive Forms, Signals, Headless Architecture, Plugin-Driven Presets, Multi-Range support, Time Picker, and Timezone-Safe Date Adapter",
   "keywords": [
     "angular",
@@ -45,7 +45,7 @@
   },
   "scripts": {
     "build": "ng-packagr -p ng-package.json && npm run postbuild",
-    "postbuild": "mkdir -p dist/themes && cp -r dist/src/themes/* dist/themes/",
+    "postbuild": "mkdir -p dist/themes && cp -r dist/src/themes/* dist/themes/ && node -e \"const pkg = require('./dist/package.json'); if (!pkg.files.includes('types/')) { pkg.files.push('types/'); require('fs').writeFileSync('./dist/package.json', JSON.stringify(pkg, null, 2)); }\"",
     "publish:pkg": "cd dist && npm publish --access public",
     "pack:check": "npm pack --dry-run && echo '\n\n=== Files that would be published ===' && npm pack 2>/dev/null | tail -1 | xargs tar -tzf 2>/dev/null | head -50",
     "pack:verify": "npm pack && tar -tzf *.tgz | grep -E '\\.(js|d\\.ts|metadata\\.json)$' | head -30 && rm -f *.tgz",
